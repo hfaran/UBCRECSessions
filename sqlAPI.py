@@ -12,7 +12,7 @@ class SQLAPI(object):
             self.conn = sqlite3.connect(DBaddress)
             self.cursor = self.conn.cursor()
         else :
-            print ("Address of the database is not string/valid")
+            print("Address of the database is not string/valid")
 
     def tableCreate(self):
         """
