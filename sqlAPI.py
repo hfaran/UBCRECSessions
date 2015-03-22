@@ -40,29 +40,35 @@ class SQLAPI(object):
             self.cursor.execute("INSERT INTO Employees VALUES (? ,? ,? ,? ,? ,?)",(Sin,fName,lName,username,password,salt))
             self.conn.commit()
         else:
-            print("Insertion for Employee table failed. Types doesn't match.")
+            raise TypeError("Element type is not valid.")
+            #print("Insertion for Employee table failed. Types doesn't match.")
 
     def insertWorkingData(self,Sin,start_shift, end_shift ):
         if (isinstance(Sin,str)==True and isinstance(start_shift,str)==True and isinstance(end_shift,str)==True):
             self.cursor.execute("INSERT INTO Working VALUES (? ,? ,?)",Sin,start_shift,end_shift)
             self.conn.commit()
         else:
-            print("Insertion for Working table failed. Types doesn't match.")
+            raise TypeError("Element type is not valid.")
+            #print("Insertion for Working table failed. Types doesn't match.")
 
     def insertVenueData(self,Name,Address):
         if (isinstance(Name,str)==False) :
-            print("Inserting Name for Venue table failed. Types doesn't match.")
+            raise TypeError("Name type must be string.")
+            #print("Inserting Name for Venue table failed. Types doesn't match.")
         elif (isinstance(Address,str)==False ):
-            print("Inserting Address for Venue table failed. Types doesn't match.")
+            raise TypeError("Address type must be string.")
+            #print("Inserting Address for Venue table failed. Types doesn't match.")
         else:
             self.cursor.execute("INSERT INTO Venue VALUES (? ,?)",(Name,Address))
             self.conn.commit()
 
     def insertSportData (self, sportName, sportID):
         if (isinstance(sportName,str)==False):
-            print("Inserting Sport Name for Sport table failed. Type doesn't match.")
+            raise TypeError("sportName type must be string.")
+            #print("Inserting Sport Name for Sport table failed. Type doesn't match.")
         elif (isinstance(sportID,int)==False or sportID<0):
-            print("Inserting Sport ID for Sport table failed. Type doesn't match.")
+            raise TypeError("sportID type must be integer.")
+            #cprint("Inserting Sport ID for Sport table failed. Type doesn't match.")
         else:
             self.cursor.execute("INSERT INTO Sport VALUES (? ,?)",(sportName,sportID))
             self.conn.commit()
@@ -74,7 +80,8 @@ class SQLAPI(object):
             self.cursor.execute("INSERT INTO Session VALUES (? ,?,? ,?,? ,?)",(startTime,endTime,sessionID,sportID,venueName,results))
             self.conn.commit()
         else:
-            print("Insertion for Session table failed. Types doesn't match.")
+            raise TypeError("Element type is not valid.")
+            #print("Insertion for Session table failed. Types doesn't match.")
 
     def insertPlayerData (self, name, studentID, password, salt):
         if (isinstance(name,str)==True and isinstance(password,str)==True
@@ -82,13 +89,16 @@ class SQLAPI(object):
             self.cursor.execute("INSERT INTO Player VALUES (?,?,?,?)",(name,password,studentID,salt))
             self.conn.commit()
         else:
-            print("Insertion for Player table failed. Types doesn't match.")
+            raise TypeError("Element type is not valid.")
+            #print("Insertion for Player table failed. Types doesn't match.")
 
     def insertPlaysInData (self, studentNum, teamID):
         if (isinstance(studentNum,str)==False):
-            print("Inserting student Number for PlaysIn table failed. Type doesn't match.")
+            raise TypeError("Student number  type must be string.")
+            #print("Inserting student Number for PlaysIn table failed. Type doesn't match.")
         elif (isinstance(teamID,int)==False or teamID<0):
-            print("Inserting team ID for PlaysIn table failed. Type doesn't match.")
+            raise TypeError("Team ID is either not string or its value is negative.")
+            #print("Inserting team ID for PlaysIn table failed. Type doesn't match.")
         else:
             self.cursor.execute("INSERT INTO PlaysIn VALUES (? ,?)",(studentNum,teamID))
             self.conn.commit()
@@ -101,4 +111,5 @@ class SQLAPI(object):
             self.cursor.execute("INSERT INTO TeamParIn VALUES (?,?,?,?,?,?)",(teamName,teamID,numPlayers,sportID,sessionID,venueName))
             self.conn.commit()
         else:
-            print("Insertion for Team_ParticipatesIn table failed. Types doesn't match.")
+            raise TypeError("Element type is not valid.")
+            #print("Insertion for Team_ParticipatesIn table failed. Types doesn't match.")
