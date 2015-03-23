@@ -55,15 +55,15 @@ class SQLAPI(object):
         )
         self.conn.commit()
 
-    def insertVenueData(self, Name, Address):
+    def create_venue(self, name, address):
         """
-        :type Name: str
-        :param Name: Venue name
-        :type Address: str
-        :param Address: Address of venue
+        :type name: str
+        :param name: Venue name
+        :type address: str
+        :param address: address of venue
         """
         self.cursor.execute(
-            "INSERT INTO Venue VALUES (? ,?)", (Name, Address)
+            "INSERT INTO Venue VALUES (? ,?)", (name, address)
         )
         self.conn.commit()
 
