@@ -1,6 +1,12 @@
 import functools
-import urllib.parse as urlparse  # py3
-from urllib.parse import urlencode  # py3
+try:
+    import urlparse  # py2
+except ImportError:
+    import urllib.parse as urlparse  # py3
+try:
+    from urllib import urlencode  # py2
+except ImportError:
+    from urllib.parse import urlencode  # py3
 
 from tornado.web import HTTPError
 
