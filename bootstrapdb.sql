@@ -53,12 +53,8 @@ CREATE TABLE Team_ParticipatesIn (
   team_id           INTEGER PRIMARY KEY AUTOINCREMENT,
   name              TEXT,
   number_of_players INTEGER,
-  sport_id          INTEGER,
   session_id        INT,
-  venue_name        TEXT,
-  FOREIGN KEY (session_id) REFERENCES Sessions (session_id),
-  FOREIGN KEY (sport_id) REFERENCES Sport (sport_id),
-  FOREIGN KEY (venue_name) REFERENCES Venue (venue_name)
+  FOREIGN KEY (session_id) REFERENCES Sessions (session_id)
 );
 
 
@@ -133,13 +129,13 @@ INSERT INTO PlaysIn (student_num, team_id) VALUES (67539489, 3);
 INSERT INTO PlaysIn (student_num, team_id) VALUES (68723732, 4);
 INSERT INTO PlaysIn (student_num, team_id) VALUES (89789656, 5);
 
-INSERT INTO Team_ParticipatesIn (name, team_id, number_of_players, session_id, sport_id, venue_name)
-VALUES ('Lakers', 1, 10, 1, 1, 'SRC A');
-INSERT INTO Team_ParticipatesIn (name, team_id, number_of_players, session_id, sport_id, venue_name)
-VALUES ('Canucks', 2, 10, 2, 2, 'SRC B');
-INSERT INTO Team_ParticipatesIn (name, team_id, number_of_players, session_id, sport_id, venue_name)
-VALUES ('MU', 3, 10, 333, 3, 'Thunderbird');
-INSERT INTO Team_ParticipatesIn (name, team_id, number_of_players, session_id, sport_id, venue_name)
-VALUES ('Fake Madrid', 4, 10, 4, 4, 'SRC Gym');
-INSERT INTO Team_ParticipatesIn (name, team_id, number_of_players, session_id, sport_id, venue_name)
-VALUES ('Eagles', 5, 10, 5, 5, 'Aquatic Center');
+INSERT INTO Team_ParticipatesIn (name, team_id, number_of_players, session_id)
+VALUES ('Lakers', 1, 10, 1);
+INSERT INTO Team_ParticipatesIn (name, team_id, number_of_players, session_id)
+VALUES ('Canucks', 2, 10, 2);
+INSERT INTO Team_ParticipatesIn (name, team_id, number_of_players, session_id)
+VALUES ('MU', 3, 10, 333);
+INSERT INTO Team_ParticipatesIn (name, team_id, number_of_players, session_id)
+VALUES ('Fake Madrid', 4, 10, 4);
+INSERT INTO Team_ParticipatesIn (name, team_id, number_of_players, session_id)
+VALUES ('Eagles', 5, 10, 5);
