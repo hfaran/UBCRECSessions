@@ -27,10 +27,8 @@ class SQLAPI(object):
                             "endShift TEXT)")
         self.cursor.execute("CREATE TABLE Venue   (name TEXT, address TEXT)")
         self.cursor.execute("CREATE TABLE Sport (name TEXT, sportID INT)")
-        # Note that I am using the start and end time as string. we initially
-        # had it as int.
         self.cursor.execute(
-            "CREATE TABLE Session (start_time TEXT, end_time TEXT, "
+            "CREATE TABLE Session (start_time INTEGER, end_time INTEGER, "
             "session_id UNSIGNED INT, sport_id UNSIGNED INT, venue_name TEXT, "
             "results TEXT)"
         )
@@ -123,10 +121,10 @@ class SQLAPI(object):
                           venueName, results):
         """
 
-        :type startTime: str
-        :param startTime: Start time for a session. The time when session starts
-        :type endTime: str
-        :param endTime: End time for a session. The time when session ends
+        :type startTime: int
+        :param startTime: Start time for a session in Unix Time (seconds)
+        :type endTime: int
+        :param endTime: End time for a session in Unix Time (seconds)s
         :type sessionID: int
         :param sessionID: ID for the drop-in session
         :type sportID: int
@@ -136,8 +134,6 @@ class SQLAPI(object):
         :type results: str
         :param results: Result of the game (not sure)
         """
-        # Note: we had start time and end time as int but i am using it as
-        # string here
         self.cursor.execute(
             "INSERT INTO Session VALUES (? ,?,? ,?,? ,?)",
             (startTime,
@@ -153,7 +149,7 @@ class SQLAPI(object):
         """
         :type name: str
         :param name: Name of the student/player
-        :type studentID:int
+        :type studentID: int
         :param studentID: Student ID of the player
         :type password: str
         :param password: Password for that student
