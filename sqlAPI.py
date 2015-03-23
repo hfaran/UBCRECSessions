@@ -2,20 +2,14 @@ import sqlite3
 
 
 class SQLAPI(object):
+    """Abstraction for database
 
-    def __init__(self, DB_address='project.db'):
-        """
-
-        :rtype : object
-        :type DB_address: str
-        :param DB_address: String containing address of the database
-        :return : the cursor for that database for later use
-        """
-        if isinstance(DB_address,str):
-            self.conn = sqlite3.connect(DB_address)
-            self.cursor = self.conn.cursor()
-        else :
-            print("Address of the database is not string/valid")
+    :type db_path: str
+    :param db_path: String containing address of the database
+    """
+    def __init__(self, db_path='project.db'):
+        self.conn = sqlite3.connect(db_path)
+        self.cursor = self.conn.cursor()
 
     def tableCreate(self):
         """
