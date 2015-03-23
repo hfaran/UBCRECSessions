@@ -29,9 +29,9 @@ class Player(APIHandler):
             }
         }
     )
-    def post(self):
+    def put(self):
         """
-        POST the required parameters to permanently register a new player
+        PUT the required parameters to permanently register a new player
 
         * `full_name`: Full name of the student
         * `password`: Password for future logins

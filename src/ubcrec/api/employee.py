@@ -19,7 +19,7 @@ class Schedule(APIHandler):
         },
         output_schema={"type": "array"}
     )
-    def get(self):
+    def post(self):
         """
         GET employee shifts from `start` to `end`
 
