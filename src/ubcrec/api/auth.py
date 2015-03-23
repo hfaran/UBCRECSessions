@@ -35,7 +35,7 @@ class PlayerLogin(APIHandler):
         """
         student_number = self.body['student_number']
         password = self.body['password']
-        player = get_player(self.db_conn, self.get_current_user())
+        player = get_player(self.db_conn, student_number)
 
         # Check if the given password hashed with the player's known
         #   salt matches the stored password
@@ -101,7 +101,7 @@ class EmployeeLogin(APIHandler):
         """
         username = self.body['username']
         password = self.body['password']
-        employee = get_employee(self.db_conn, self.get_current_user())
+        employee = get_employee(self.db_conn, username)
 
         # Check if the given password hashed with the player's known
         #   salt matches the stored password
