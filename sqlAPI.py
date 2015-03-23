@@ -78,8 +78,8 @@ class SQLAPI(object):
         self.cursor.execute(
             "INSERT INTO Working VALUES (? ,? ,?)",
             (Sin,
-            startShift,
-            endShift)
+             startShift,
+             endShift)
         )
         self.conn.commit()
 
@@ -123,7 +123,8 @@ class SQLAPI(object):
         :type results: str
         :param results: Result of the game (not sure)
         """
-        # Note: we had start time and end time as int but i am using it as string here
+        # Note: we had start time and end time as int but i am using it as
+        # string here
         self.cursor.execute(
             "INSERT INTO Session VALUES (? ,?,? ,?,? ,?)",
             (startTime,
