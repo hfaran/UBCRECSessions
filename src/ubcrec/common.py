@@ -1,7 +1,7 @@
 from sphinx_typesafe.typesafe import typesafe
 from tornado_json.exceptions import api_assert
 
-from ubcrec.models import Player, Session, Venue, Employee
+from ubcrec.models import Player, Session, Venue, Employee, Team
 
 
 @typesafe
@@ -82,3 +82,24 @@ def get_employee(db_conn, username):
     )
 
     return employee
+
+
+@typesafe
+def get_team(db_conn, team_id):
+    """Get Team with ``team_id``
+
+    :type team_id: int or str
+    :rtype: Team or None
+    """
+    try:
+        team = db_conn.get_team(int(team_id))
+    except ValueError:
+        team = None
+
+    api_assert(
+        team is not None,
+        409,
+        log_message="No team with ID {} exists.".format(team_id)
+    )
+
+    return team
