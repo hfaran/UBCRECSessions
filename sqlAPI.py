@@ -2,43 +2,54 @@ import sqlite3
 
 
 class SQLAPI(object):
-
     """Abstraction for database
 
     :type db_path: str
     :param db_path: String containing address of the database
     """
-
     def __init__(self, db_path='project.db'):
         self.conn = sqlite3.connect(db_path)
         self.cursor = self.conn.cursor()
 
     def tableCreate(self):
         """
-        :rtype : object
-        Note: This function is creates the tables and stuff but does not properly set the foreign and primary keys.
-        We only need to do this one and therefore we can do it using SQL manager once and use it for the rest of time
+        This function is creates the tables and stuff but does not
+        properly set the foreign and primary keys.
+        We only need to do this one and therefore we can do it using SQL
+        manager once and use it for the rest of time
         So use this for testing only.
         """
         self.cursor.execute(
-            "CREATE TABLE Employees (sin TEXT, fName TEXT, lName TEXT, username TEXT,password TEXT,salt TEXT)")
-        self.cursor.execute(
-            "CREATE TABLE Working  (sin TEXT, startShift TEXT, endShift TEXT)")
+            "CREATE TABLE Employees (sin TEXT, fName TEXT, lName TEXT, "
+            "username TEXT,password TEXT,salt TEXT)"
+        )
+        self.cursor.execute("CREATE TABLE Working  (sin TEXT, startShift TEXT, "
+                            "endShift TEXT)")
         self.cursor.execute("CREATE TABLE Venue   (name TEXT, address TEXT)")
         self.cursor.execute("CREATE TABLE Sport (name TEXT, sportID INT)")
         # Note that I am using the start and end time as string. we initially
         # had it as int.
         self.cursor.execute(
-            "CREATE TABLE Session  (start_time TEXT, end_time TEXT, session_id UNSIGNED INT, sport_id UNSIGNED INT, venue_name TEXT, results TEXT)")
+            "CREATE TABLE Session (start_time TEXT, end_time TEXT, "
+            "session_id UNSIGNED INT, sport_id UNSIGNED INT, venue_name TEXT, "
+            "results TEXT)"
+        )
         self.cursor.execute(
-            "CREATE TABLE Player (name TEXT , student_num UNSIGNED INT, password TEXT, salt TEXT)")
+            "CREATE TABLE Player (name TEXT , student_num UNSIGNED INT, "
+            "password TEXT, salt TEXT)"
+        )
         self.cursor.execute(
-            "CREATE TABLE PlaysIn (student_num UNSIGNED INT, team_id UNSIGNED INT)")
+            "CREATE TABLE PlaysIn (student_num UNSIGNED INT, "
+            "team_id UNSIGNED INT)"
+        )
         self.cursor.execute(
-            "CREATE TABLE Team_ParticipatesIn (name TEXT, team_ID UNSIGNED INT, number_of_players UNSIGNED INT,"
-            "sport_id UNSIGNED INT, session_id INT,venue_name TEXT)")
+            "CREATE TABLE Team_ParticipatesIn (name TEXT, "
+            "team_ID UNSIGNED INT, number_of_players UNSIGNED INT,"
+            "sport_id UNSIGNED INT, session_id INT,venue_name TEXT)"
+        )
 
-    # Below are the functions used to update each table of the database for the schemas we defined.
+    # Below are the functions used to update each table of the database for
+    # the schemas we defined.
     # Function names and attributes are self-explanatory.
 
     def insertEmployeesData(self, Sin, fName, lName, username, password, salt):
@@ -91,7 +102,8 @@ class SQLAPI(object):
         :param Address: Address of venue
         """
         self.cursor.execute(
-            "INSERT INTO Venue VALUES (? ,?)", (Name, Address))
+            "INSERT INTO Venue VALUES (? ,?)", (Name, Address)
+        )
         self.conn.commit()
 
     def insertSportData(self, sportName, sportID):
@@ -103,7 +115,8 @@ class SQLAPI(object):
         :param sportID: ID of the sport type
         """
         self.cursor.execute(
-            "INSERT INTO Sport VALUES (? ,?)", (sportName, sportID))
+            "INSERT INTO Sport VALUES (? ,?)", (sportName, sportID)
+        )
         self.conn.commit()
 
     def insertSessionData(self, startTime, endTime, sessionID, sportID,
@@ -164,7 +177,8 @@ class SQLAPI(object):
         :param teamID: Team ID
         """
         self.cursor.execute(
-            "INSERT INTO PlaysIn VALUES (? ,?)", (studentNum, teamID))
+            "INSERT INTO PlaysIn VALUES (? ,?)", (studentNum, teamID)
+        )
         self.conn.commit()
 
     def insertTeamParInData(self, teamName, teamID, numPlayers, sportID,
@@ -191,5 +205,6 @@ class SQLAPI(object):
              numPlayers,
              sportID,
              sessionID,
-             venueName))
+             venueName)
+        )
         self.conn.commit()
