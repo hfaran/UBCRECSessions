@@ -1,2 +1,6 @@
-django
+click
+
 Tornado-JSON>=1.2.0
+
+bcrypt>=1.0.2
+jsonpickle>=0.6.1

@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python3
 
 import logging
 import os
@@ -6,22 +6,15 @@ import time
 import signal
 import json
 import uuid
-import socket
-from urllib import urlretrieve
 
-import jsonpickle
+import click
 import tornado.httpserver
 import tornado.ioloop
-import tornado.options
-from tornado.options import options
 from tornado_json.application import Application
 
-# from cutthroat import db2
-# from cutthroat import ctconfig
-# from cutthroat import routes as mod_routes
-
-
-MAX_WAIT_SECONDS_BEFORE_SHUTDOWN = 3
+from ubcrec.sqlAPI import SQLAPI
+from ubcrec.config import UBCRECConfig
+from ubcrec.routes import assemble_routes
 
 
 def sig_handler(sig, frame):
@@ -32,6 +25,8 @@ def sig_handler(sig, frame):
 
 def shutdown():
     """Waits MAX_WAIT_SECONDS_BEFORE_SHUTDOWN, then shuts down the server"""
+    MAX_WAIT_SECONDS_BEFORE_SHUTDOWN = 3
+
     logging.info('Stopping http server')
     http_server.stop()
 
@@ -52,7 +47,20 @@ def shutdown():
     stop_loop()
 
 
-def main():
+@click.command()
+@click.option('-p', '--port', default=8888, type=int, required=True,
+              help="Port to start server on")
+@click.option('--db', default="project.db", type=str, required=True,
+              help="Path of database file")
+@click.option('--session-timeout-days', default=1, required=True,
+              help=("Cookie expiration time in days; can also be set to "
+                    "``None`` for session cookies, i.e., cookies that "
+                    "expire when browser window is closed."))
+@click.option('--cookie-secret', default="", required=True,
+              help=("Set this to an empty string to generate a new cookie secret "
+                    "each time the server is restarted, or to any string which is "
+                    "the cookie secret."))
+def main(port, db, session_timeout_days, cookie_secret):
     """
     - Get options from config file
     - Gather all routes
@@ -61,49 +69,42 @@ def main():
     """
     global http_server
 
-    routes = []  # mod_routes.assemble_routes()
+    ubcrec_config = UBCRECConfig(
+        port=port,
+        db_file=db,
+        session_timeout_days=session_timeout_days,
+        cookie_secret=cookie_secret
+    )
+
+    routes = assemble_routes()
+
     settings = dict(
         template_path=os.path.join(
             os.path.dirname(__file__), "templates"),
         static_path=os.path.join(os.path.dirname(__file__), "static"),
         gzip=True,
-        cookie_secret=(options.cookie_secret if options.cookie_secret
+        cookie_secret=(cookie_secret if cookie_secret
                        else uuid.uuid4().hex),
-        # login_url="/signin/signin"
+        ubcrec=ubcrec_config
+        # login_url="/signin/signin"   # TODO
     )
 
-    # If asked to write routes, do so
-    if options.output_routes:
-        with open("routes.json", "w+") as f:
-            f.write(
-                json.dumps(
-                    [(route, jsonpickle.encode(rh)) for route, rh in routes],
-                    indent=4
-                )
-            )
-
+    # Create server
     http_server = tornado.httpserver.HTTPServer(
         Application(
             routes=routes,
             settings=settings,
-            # db_conn=db2.Connection(options.sqlite_db).db,
+            db_conn=SQLAPI(db),
         )
     )
+    # Bind to port
+    http_server.listen(port)
 
-    for port in options.ports:
-        try:
-            logging.debug("Attempting to bind on {}.".format(port))
-            http_server.listen(port)
-            logging.info("Listening on {}.".format(port))
-            break
-        except socket.error:
-            logging.debug("Could not bind on {}.".format(port))
-    else:
-        raise Exception("Ran out of ports to try.")
-
+    # Register signal handlers for quitting
     signal.signal(signal.SIGTERM, sig_handler)
     signal.signal(signal.SIGINT, sig_handler)
 
+    # Start IO loop
     tornado.ioloop.IOLoop.instance().start()
 
     logging.info("Exit...")

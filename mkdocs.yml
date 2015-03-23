@@ -1,0 +1,4 @@
+site_name: UBC REC
+theme: slate
+pages:
+  - [API_Documentation.md, API Documentation]
