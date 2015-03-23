@@ -14,10 +14,7 @@ from tornado_json.application import Application
 
 from ubcrec.sqlAPI import SQLAPI
 from ubcrec.config import UBCRECConfig
-# from cutthroat import routes as mod_routes
-
-
-MAX_WAIT_SECONDS_BEFORE_SHUTDOWN = 3
+from ubcrec.routes import assemble_routes
 
 
 def sig_handler(sig, frame):
@@ -28,6 +25,8 @@ def sig_handler(sig, frame):
 
 def shutdown():
     """Waits MAX_WAIT_SECONDS_BEFORE_SHUTDOWN, then shuts down the server"""
+    MAX_WAIT_SECONDS_BEFORE_SHUTDOWN = 3
+
     logging.info('Stopping http server')
     http_server.stop()
 
@@ -77,7 +76,7 @@ def main(port, db, session_timeout_days, cookie_secret):
         cookie_secret=cookie_secret
     )
 
-    routes = []  # mod_routes.assemble_routes()
+    routes = assemble_routes()
 
     settings = dict(
         template_path=os.path.join(
@@ -87,7 +86,7 @@ def main(port, db, session_timeout_days, cookie_secret):
         cookie_secret=(cookie_secret if cookie_secret
                        else uuid.uuid4().hex),
         ubcrec=ubcrec_config
-        # login_url="/signin/signin"
+        # login_url="/signin/signin"   # TODO
     )
 
     # Create server
