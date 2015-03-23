@@ -155,33 +155,30 @@ class SQLAPI(object):
         )
         self.conn.commit()
 
-    def insertTeamParInData(self, teamName, teamID, numPlayers, sportID,
-                            sessionID, venueName):
+    def create_team(self, name, num_max_players, session_id):
         """Inserting data for Team_ParticipatesIn table
 
-        :type teamName: str
-        :param teamName: Name of the team
-        :type teamID: ID for team
-        :param teamID: ID for team
-        :type numPlayers: int
-        :param numPlayers: Number of player in a team
-        :type sportID: int
-        :param sportID: ID for sport
-        :type sessionID: int
-        :param sessionID: ID for session
-        :type venueName: str
-        :param venueName: Name of the venue where the drop-in session is held
+        :type name: str
+        :param name: Name of the team
+        :type num_max_players: int
+        :param num_max_players: Number of player in a team
+        :type session_id: int
+        :param session_id: ID for session
+        :rtype: int
+        :returns: ID of newly created team
         """
         self.cursor.execute(
-            "INSERT INTO Team_ParticipatesIn VALUES (?,?,?,?,?,?)",
-            (teamName,
-             teamID,
-             numPlayers,
-             sportID,
-             sessionID,
-             venueName)
+            "INSERT INTO Team_ParticipatesIn "
+            "(name, number_of_players, session_id) "
+            "VALUES (?,?,?)",
+            (name,
+             num_max_players,
+             session_id)
         )
         self.conn.commit()
+
+        # Return ID of newly created team
+        return self.cursor.lastrowid
 
     def get_player(self, student_number):
         """Gets player with ``student_number``
@@ -280,6 +277,16 @@ class SQLAPI(object):
         """Return list of all sports (as Sport models)
 
         :rtype: list
-        :returns: A list like the following: [Sport(...), Sport(...)]
+        :returns: A list like the following: [models.Sport(...), models.Sport(...)]
+        """
+        raise NotImplementedError
+
+    def get_teams_for_session(self, session_id):
+        """Return list of Team models for teams that are part of a session
+
+        :type session_id: int
+        :param session_id: ID of session for which to get teams for
+        :rtype: list
+        :returns: A list like the following: [models.Team(...), models.Team(...)]
         """
         raise NotImplementedError

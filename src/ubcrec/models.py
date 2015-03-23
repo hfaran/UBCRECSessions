@@ -115,3 +115,26 @@ class Sport(object):
             "sport_id",
             "name",
         ]}
+
+
+class Team(object):
+    """Team model
+
+    :type team_id: int
+    :type name: str
+    :type num_max_players: int
+    :type session_id: int
+    """
+    def __init__(self, team_id, name, num_max_players, session_id):
+        self.team_id = team_id
+        self.name = name
+        self.num_max_players = num_max_players
+        self.session_id = session_id
+
+    def to_dict(self):
+        return {k: getattr(self, k) for k in [
+            "team_id",
+            "name",
+            "num_max_players",
+            "session_id"
+        ]}
