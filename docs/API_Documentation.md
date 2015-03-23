@@ -438,6 +438,63 @@ in/registered for by student with `student_number`
 
     Content-Type: application/json
 
+## PUT
+
+
+**Input Schema**
+```json
+{
+    "properties": {
+        "end_time": {
+            "type": "number"
+        },
+        "sport_id": {
+            "type": "number"
+        },
+        "start_time": {
+            "type": "number"
+        },
+        "venue_name": {
+            "type": "string"
+        }
+    },
+    "required": [
+        "start_time",
+        "end_time",
+        "sport_id",
+        "venue_name"
+    ],
+    "type": "object"
+}
+```
+
+
+
+**Output Schema**
+```json
+{
+    "properties": {
+        "session_id": {
+            "type": "number"
+        }
+    },
+    "type": "object"
+}
+```
+
+
+
+**Notes**
+
+PUT to create a new session
+
+* `start_time`: Time session starts in Unix Time
+* `end_time`: Time session ends in Unix Time
+* `sport_id`: ID of sport this session is for
+* `venue_name`: Name of venue where this session is held
+
+
+
 ## PATCH
 
 
@@ -526,63 +583,6 @@ null
 **Notes**
 
 GET data for session with `session_id`
-
-
-
-## PUT
-
-
-**Input Schema**
-```json
-{
-    "properties": {
-        "end_time": {
-            "type": "number"
-        },
-        "sport_id": {
-            "type": "number"
-        },
-        "start_time": {
-            "type": "number"
-        },
-        "venue_name": {
-            "type": "string"
-        }
-    },
-    "required": [
-        "start_time",
-        "end_time",
-        "sport_id",
-        "venue_name"
-    ],
-    "type": "object"
-}
-```
-
-
-
-**Output Schema**
-```json
-{
-    "properties": {
-        "session_id": {
-            "type": "number"
-        }
-    },
-    "type": "object"
-}
-```
-
-
-
-**Notes**
-
-PUT to create a new session
-
-* `start_time`: Time session starts in Unix Time
-* `end_time`: Time session ends in Unix Time
-* `sport_id`: ID of sport this session is for
-* `venue_name`: Name of venue where this session is held
 
 
 
@@ -593,6 +593,63 @@ PUT to create a new session
 
     Content-Type: application/json
 
+## PUT
+
+
+**Input Schema**
+```json
+{
+    "properties": {
+        "end_time": {
+            "type": "number"
+        },
+        "sport_id": {
+            "type": "number"
+        },
+        "start_time": {
+            "type": "number"
+        },
+        "venue_name": {
+            "type": "string"
+        }
+    },
+    "required": [
+        "start_time",
+        "end_time",
+        "sport_id",
+        "venue_name"
+    ],
+    "type": "object"
+}
+```
+
+
+
+**Output Schema**
+```json
+{
+    "properties": {
+        "session_id": {
+            "type": "number"
+        }
+    },
+    "type": "object"
+}
+```
+
+
+
+**Notes**
+
+PUT to create a new session
+
+* `start_time`: Time session starts in Unix Time
+* `end_time`: Time session ends in Unix Time
+* `sport_id`: ID of sport this session is for
+* `venue_name`: Name of venue where this session is held
+
+
+
 ## PATCH
 
 
@@ -681,63 +738,6 @@ null
 **Notes**
 
 GET data for session with `session_id`
-
-
-
-## PUT
-
-
-**Input Schema**
-```json
-{
-    "properties": {
-        "end_time": {
-            "type": "number"
-        },
-        "sport_id": {
-            "type": "number"
-        },
-        "start_time": {
-            "type": "number"
-        },
-        "venue_name": {
-            "type": "string"
-        }
-    },
-    "required": [
-        "start_time",
-        "end_time",
-        "sport_id",
-        "venue_name"
-    ],
-    "type": "object"
-}
-```
-
-
-
-**Output Schema**
-```json
-{
-    "properties": {
-        "session_id": {
-            "type": "number"
-        }
-    },
-    "type": "object"
-}
-```
-
-
-
-**Notes**
-
-PUT to create a new session
-
-* `start_time`: Time session starts in Unix Time
-* `end_time`: Time session ends in Unix Time
-* `sport_id`: ID of sport this session is for
-* `venue_name`: Name of venue where this session is held
 
 
 
@@ -843,7 +843,61 @@ GET array of all sports
 <br>
 <br>
 
-# /api/venue/venue/\(?P\<venue\_name\>\[a\-zA\-Z0\-9\_\]\+\)/?$
+# /api/team/team/?
+
+    Content-Type: application/json
+
+## PUT
+
+
+**Input Schema**
+```json
+{
+    "properties": {
+        "name": {
+            "type": "string"
+        },
+        "num_max_players": {
+            "type": "number"
+        },
+        "session_id": {
+            "type": "number"
+        }
+    },
+    "type": "object"
+}
+```
+
+
+
+**Output Schema**
+```json
+{
+    "properties": {
+        "team_id": {
+            "type": "number"
+        }
+    },
+    "type": "object"
+}
+```
+
+
+
+**Notes**
+
+(Employees Only) Create a team for a session
+
+* `name`: Name of team
+* `num_max_players`: Maximum number of players that can join this team
+* `session_id`: ID of session which this team is for
+
+
+
+<br>
+<br>
+
+# /api/team/teams/\(?P\<session\_id\>\[a\-zA\-Z0\-9\_\]\+\)/?$
 
     Content-Type: application/json
 
@@ -860,25 +914,36 @@ null
 **Output Schema**
 ```json
 {
-    "properties": {
-        "address": {
-            "type": "string"
-        },
-        "name": {
-            "type": "string"
-        }
-    },
-    "type": "object"
+    "type": "array"
 }
 ```
 
 
+**Output Example**
+```json
+[
+    {
+        "name": "The Team",
+        "num_max_players": 8,
+        "session_id": 5,
+        "team_id": 1
+    }
+]
+```
+
 
 **Notes**
 
-GET data for venue with ``venue_name``
+GET array of all teams for the given `session_id`
 
 
+
+<br>
+<br>
+
+# /api/venue/venue/\(?P\<venue\_name\>\[a\-zA\-Z0\-9\_\]\+\)/?$
+
+    Content-Type: application/json
 
 ## PUT
 
@@ -921,6 +986,39 @@ GET data for venue with ``venue_name``
 **Notes**
 
 PUT to add new venue
+
+
+
+## GET
+
+
+**Input Schema**
+```json
+null
+```
+
+
+
+**Output Schema**
+```json
+{
+    "properties": {
+        "address": {
+            "type": "string"
+        },
+        "name": {
+            "type": "string"
+        }
+    },
+    "type": "object"
+}
+```
+
+
+
+**Notes**
+
+GET data for venue with ``venue_name``
 
 
 
@@ -931,39 +1029,6 @@ PUT to add new venue
 
     Content-Type: application/json
 
-## GET
-
-
-**Input Schema**
-```json
-null
-```
-
-
-
-**Output Schema**
-```json
-{
-    "properties": {
-        "address": {
-            "type": "string"
-        },
-        "name": {
-            "type": "string"
-        }
-    },
-    "type": "object"
-}
-```
-
-
-
-**Notes**
-
-GET data for venue with ``venue_name``
-
-
-
 ## PUT
 
 
@@ -1005,6 +1070,39 @@ GET data for venue with ``venue_name``
 **Notes**
 
 PUT to add new venue
+
+
+
+## GET
+
+
+**Input Schema**
+```json
+null
+```
+
+
+
+**Output Schema**
+```json
+{
+    "properties": {
+        "address": {
+            "type": "string"
+        },
+        "name": {
+            "type": "string"
+        }
+    },
+    "type": "object"
+}
+```
+
+
+
+**Notes**
+
+GET data for venue with ``venue_name``
 
 
 
