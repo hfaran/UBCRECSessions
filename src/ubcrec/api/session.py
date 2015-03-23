@@ -27,6 +27,46 @@ class Session(APIHandler):
         session = get_session(self.db_conn, session_id)
         return session.to_dict()
 
+    @schema.validate(
+        input_schema={
+            "type": "object",
+            "properties": {
+                "start_time": {"type": "number"},
+                "end_time": {"type": "number"},
+                "sport_id": {"type": "number"},
+                "venue_name": {"type": "string"},
+            }
+        },
+        output_schema={
+            "type": "object",
+            "properties": {
+                "session_id": {"type": "number"}
+            }
+        }
+    )
+    def put(self):
+        """
+        PUT to create a new session
+
+        * `start_time`: Time session starts in Unix Time
+        * `end_time`: Time session ends in Unix Time
+        * `sport_id`: ID of sport this session is for
+        * `venue_name`: Name of venue where this session is held
+        """
+        start_time = self.body['start_time']
+        end_time = self.body['end_time']
+        sport_id = self.body['sport_id']
+        venue_name = self.body['venue_name']
+
+        session_id = self.db_conn.create_session(
+            startTime=start_time,
+            endTime=end_time,
+            sportID=sport_id,
+            venueName=venue_name
+        )
+
+        return {"session_id": session_id}
+
 
 class Sessions(APIHandler):
 

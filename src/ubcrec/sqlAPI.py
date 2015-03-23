@@ -80,23 +80,27 @@ class SQLAPI(object):
         )
         self.conn.commit()
 
-    def insertSessionData(self, startTime, endTime, sessionID, sportID,
-                          venueName, results):
-        """
+    def create_session(self, startTime, endTime, sportID, venueName):
+        """Create a new session
 
         :type startTime: int
         :param startTime: Start time for a session in Unix Time (seconds)
         :type endTime: int
         :param endTime: End time for a session in Unix Time (seconds)s
-        :type sessionID: int
-        :param sessionID: ID for the drop-in session
         :type sportID: int
         :param sportID: ID for the sport type
         :type venueName: str
         :param venueName: Name of the venue
-        :type results: str
-        :param results: Result of the game (not sure)
+
+        :returns: ID of newly created session
+        :rtype: int
         """
+        raise NotImplementedError
+
+        sessionID = None  # TODO This should be auto-incremented by SQL
+        results = None  # TODO Doesn't make sense to add on a PUT; should be
+            # inserted afterwards; also wtf is this supposed to actually
+            # represent, it isn't specified clearly anywhere.
         self.cursor.execute(
             "INSERT INTO Session VALUES (? ,?,? ,?,? ,?)",
             (startTime,
@@ -107,6 +111,10 @@ class SQLAPI(object):
              results)
         )
         self.conn.commit()
+
+        # TODO Get and return session_id
+        # return session_id
+
 
     def insert_player_data(self, name, student_number, password, salt):
         """
