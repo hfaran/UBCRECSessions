@@ -1,6 +1,6 @@
 from tornado_json.exceptions import api_assert
 
-from ubcrec.models import Player, Session, Venue
+from ubcrec.models import Player, Session, Venue, Employee
 
 
 def get_player(db_conn, student_number):
@@ -54,3 +54,20 @@ def get_venue(db_conn, venue_name):
     )
 
     return venue
+
+
+def get_employee(db_conn, username):
+    """Get Employee with ``username``
+
+    :type username: str
+    :rtype: Employee or None
+    """
+    employee = db_conn.get_employee(username)
+
+    api_assert(
+        employee is not None,
+        409,
+        log_message="No Employee with username {} exists.".format(username)
+    )
+
+    return employee
