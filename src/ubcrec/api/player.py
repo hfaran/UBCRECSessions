@@ -1,13 +1,13 @@
 import re
 
 import bcrypt
-from tornado.web import authenticated
 from tornado_json.exceptions import api_assert
 from tornado_json import schema
 
 from ubcrec.handlers import APIHandler
 from ubcrec.common import get_player
 from ubcrec.constants import USERTYPE_PLAYER
+from ubcrec.web import authenticated
 
 
 class Player(APIHandler):
@@ -76,7 +76,7 @@ class Player(APIHandler):
 
 class Me(APIHandler):
 
-    @authenticated
+    @authenticated(USERTYPE_PLAYER)
     @schema.validate(
         output_schema={
             "type": "object",
@@ -104,7 +104,7 @@ class Me(APIHandler):
 
 class Sessions(APIHandler):
 
-    @authenticated
+    @authenticated(USERTYPE_PLAYER)
     @schema.validate(
         output_schema={
             "type": "array",
