@@ -62,3 +62,18 @@ class Venue(APIHandler):
 
         self.db_conn.create_venue(name=name, address=address)
         return {"name": name}
+
+
+class Venues(APIHandler):
+
+    @schema.validate(
+        output_schema={"type": "array"}
+    )
+    def get(self):
+        """
+        GET all venues
+        """
+        return list(map(
+            models.Venue.to_dict,
+            self.db_conn.get_venues()
+        ))

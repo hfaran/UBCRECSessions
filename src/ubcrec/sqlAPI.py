@@ -243,3 +243,11 @@ class SQLAPI(object):
         :rtype: models.Venue or None
         """
         raise NotImplementedError
+
+    def get_venues(self):
+        """Return all venues
+
+        :returns: list of Venue models
+        :rtype: list
+        """
+        raise NotImplementedError
