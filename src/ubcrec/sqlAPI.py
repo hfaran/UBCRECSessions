@@ -179,3 +179,13 @@ class SQLAPI(object):
         :rtype: models.Player or None
         """
         raise NotImplementedError
+
+    def get_player_session_ids(self, username):
+        """Returns list of IDs for session that player is/was registered in
+
+        :type username: str
+        :param username: Username of player to find
+        :rtype: list
+        :returns: list of session IDs
+        """
+        raise NotImplementedError

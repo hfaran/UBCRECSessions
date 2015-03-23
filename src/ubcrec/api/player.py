@@ -6,6 +6,7 @@ from tornado_json.exceptions import api_assert
 from tornado_json import schema
 
 from ubcrec.handlers import APIHandler
+from ubcrec.common import get_player
 
 
 class Player(APIHandler):
@@ -75,21 +76,37 @@ class Player(APIHandler):
                 "student_number": {"type": "number"},
             }
         },
+        output_example={
+            "username": "john_smith",
+            "student_number": 10235609
+        }
     )
     def get(self):
         """
         GET to retrieve player info
         """
-        username = self.get_current_user()
-        player = self.db_conn.get_player(username)
-
-        api_assert(
-            player is not None,
-            409,
-            log_message="No user {} exists.".format(username)
-        )
-
+        player = get_player(db_conn=self.db_conn,
+                            username=self.get_current_user())
         return {
             "username": player.username,
             "student_number": player.student_number
         }
+
+
+class Sessions(APIHandler):
+
+    @authenticated
+    @schema.validate(
+        output_schema={
+            "type": "array",
+        },
+        output_example=[1, 56, 7859]
+    )
+    def get(self):
+        """
+        GET to retrieve IDs of sessions participated in/registered for
+        """
+        session_ids = self.db_conn.get_player_session_ids(
+            self.get_current_user()
+        )
+        return session_ids
