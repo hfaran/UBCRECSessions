@@ -66,20 +66,21 @@ class SQLAPI(object):
              salt))
         self.conn.commit()
 
-    def insertWorkingData(self, Sin, start_shift, end_shift):
+    def insertWorkingData(self, Sin, startShift, endShift):
         """
         :type Sin: str
         :param Sin: Employees SIN number
-        :type start_shift: str
-        :param start_shift: Employees start shift
-        :type end_shift: str
-        :param end_shift: Employees end shift
+        :type startShift: str
+        :param startShift: Employees start shift
+        :type endShift: str
+        :param endShift: Employees end shift
         """
         self.cursor.execute(
             "INSERT INTO Working VALUES (? ,? ,?)",
-            Sin,
-            start_shift,
-            end_shift)
+            (Sin,
+            startShift,
+            endShift)
+        )
         self.conn.commit()
 
     def insertVenueData(self, Name, Address):
@@ -183,7 +184,7 @@ class SQLAPI(object):
         :param venueName: Name of the venue where the drop-in session is held
         """
         self.cursor.execute(
-            "INSERT INTO TeamParIn VALUES (?,?,?,?,?,?)",
+            "INSERT INTO Team_ParticipatesIn VALUES (?,?,?,?,?,?)",
             (teamName,
              teamID,
              numPlayers,
