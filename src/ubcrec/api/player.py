@@ -1,11 +1,13 @@
-import bcrypt
+import re
 
+import bcrypt
 from tornado.web import authenticated
 from tornado_json.exceptions import api_assert
 from tornado_json import schema
 
 from ubcrec.handlers import APIHandler
 from ubcrec.common import get_player
+from ubcrec.constants import USERTYPE_PLAYER
 
 
 class Player(APIHandler):
@@ -37,6 +39,11 @@ class Player(APIHandler):
         """
         # Get attributes from request body
         full_name = self.body['full_name']
+        api_assert(
+            re.match(r"^[A-z ]+$", full_name) is not None,
+            400,
+            "full_name may only contain letters and spaces."
+        )
         password = self.body['password']
         student_number = self.body['student_number']
 
@@ -60,7 +67,7 @@ class Player(APIHandler):
         # We also do the step of logging the player in after registration
         self.set_secure_cookie(
             "user",
-            student_number,
+            "{} {}".format(USERTYPE_PLAYER, student_number),
             self.settings['ubcrec'].session_timeout_days
         )
 
