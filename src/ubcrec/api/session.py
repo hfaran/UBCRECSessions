@@ -2,7 +2,9 @@ from tornado_json import schema
 
 from ubcrec.handlers import APIHandler
 from ubcrec.common import get_session
+from ubcrec.web import authenticated
 from ubcrec import models
+from ubcrec.constants import USERTYPE_EMPLOYEE
 
 
 class Session(APIHandler):
@@ -27,6 +29,7 @@ class Session(APIHandler):
         session = get_session(self.db_conn, session_id)
         return session.to_dict()
 
+    @authenticated(USERTYPE_EMPLOYEE)
     @schema.validate(
         input_schema={
             "type": "object",
