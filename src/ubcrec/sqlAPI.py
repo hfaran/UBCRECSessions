@@ -115,6 +115,13 @@ class SQLAPI(object):
         # TODO Get and return session_id
         # return session_id
 
+    def add_session_results(self, session_id, results):
+        """Add results to session
+
+        :type session_id: int
+        :type results: str
+        """
+        raise NotImplementedError
 
     def insert_player_data(self, name, student_number, password, salt):
         """

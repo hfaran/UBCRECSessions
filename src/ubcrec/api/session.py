@@ -70,6 +70,38 @@ class Session(APIHandler):
 
         return {"session_id": session_id}
 
+    @authenticated(USERTYPE_EMPLOYEE)
+    @schema.validate(
+        input_schema={
+            "type": "object",
+            "properties": {
+                "session_id": {"type": "number"},
+                "results": {"type": "string"}
+            }
+        },
+        output_schema={
+            "type": "object",
+            "properties": {
+                "session_id": {"type": "number"},
+            }
+        }
+    )
+    def patch(self):
+        """
+        PATCH to add/amend results for a session
+
+        * `results`: String noting results of a session
+        """
+        session_id = self.body['session_id']
+        results = self.body['results']
+
+        # Make sure session exists
+        get_session(self.db_conn, session_id)
+
+        self.db_conn.add_session_results(session_id, results)
+
+        return {"session_id": session_id}
+
 
 class Sessions(APIHandler):
 
