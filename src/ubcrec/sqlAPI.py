@@ -1,5 +1,7 @@
 import sqlite3
 
+from ubcrec import models
+
 
 class SQLAPI(object):
     """Abstraction for database
@@ -10,45 +12,6 @@ class SQLAPI(object):
     def __init__(self, db_path='project.db'):
         self.conn = sqlite3.connect(db_path)
         self.cursor = self.conn.cursor()
-
-    def tableCreate(self):
-        """
-        This function is creates the tables and stuff but does not
-        properly set the foreign and primary keys.
-        We only need to do this one and therefore we can do it using SQL
-        manager once and use it for the rest of time
-        So use this for testing only.
-        """
-        self.cursor.execute(
-            "CREATE TABLE Employees (sin TEXT, fName TEXT, lName TEXT, "
-            "username TEXT,password TEXT,salt TEXT)"
-        )
-        self.cursor.execute("CREATE TABLE Working  (sin TEXT, startShift TEXT, "
-                            "endShift TEXT)")
-        self.cursor.execute("CREATE TABLE Venue   (name TEXT, address TEXT)")
-        self.cursor.execute("CREATE TABLE Sport (name TEXT, sportID INT)")
-        self.cursor.execute(
-            "CREATE TABLE Session (start_time INTEGER, end_time INTEGER, "
-            "session_id UNSIGNED INT, sport_id UNSIGNED INT, venue_name TEXT, "
-            "results TEXT)"
-        )
-        self.cursor.execute(
-            "CREATE TABLE Player (name TEXT , student_num UNSIGNED INT, "
-            "password TEXT, salt TEXT)"
-        )
-        self.cursor.execute(
-            "CREATE TABLE PlaysIn (student_num UNSIGNED INT, "
-            "team_id UNSIGNED INT)"
-        )
-        self.cursor.execute(
-            "CREATE TABLE Team_ParticipatesIn (name TEXT, "
-            "team_ID UNSIGNED INT, number_of_players UNSIGNED INT,"
-            "sport_id UNSIGNED INT, session_id INT,venue_name TEXT)"
-        )
-
-    # Below are the functions used to update each table of the database for
-    # the schemas we defined.
-    # Function names and attributes are self-explanatory.
 
     def insertEmployeesData(self, Sin, fName, lName, username, password, salt):
         """
@@ -66,7 +29,7 @@ class SQLAPI(object):
         :param salt: salt for fun :D
         """
         self.cursor.execute(
-            "INSERT INTO Employees VALUES (? ,? ,? ,? ,? ,?)",
+            "INSERT INTO Employees VALUES (?, ?, ?, ?, ?, ?)",
             (Sin,
              fName,
              lName,
@@ -204,3 +167,13 @@ class SQLAPI(object):
              venueName)
         )
         self.conn.commit()
+
+    def find_player(self, username):
+        """Finds player with ``username``
+
+        :type username: str
+        :param username: Username of player to find
+        :returns: Model of player with user
+        :rtype: models.Player
+        """
+        raise NotImplementedError
