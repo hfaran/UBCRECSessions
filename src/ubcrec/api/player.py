@@ -65,3 +65,31 @@ class Player(APIHandler):
         )
 
         return {"username": username}
+
+    @authenticated
+    @schema.validate(
+        output_schema={
+            "type": "object",
+            "properties": {
+                "username": {"type": "string"},
+                "student_number": {"type": "number"},
+            }
+        },
+    )
+    def get(self):
+        """
+        GET to retrieve player info
+        """
+        username = self.get_current_user()
+        player = self.db_conn.get_player(username)
+
+        api_assert(
+            player is not None,
+            409,
+            log_message="No user {} exists.".format(username)
+        )
+
+        return {
+            "username": player.username,
+            "student_number": player.student_number
+        }

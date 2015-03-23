@@ -13,7 +13,6 @@ class Player(object):
         self.salt = salt
 
 
-
 class Employee(object):
     """Employee Model
 
@@ -25,7 +24,6 @@ class Employee(object):
     :type hashed_pass: str
     :type salt: str
     """
-
     def __init__(self, sin, first_name, last_name, username, hashed_pass, salt):
         self.sin = sin
         self.first_name = first_name
@@ -33,7 +31,6 @@ class Employee(object):
         self.username = username
         self.hashed_pass = hashed_pass
         self.salt = salt
-
 
 
 class Session(object):
@@ -46,7 +43,6 @@ class Session(object):
     :type venue_name: str
     :type results: str
     """
-
     def __init__(self, start_time, end_time, session_id, sport_id, venue_name,
                results):
         self.start_time = start_time
@@ -57,14 +53,12 @@ class Session(object):
         self.results = results
 
 
-
 class Venue(object):
     """Venue Model
 
     :type name: str
     :type address: str
     """
-
     def __init__(self, name, address):
         self.name = name
         self.address = address
