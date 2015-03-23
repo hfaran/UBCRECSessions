@@ -108,22 +108,22 @@ class SQLAPI(object):
         )
         self.conn.commit()
 
-    def insertPlayerData(self, name, studentID, password, salt):
+    def insert_player_data(self, name, student_number, password, salt):
         """
         :type name: str
         :param name: Name of the student/player
-        :type studentID: int
-        :param studentID: Student ID of the player
+        :type student_number: int
+        :param student_number: Student ID of the player
         :type password: str
         :param password: Password for that student
         :type salt: str
-        :param salt: I dont know
+        :param salt: Password salt
         """
         self.cursor.execute(
             "INSERT INTO Player VALUES (?,?,?,?)",
             (name,
              password,
-             studentID,
+             student_number,
              salt)
         )
         self.conn.commit()
@@ -168,12 +168,14 @@ class SQLAPI(object):
         )
         self.conn.commit()
 
-    def find_player(self, username):
-        """Finds player with ``username``
+    def get_player(self, username):
+        """Gets player with ``username``
+
+        If no such player exists, return ``None``.
 
         :type username: str
         :param username: Username of player to find
         :returns: Model of player with user
-        :rtype: models.Player
+        :rtype: models.Player or None
         """
         raise NotImplementedError

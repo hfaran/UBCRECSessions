@@ -17,6 +17,7 @@ from tornado.options import options
 from tornado_json.application import Application
 
 # from cutthroat import db2
+from ubcrec.sqlAPI import SQLAPI
 # from cutthroat import ctconfig
 # from cutthroat import routes as mod_routes
 
@@ -86,7 +87,7 @@ def main():
         Application(
             routes=routes,
             settings=settings,
-            # db_conn=db2.Connection(options.sqlite_db).db,
+            db_conn=SQLAPI(options.sqlite_db),
         )
     )
 
