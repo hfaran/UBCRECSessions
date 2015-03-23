@@ -78,3 +78,23 @@ class Venue(object):
             "name",
             "address",
         ]}
+
+
+class Shift(object):
+    """Shift (for employees) model
+
+    :type username: str
+    :type start_time: int
+    :type end_time: int
+    """
+    def __init__(self, username, start_time, end_time):
+        self.username = username
+        self.start_time = start_time
+        self.end_time = end_time
+
+    def to_dict(self):
+        return {k: getattr(self, k) for k in [
+            "username",
+            "start_time",
+            "end_time"
+        ]}

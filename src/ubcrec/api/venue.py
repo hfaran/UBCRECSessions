@@ -33,7 +33,8 @@ class Venue(APIHandler):
             "properties": {
                 "name": {"type": "string"},
                 "address": {"type": "string"}
-            }
+            },
+            "required": ["name", "address"]
         },
         output_schema={
             "type": "object",

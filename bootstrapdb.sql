@@ -5,7 +5,7 @@ CREATE TABLE Employees (
     sin TEXT, fName TEXT, lName TEXT, username TEXT,
     password TEXT, salt TEXT
 );
-CREATE TABLE Working (sin TEXT, startShift TEXT, endShift TEXT);
+CREATE TABLE Working (sin TEXT, startShift INTEGER, endShift INTEGER);
 CREATE TABLE Venue (name TEXT, address TEXT);
 CREATE TABLE Sport (name TEXT, sportID INT);
 CREATE TABLE Session (

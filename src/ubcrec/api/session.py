@@ -38,7 +38,8 @@ class Session(APIHandler):
                 "end_time": {"type": "number"},
                 "sport_id": {"type": "number"},
                 "venue_name": {"type": "string"},
-            }
+            },
+            "required": ["start_time", "end_time", "sport_id", "venue_name"]
         },
         output_schema={
             "type": "object",
@@ -77,7 +78,8 @@ class Session(APIHandler):
             "properties": {
                 "session_id": {"type": "number"},
                 "results": {"type": "string"}
-            }
+            },
+            "required": ["session_id", "results"]
         },
         output_schema={
             "type": "object",
