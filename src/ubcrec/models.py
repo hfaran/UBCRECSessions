@@ -98,3 +98,20 @@ class Shift(object):
             "start_time",
             "end_time"
         ]}
+
+
+class Sport(object):
+    """Sport model
+
+    :type sport_id: int
+    :type name: str
+    """
+    def __init__(self, sport_id, name):
+        self.sport_id = sport_id
+        self.name = name
+
+    def to_dict(self):
+        return {k: getattr(self, k) for k in [
+            "sport_id",
+            "name",
+        ]}

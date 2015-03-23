@@ -275,3 +275,11 @@ class SQLAPI(object):
         :rtype: list
         """
         raise NotImplementedError
+
+    def get_sports(self):
+        """Return list of all sports (as Sport models)
+
+        :rtype: list
+        :returns: A list like the following: [Sport(...), Sport(...)]
+        """
+        raise NotImplementedError
