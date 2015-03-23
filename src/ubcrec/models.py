@@ -52,6 +52,16 @@ class Session(object):
         self.venue_name = venue_name
         self.results = results
 
+    def to_dict(self):
+        return {k: getattr(self, k) for k in [
+            "start_time",
+            "end_time",
+            "session_id",
+            "sport_id",
+            "venue_name",
+            "results"
+        ]}
+
 
 class Venue(object):
     """Venue Model

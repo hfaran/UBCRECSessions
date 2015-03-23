@@ -1,6 +1,6 @@
 from tornado_json.exceptions import api_assert
 
-from ubcrec.models import Player
+from ubcrec.models import Player, Session
 
 
 def get_player(db_conn, username):
@@ -17,3 +17,19 @@ def get_player(db_conn, username):
     )
 
     return player
+
+
+def get_session(db_conn, session_id):
+    """Get player with ``session_id``
+
+    :rtype: Session or None
+    """
+    session = db_conn.get_session(session_id)
+
+    api_assert(
+        session is not None,
+        409,
+        log_message="No session with ID {} exists.".format(session_id)
+    )
+
+    return session
