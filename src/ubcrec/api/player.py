@@ -1,7 +1,6 @@
 import bcrypt
 
 from tornado.web import authenticated
-from tornado.options import options
 from tornado_json.exceptions import api_assert
 from tornado_json import schema
 
@@ -62,7 +61,7 @@ class Player(APIHandler):
         self.set_secure_cookie(
             "user",
             username,
-            options.session_timeout_days
+            self.settings['ubcrec'].session_timeout_days
         )
 
         return {"username": username}
