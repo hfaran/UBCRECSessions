@@ -7,8 +7,6 @@ from ubcrec import models
 
 class Session(APIHandler):
 
-    __urls__ = ["/api/session"]
-
     @schema.validate(
         output_schema={
             "type": "object",
@@ -31,8 +29,6 @@ class Session(APIHandler):
 
 
 class Sessions(APIHandler):
-
-    __urls__ = ["/api/sessions"]
 
     @schema.validate(
         input_schema={
