@@ -235,3 +235,11 @@ class SQLAPI(object):
         :return: List of Session objects
         """
         raise NotImplementedError
+
+    def get_venue(self, venue_name):
+        """Returns Venue with ``venue_name``
+
+        :type venue_name: str
+        :rtype: models.Venue or None
+        """
+        raise NotImplementedError
