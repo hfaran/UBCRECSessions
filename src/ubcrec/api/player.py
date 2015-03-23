@@ -14,16 +14,16 @@ class Player(APIHandler):
         input_schema={
             "type": "object",
             "properties": {
-                "username": {"type": "string"},
+                "full_name": {"type": "string"},
                 "student_number": {"type": "number"},
                 "password": {"type": "string"},
             },
-            "required": ["username", "password", "student_number"],
+            "required": ["full_name", "password", "student_number"],
         },
         output_schema={
             "type": "object",
             "properties": {
-                "username": {"type": "string"}
+                "student_number": {"type": "number"}
             }
         }
     )
@@ -31,27 +31,27 @@ class Player(APIHandler):
         """
         POST the required parameters to permanently register a new player
 
-        * `username`: Username of the player
+        * `full_name`: Full name of the student
         * `password`: Password for future logins
         * `student_number`: Student number of the player
         """
         # Get attributes from request body
-        username = self.body['username']
+        full_name = self.body['full_name']
         password = self.body['password']
         student_number = self.body['student_number']
 
         # Check if a player with this name already exists
-        existing_player = self.db_conn.get_player(username)
+        existing_player = self.db_conn.get_player(student_number)
         api_assert(
             existing_player is None,
             409,
-            log_message="{} is already registered.".format(username)
+            log_message="{} is already registered.".format(student_number)
         )
 
         # Create a new user/write to DB
         salt = bcrypt.gensalt(rounds=12)
         self.db_conn.insert_player_data(
-            name=username,
+            name=full_name,
             student_number=student_number,
             password=bcrypt.hashpw(str(password), salt),
             salt=salt
@@ -60,11 +60,11 @@ class Player(APIHandler):
         # We also do the step of logging the player in after registration
         self.set_secure_cookie(
             "user",
-            username,
+            student_number,
             self.settings['ubcrec'].session_timeout_days
         )
 
-        return {"username": username}
+        return {"student_number": student_number}
 
 
 class Me(APIHandler):
@@ -79,7 +79,7 @@ class Me(APIHandler):
             }
         },
         output_example={
-            "username": "john_smith",
+            "full_name": "John Smith",
             "student_number": 10235609
         }
     )
@@ -88,9 +88,9 @@ class Me(APIHandler):
         GET to retrieve player info
         """
         player = get_player(db_conn=self.db_conn,
-                            username=self.get_current_user())
+                            student_number=self.get_current_user())
         return {
-            "username": player.username,
+            "full_name": player.full_name,
             "student_number": player.student_number
         }
 

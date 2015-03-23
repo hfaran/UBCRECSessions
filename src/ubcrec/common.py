@@ -3,17 +3,19 @@ from tornado_json.exceptions import api_assert
 from ubcrec.models import Player, Session
 
 
-def get_player(db_conn, username):
-    """Get player with ``username``
+def get_player(db_conn, student_number):
+    """Get player with ``student_number``
 
     :rtype: Player or None
     """
-    player = db_conn.get_player(username)
+    player = db_conn.get_player(student_number)
 
     api_assert(
         player is not None,
         409,
-        log_message="No player {} exists.".format(username)
+        log_message="No player with student number {} exists.".format(
+            student_number
+        )
     )
 
     return player
