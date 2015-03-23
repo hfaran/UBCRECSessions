@@ -66,6 +66,9 @@ class Player(APIHandler):
 
         return {"username": username}
 
+
+class Me(APIHandler):
+
     @authenticated
     @schema.validate(
         output_schema={

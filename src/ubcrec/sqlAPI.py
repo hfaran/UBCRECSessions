@@ -189,3 +189,34 @@ class SQLAPI(object):
         :returns: list of session IDs
         """
         raise NotImplementedError
+
+    def get_session(self, session_id):
+        """Returns session with ``session_id``
+
+        :type session_id: int
+        :param session_id: ID of session
+        :return: Session or None if no such session with ``session_id`` exists
+        :rtype: models.Session or None
+        """
+        raise NotImplementedError
+
+    def get_sessions(self, started_before=None, ended_before=None, sports=None,
+                     venues=None):
+        """Returns list of Session objects that match the provided filters
+
+        :type started_before: int or None
+        :param started_before: Filter only sessions with a start_time greater
+            than this (Unix Time), or, if this is None, do not filter.
+        :type ended_before: int or None
+        :param ended_before: Filter only sessions with an end_time smaller
+            than this (Unix Time), or, if this is None, do not filter.
+        :type sports: list or None
+        :param sports: List of sport names; filter only sessions for these
+            sports,  or, if this is None, do not filter.
+        :type venues: list or None
+        :param venues: List of venue names; filter only sessions held in
+            these venues, or, if this is None, do not filter.
+        :rtype: list
+        :return: List of Session objects
+        """
+        raise NotImplementedError
