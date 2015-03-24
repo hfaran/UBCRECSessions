@@ -5,7 +5,7 @@
 ### Bootstrapping Database
 
 ```bash
-$ sqlite3 project.db < boostrapdb.sql
+$ sqlite3 project.db < bootstrapdb.sql
 ```
 
 ### Documentation
