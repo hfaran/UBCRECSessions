@@ -168,23 +168,23 @@ class SQLAPI(object):
         )
         self.conn.commit()
 
-    def get_player(self, username):
-        """Gets player with ``username``
+    def get_player(self, student_number):
+        """Gets player with ``student_number``
 
         If no such player exists, return ``None``.
 
-        :type username: str
-        :param username: Username of player to find
+        :type student_number: int
+        :param student_number: Student number of player to find
         :returns: Model of player with user
         :rtype: models.Player or None
         """
         raise NotImplementedError
 
-    def get_player_session_ids(self, username):
+    def get_player_session_ids(self, student_number):
         """Returns list of IDs for session that player is/was registered in
 
-        :type username: str
-        :param username: Username of player to find
+        :type student_number: int
+        :param student_number: Student number of player to find
         :rtype: list
         :returns: list of session IDs
         """

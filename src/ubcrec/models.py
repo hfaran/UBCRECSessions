@@ -2,13 +2,13 @@ class Player(object):
     """Model of Player
 
     :type student_number: int
-    :type username: str
+    :type full_name: str
     :type hashed_pass: str
     :type salt: str
     """
-    def __init__(self, student_number, username, hashed_pass, salt):
+    def __init__(self, student_number, full_name, hashed_pass, salt):
         self.student_number = student_number
-        self.username = username
+        self.full_name = full_name
         self.hashed_pass = hashed_pass
         self.salt = salt
 

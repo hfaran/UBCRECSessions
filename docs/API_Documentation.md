@@ -2,6 +2,119 @@
 
 **Output schemas only represent `data` and not the full output; see output examples and the JSend specification.**
 
+# /api/auth/logout/?
+
+    Content-Type: application/json
+
+## DELETE
+
+
+**Input Schema**
+```json
+null
+```
+
+
+
+**Output Schema**
+```json
+{
+    "type": "string"
+}
+```
+
+
+
+**Notes**
+
+DELETE to clear cookie for current user.
+
+
+
+<br>
+<br>
+
+# /api/auth/playerlogin/?
+
+    Content-Type: application/json
+
+## POST
+
+
+**Input Schema**
+```json
+{
+    "properties": {
+        "password": {
+            "type": "string"
+        },
+        "student_number": {
+            "type": "string"
+        }
+    },
+    "required": [
+        "student_number",
+        "password"
+    ],
+    "type": "object"
+}
+```
+
+
+
+**Output Schema**
+```json
+{
+    "properties": {
+        "student_number": {
+            "type": "string"
+        }
+    },
+    "type": "object"
+}
+```
+
+
+
+**Notes**
+
+POST the required credentials to get back a cookie
+
+* `student_number`: Student Number
+* `password`: Password
+
+
+
+## GET
+
+
+**Input Schema**
+```json
+null
+```
+
+
+
+**Output Schema**
+```json
+{
+    "type": "string"
+}
+```
+
+
+
+**Notes**
+
+GET to check if authenticated.
+
+Should be obvious from status code (403 vs. 200).
+
+
+
+<br>
+<br>
+
 # /api/player/me/?
 
     Content-Type: application/json
@@ -35,8 +148,8 @@ null
 **Output Example**
 ```json
 {
-    "student_number": 10235609,
-    "username": "john_smith"
+    "full_name": "John Smith",
+    "student_number": 10235609
 }
 ```
 
@@ -61,18 +174,18 @@ GET to retrieve player info
 ```json
 {
     "properties": {
+        "full_name": {
+            "type": "string"
+        },
         "password": {
             "type": "string"
         },
         "student_number": {
             "type": "number"
-        },
-        "username": {
-            "type": "string"
         }
     },
     "required": [
-        "username",
+        "full_name",
         "password",
         "student_number"
     ],
@@ -86,8 +199,8 @@ GET to retrieve player info
 ```json
 {
     "properties": {
-        "username": {
-            "type": "string"
+        "student_number": {
+            "type": "number"
         }
     },
     "type": "object"
@@ -100,7 +213,7 @@ GET to retrieve player info
 
 POST the required parameters to permanently register a new player
 
-* `username`: Username of the player
+* `full_name`: Full name of the student
 * `password`: Password for future logins
 * `student_number`: Student number of the player
 

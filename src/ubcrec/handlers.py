@@ -1,20 +1,32 @@
 from tornado_json import requesthandlers
 
 
-class APIHandler(requesthandlers.APIHandler):
+class AuthMixin(object):
+
+    def get_current_user(self):
+        cookie = self.get_secure_cookie("user")
+        if cookie is None:
+            return None
+
+        user_type, user_id = cookie.split(" ")
+        return user_id
+
+    @property
+    def user_type(self):
+        cookie = self.get_secure_cookie("user")
+        if cookie is None:
+            return None
+
+        user_type, user_id = cookie.split(" ")
+        return user_type
+
+
+class APIHandler(requesthandlers.APIHandler, AuthMixin):
     """APIHandler"""
 
-    body = None  # For PyCharm completion, since this is otherwise dynamically
-                 # inserted
-
-    def get_current_user(self):
-        return self.get_secure_cookie("user")
-
-
-class ViewHandler(requesthandlers.ViewHandler):
-    """ViewHandler"""
-
+    # For PyCharm completion, since this is otherwise dynamically  inserted
     body = None
 
-    def get_current_user(self):
-        return self.get_secure_cookie("user")
+
+class ViewHandler(requesthandlers.ViewHandler, AuthMixin):
+    """ViewHandler"""
