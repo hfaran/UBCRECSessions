@@ -1,6 +1,7 @@
 import sqlite3
 
-from ubcrec import models
+# not sure about the below
+import models
 
 
 class SQLAPI(object):
@@ -55,6 +56,7 @@ class SQLAPI(object):
         )
         self.conn.commit()
 
+    # TODO: change this to insert_venue
     def create_venue(self, name, address):
         """
         :type name: str
@@ -80,6 +82,7 @@ class SQLAPI(object):
         )
         self.conn.commit()
 
+        # TODO whay is this create ? lool need to change that to insert_session -> let Hamza know
     def create_session(self, startTime, endTime, sportID, venueName):
         """Create a new session
 
@@ -191,7 +194,18 @@ class SQLAPI(object):
         :returns: Model of player with user
         :rtype: models.Player or None
         """
-        raise NotImplementedError
+        self.cursor.execute('SELECT * FROM Player WHERE student_num=?', (student_number,))
+        row = self.cursor.fetchall()
+
+        # I am adding this in case I messed up during the database setup
+        if (len(row) > 1):
+            raise (IndexError, "There is something wrong with the primary key of Player Table. Duplicated keys")
+        elif (len(row) == 1):
+            # schema: Player (name: string , student_num: uint, password: string, salt: string)
+            player_model = models.Player(row[0],row[1],row[2],row[3])
+            return player_model
+        else :
+            return None
 
     def get_player_session_ids(self, student_number):
         """Returns list of IDs for session that player is/was registered in
@@ -201,7 +215,10 @@ class SQLAPI(object):
         :rtype: list
         :returns: list of session IDs
         """
-        raise NotImplementedError
+        self.cursor.execute('SELECT session_id FROM Session WHERE student_num=?', (student_number,))
+        row = self.cursor.fetchall()
+
+        return row
 
     def get_session(self, session_id):
         """Returns session with ``session_id``
@@ -211,7 +228,17 @@ class SQLAPI(object):
         :return: Session or None if no such session with ``session_id`` exists
         :rtype: models.Session or None
         """
-        raise NotImplementedError
+        self.cursor.execute('SELECT * FROM Session WHERE session_id=?', (session_id,))
+        row = self.cursor.fetchall()
+        # I am adding this in case I messed up during the database setup
+        if (len(row) > 1):
+            raise (IndexError, "There is something wrong with the primary key of Session Table. Duplicated keys")
+        elif (len(row) == 1):
+            # Session (start_time: integer, end_time: integer, session_id: integer, sport_id: uint, venue_name: string, results: string)
+            session_model = models.Session(row[0],row[1],row[2],row[3],row[4],row[5])
+            return session_model
+        else:
+            return None
 
     def get_sessions(self, started_before=None, ended_before=None, sports=None,
                      venues=None):
@@ -240,7 +267,16 @@ class SQLAPI(object):
         :type venue_name: str
         :rtype: models.Venue or None
         """
-        raise NotImplementedError
+        self.cursor.execute('SELECT * FROM Venue WHERE venue_name=?', (venue_name,))
+        row = self.cursor.fetchall()
+        # I am adding this in case I messed up during the database setup
+        if (len(row) > 1):
+            raise (IndexError, "There is something wrong with the primary key of Session Table. Duplicated keys")
+        elif (len(row) == 1):
+            venue_model = models.Venue(row[0],row[1])
+            return venue_model
+        else:
+            return None
 
     def get_venues(self):
         """Return all venues
@@ -248,7 +284,12 @@ class SQLAPI(object):
         :returns: list of Venue models
         :rtype: list
         """
-        raise NotImplementedError
+        self.cursor.execute('SELECT * FROM Venue')
+        row = self.cursor.fetchall()
+        if (len(row) > 0):
+            return row
+        else:
+            return None
 
     def get_employee(self, username):
         """Get Employee with ``username``
@@ -257,7 +298,16 @@ class SQLAPI(object):
         :rtype: models.Employee or None
         :returns: Employee model if exists otherwise, None
         """
-        raise NotImplementedError
+        self.cursor.execute('SELECT * FROM Employees WHERE venue_name=?', (username,))
+        row = self.cursor.fetchall()
+        # I am adding this in case I messed up during the database setup
+        if (len(row) > 1):
+            raise (IndexError, "There is something wrong with the primary key of Employees Table. Duplicated keys")
+        elif (len(row) == 1):
+            employee_model = models.Employee(row[0],row[1],row[2],row[3],row[4],row[5])
+            return employee_model
+        else:
+            return None
 
     def get_employee_shifts(self, username, start=None, end=None):
         """Return shifts for employee username
@@ -272,6 +322,20 @@ class SQLAPI(object):
         :return: list of Shift models
         :rtype: list
         """
+
+        # I dont understand what you need from this function, need to discuss
+        # TODO: discuss the fucntionality
+        if start==None:
+            print "Check start conditions"
+            # raise MyBrainDoesntWork
+            # get the sin for the username
+            #use the sin in Working table and check if start_time greater than start
+        elif end==None:
+            print "Check end conditions"
+            # get the sin for the username (cause Working schema has sin)
+            #use the sin in Working table and check if start_time greater than start
+        else:
+            print "Check both start and end condition"
         raise NotImplementedError
 
     def get_sports(self):
