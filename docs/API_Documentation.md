@@ -6,6 +6,33 @@
 
     Content-Type: application/json
 
+## GET
+
+
+**Input Schema**
+```json
+null
+```
+
+
+
+**Output Schema**
+```json
+{
+    "type": "string"
+}
+```
+
+
+
+**Notes**
+
+GET to check if authenticated.
+
+Should be obvious from status code (403 vs. 200).
+
+
+
 ## POST
 
 
@@ -53,33 +80,6 @@ POST the required credentials to get back a cookie
 
 
 
-## GET
-
-
-**Input Schema**
-```json
-null
-```
-
-
-
-**Output Schema**
-```json
-{
-    "type": "string"
-}
-```
-
-
-
-**Notes**
-
-GET to check if authenticated.
-
-Should be obvious from status code (403 vs. 200).
-
-
-
 <br>
 <br>
 
@@ -118,6 +118,33 @@ DELETE to clear cookie for current user.
 # /api/auth/playerlogin/?
 
     Content-Type: application/json
+
+## GET
+
+
+**Input Schema**
+```json
+null
+```
+
+
+
+**Output Schema**
+```json
+{
+    "type": "string"
+}
+```
+
+
+
+**Notes**
+
+GET to check if authenticated.
+
+Should be obvious from status code (403 vs. 200).
+
+
 
 ## POST
 
@@ -163,33 +190,6 @@ POST the required credentials to get back a cookie
 
 * `student_number`: Student Number
 * `password`: Password
-
-
-
-## GET
-
-
-**Input Schema**
-```json
-null
-```
-
-
-
-**Output Schema**
-```json
-{
-    "type": "string"
-}
-```
-
-
-
-**Notes**
-
-GET to check if authenticated.
-
-Should be obvious from status code (403 vs. 200).
 
 
 
@@ -748,7 +748,7 @@ PATCH to add/amend results for a session
 
     Content-Type: application/json
 
-## GET
+## POST
 
 
 **Input Schema**
@@ -801,6 +801,39 @@ GET array of sessions matching given parameters
 
     Content-Type: application/json
 
+## GET
+
+
+**Input Schema**
+```json
+null
+```
+
+
+
+**Output Schema**
+```json
+{
+    "properties": {
+        "address": {
+            "type": "string"
+        },
+        "name": {
+            "type": "string"
+        }
+    },
+    "type": "object"
+}
+```
+
+
+
+**Notes**
+
+GET data for venue with ``venue_name``
+
+
+
 ## PUT
 
 
@@ -842,39 +875,6 @@ GET array of sessions matching given parameters
 **Notes**
 
 PUT to add new venue
-
-
-
-## GET
-
-
-**Input Schema**
-```json
-null
-```
-
-
-
-**Output Schema**
-```json
-{
-    "properties": {
-        "address": {
-            "type": "string"
-        },
-        "name": {
-            "type": "string"
-        }
-    },
-    "type": "object"
-}
-```
-
-
-
-**Notes**
-
-GET data for venue with ``venue_name``
 
 
 
@@ -885,6 +885,39 @@ GET data for venue with ``venue_name``
 
     Content-Type: application/json
 
+## GET
+
+
+**Input Schema**
+```json
+null
+```
+
+
+
+**Output Schema**
+```json
+{
+    "properties": {
+        "address": {
+            "type": "string"
+        },
+        "name": {
+            "type": "string"
+        }
+    },
+    "type": "object"
+}
+```
+
+
+
+**Notes**
+
+GET data for venue with ``venue_name``
+
+
+
 ## PUT
 
 
@@ -926,39 +959,6 @@ GET data for venue with ``venue_name``
 **Notes**
 
 PUT to add new venue
-
-
-
-## GET
-
-
-**Input Schema**
-```json
-null
-```
-
-
-
-**Output Schema**
-```json
-{
-    "properties": {
-        "address": {
-            "type": "string"
-        },
-        "name": {
-            "type": "string"
-        }
-    },
-    "type": "object"
-}
-```
-
-
-
-**Notes**
-
-GET data for venue with ``venue_name``
 
 
 
