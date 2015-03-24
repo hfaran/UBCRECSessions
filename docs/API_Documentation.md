@@ -312,6 +312,160 @@ GET data for session with `session_id`
 
 
 
+## PUT
+
+
+**Input Schema**
+```json
+{
+    "properties": {
+        "end_time": {
+            "type": "number"
+        },
+        "sport_id": {
+            "type": "number"
+        },
+        "start_time": {
+            "type": "number"
+        },
+        "venue_name": {
+            "type": "string"
+        }
+    },
+    "type": "object"
+}
+```
+
+
+
+**Output Schema**
+```json
+{
+    "properties": {
+        "session_id": {
+            "type": "number"
+        }
+    },
+    "type": "object"
+}
+```
+
+
+
+**Notes**
+
+PUT to create a new session
+
+* `start_time`: Time session starts in Unix Time
+* `end_time`: Time session ends in Unix Time
+* `sport_id`: ID of sport this session is for
+* `venue_name`: Name of venue where this session is held
+
+
+
+<br>
+<br>
+
+# /api/session/session/?
+
+    Content-Type: application/json
+
+## GET
+
+
+**Input Schema**
+```json
+null
+```
+
+
+
+**Output Schema**
+```json
+{
+    "properties": {
+        "end_time": {
+            "type": "number"
+        },
+        "results": {
+            "type": "string"
+        },
+        "session_id": {
+            "type": "number"
+        },
+        "sport_id": {
+            "type": "number"
+        },
+        "start_time": {
+            "type": "number"
+        },
+        "venue_name": {
+            "type": "string"
+        }
+    },
+    "type": "object"
+}
+```
+
+
+
+**Notes**
+
+GET data for session with `session_id`
+
+
+
+## PUT
+
+
+**Input Schema**
+```json
+{
+    "properties": {
+        "end_time": {
+            "type": "number"
+        },
+        "sport_id": {
+            "type": "number"
+        },
+        "start_time": {
+            "type": "number"
+        },
+        "venue_name": {
+            "type": "string"
+        }
+    },
+    "type": "object"
+}
+```
+
+
+
+**Output Schema**
+```json
+{
+    "properties": {
+        "session_id": {
+            "type": "number"
+        }
+    },
+    "type": "object"
+}
+```
+
+
+
+**Notes**
+
+PUT to create a new session
+
+* `start_time`: Time session starts in Unix Time
+* `end_time`: Time session ends in Unix Time
+* `sport_id`: ID of sport this session is for
+* `venue_name`: Name of venue where this session is held
+
+
+
 <br>
 <br>
 
