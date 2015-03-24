@@ -251,3 +251,12 @@ class SQLAPI(object):
         :rtype: list
         """
         raise NotImplementedError
+
+    def get_employee(self, username):
+        """Get Employee with ``username``
+
+        :type username: str
+        :rtype: models.Employee or None
+        :returns: Employee model if exists otherwise, None
+        """
+        raise NotImplementedError

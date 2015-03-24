@@ -4,7 +4,7 @@ from tornado_json.exceptions import APIError
 
 from ubcrec.web import authenticated
 from ubcrec.handlers import APIHandler
-from ubcrec.common import get_player
+from ubcrec.common import get_player, get_employee
 from ubcrec.constants import USERTYPE_PLAYER, USERTYPE_EMPLOYEE
 
 
@@ -35,7 +35,7 @@ class PlayerLogin(APIHandler):
         """
         student_number = self.body['student_number']
         password = self.body['password']
-        player = get_player(self.db_conn, self.get_current_user())
+        player = get_player(self.db_conn, student_number)
 
         # Check if the given password hashed with the player's known
         #   salt matches the stored password
@@ -68,6 +68,72 @@ class PlayerLogin(APIHandler):
                 403,
                 log_message="Please post to {} to get a cookie".format(
                     "/api/auth/playerlogin")
+            )
+        else:
+            return "You are already logged in."
+
+
+class EmployeeLogin(APIHandler):
+    """EmployeeLogin"""
+
+    @schema.validate(
+        input_schema={
+            "required": ["username", "password"],
+            "type": "object",
+            "properties": {
+                "username": {"type": "string"},
+                "password": {"type": "string"},
+            },
+        },
+        output_schema={
+            "type": "object",
+            "properties": {
+                "username": {"type": "string"}
+            }
+        },
+    )
+    def post(self):
+        """
+        POST the required credentials to get back a cookie
+
+        * `username`: Username
+        * `password`: Password
+        """
+        username = self.body['username']
+        password = self.body['password']
+        employee = get_employee(self.db_conn, username)
+
+        # Check if the given password hashed with the player's known
+        #   salt matches the stored password
+        password_match = bcrypt.hashpw(
+            str(password), str(employee.salt)
+        ) == employee.hashed_pass
+        if password_match:
+            self.set_secure_cookie(
+                "user",
+                "{} {}".format(USERTYPE_EMPLOYEE, username),
+                self.settings['ubcrec'].session_timeout_days
+            )
+            return {"username": username}
+        else:
+            raise APIError(
+                400,
+                log_message="Bad username/password combo"
+            )
+
+    @schema.validate(
+        output_schema={"type": "string"}
+    )
+    def get(self):
+        """GET to check if authenticated.
+
+        Should be obvious from status code (403 vs. 200).
+        """
+        if not self.get_current_user():
+            raise APIError(
+                403,
+                log_message="Please post to {} to get a cookie".format(
+                    "/api/auth/employeelogin")
             )
         else:
             return "You are already logged in."

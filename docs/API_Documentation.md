@@ -2,6 +2,87 @@
 
 **Output schemas only represent `data` and not the full output; see output examples and the JSend specification.**
 
+# /api/auth/employeelogin/?
+
+    Content-Type: application/json
+
+## POST
+
+
+**Input Schema**
+```json
+{
+    "properties": {
+        "password": {
+            "type": "string"
+        },
+        "username": {
+            "type": "string"
+        }
+    },
+    "required": [
+        "username",
+        "password"
+    ],
+    "type": "object"
+}
+```
+
+
+
+**Output Schema**
+```json
+{
+    "properties": {
+        "username": {
+            "type": "string"
+        }
+    },
+    "type": "object"
+}
+```
+
+
+
+**Notes**
+
+POST the required credentials to get back a cookie
+
+* `username`: Username
+* `password`: Password
+
+
+
+## GET
+
+
+**Input Schema**
+```json
+null
+```
+
+
+
+**Output Schema**
+```json
+{
+    "type": "string"
+}
+```
+
+
+
+**Notes**
+
+GET to check if authenticated.
+
+Should be obvious from status code (403 vs. 200).
+
+
+
+<br>
+<br>
+
 # /api/auth/logout/?
 
     Content-Type: application/json
@@ -156,7 +237,7 @@ null
 
 **Notes**
 
-GET to retrieve player info
+(Player only) GET to retrieve player info
 
 
 
@@ -256,7 +337,50 @@ null
 
 **Notes**
 
-GET to retrieve IDs of sessions participated in/registered for
+(Player only) GET to retrieve IDs of sessions participated
+in/registered for
+
+
+
+<br>
+<br>
+
+# /api/player/studentsessions/\(?P\<student\_number\>\[a\-zA\-Z0\-9\_\]\+\)/?$
+
+    Content-Type: application/json
+
+## GET
+
+
+**Input Schema**
+```json
+null
+```
+
+
+
+**Output Schema**
+```json
+{
+    "type": "array"
+}
+```
+
+
+**Output Example**
+```json
+[
+    1,
+    56,
+    7859
+]
+```
+
+
+**Notes**
+
+(Employees only) GET to retrieve IDs of sessions participated
+in/registered for by student with `student_number`
 
 
 
@@ -267,57 +391,6 @@ GET to retrieve IDs of sessions participated in/registered for
 
     Content-Type: application/json
 
-## PUT
-
-
-**Input Schema**
-```json
-{
-    "properties": {
-        "end_time": {
-            "type": "number"
-        },
-        "sport_id": {
-            "type": "number"
-        },
-        "start_time": {
-            "type": "number"
-        },
-        "venue_name": {
-            "type": "string"
-        }
-    },
-    "type": "object"
-}
-```
-
-
-
-**Output Schema**
-```json
-{
-    "properties": {
-        "session_id": {
-            "type": "number"
-        }
-    },
-    "type": "object"
-}
-```
-
-
-
-**Notes**
-
-PUT to create a new session
-
-* `start_time`: Time session starts in Unix Time
-* `end_time`: Time session ends in Unix Time
-* `sport_id`: ID of sport this session is for
-* `venue_name`: Name of venue where this session is held
-
-
-
 ## PATCH
 
 
@@ -402,6 +475,57 @@ null
 **Notes**
 
 GET data for session with `session_id`
+
+
+
+## PUT
+
+
+**Input Schema**
+```json
+{
+    "properties": {
+        "end_time": {
+            "type": "number"
+        },
+        "sport_id": {
+            "type": "number"
+        },
+        "start_time": {
+            "type": "number"
+        },
+        "venue_name": {
+            "type": "string"
+        }
+    },
+    "type": "object"
+}
+```
+
+
+
+**Output Schema**
+```json
+{
+    "properties": {
+        "session_id": {
+            "type": "number"
+        }
+    },
+    "type": "object"
+}
+```
+
+
+
+**Notes**
+
+PUT to create a new session
+
+* `start_time`: Time session starts in Unix Time
+* `end_time`: Time session ends in Unix Time
+* `sport_id`: ID of sport this session is for
+* `venue_name`: Name of venue where this session is held
 
 
 
@@ -412,57 +536,6 @@ GET data for session with `session_id`
 
     Content-Type: application/json
 
-## PUT
-
-
-**Input Schema**
-```json
-{
-    "properties": {
-        "end_time": {
-            "type": "number"
-        },
-        "sport_id": {
-            "type": "number"
-        },
-        "start_time": {
-            "type": "number"
-        },
-        "venue_name": {
-            "type": "string"
-        }
-    },
-    "type": "object"
-}
-```
-
-
-
-**Output Schema**
-```json
-{
-    "properties": {
-        "session_id": {
-            "type": "number"
-        }
-    },
-    "type": "object"
-}
-```
-
-
-
-**Notes**
-
-PUT to create a new session
-
-* `start_time`: Time session starts in Unix Time
-* `end_time`: Time session ends in Unix Time
-* `sport_id`: ID of sport this session is for
-* `venue_name`: Name of venue where this session is held
-
-
-
 ## PATCH
 
 
@@ -547,6 +620,57 @@ null
 **Notes**
 
 GET data for session with `session_id`
+
+
+
+## PUT
+
+
+**Input Schema**
+```json
+{
+    "properties": {
+        "end_time": {
+            "type": "number"
+        },
+        "sport_id": {
+            "type": "number"
+        },
+        "start_time": {
+            "type": "number"
+        },
+        "venue_name": {
+            "type": "string"
+        }
+    },
+    "type": "object"
+}
+```
+
+
+
+**Output Schema**
+```json
+{
+    "properties": {
+        "session_id": {
+            "type": "number"
+        }
+    },
+    "type": "object"
+}
+```
+
+
+
+**Notes**
+
+PUT to create a new session
+
+* `start_time`: Time session starts in Unix Time
+* `end_time`: Time session ends in Unix Time
+* `sport_id`: ID of sport this session is for
+* `venue_name`: Name of venue where this session is held
 
 
 

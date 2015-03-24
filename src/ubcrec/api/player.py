@@ -6,7 +6,7 @@ from tornado_json import schema
 
 from ubcrec.handlers import APIHandler
 from ubcrec.common import get_player
-from ubcrec.constants import USERTYPE_PLAYER
+from ubcrec.constants import USERTYPE_PLAYER, USERTYPE_EMPLOYEE
 from ubcrec.web import authenticated
 
 
@@ -92,7 +92,7 @@ class Me(APIHandler):
     )
     def get(self):
         """
-        GET to retrieve player info
+        (Player only) GET to retrieve player info
         """
         player = get_player(db_conn=self.db_conn,
                             student_number=self.get_current_user())
@@ -113,9 +113,33 @@ class Sessions(APIHandler):
     )
     def get(self):
         """
-        GET to retrieve IDs of sessions participated in/registered for
+        (Player only) GET to retrieve IDs of sessions participated
+        in/registered for
         """
         session_ids = self.db_conn.get_player_session_ids(
             self.get_current_user()
+        )
+        return session_ids
+
+
+class StudentSessions(APIHandler):
+
+    @authenticated(USERTYPE_EMPLOYEE)
+    @schema.validate(
+        output_schema={
+            "type": "array",
+        },
+        output_example=[1, 56, 7859]
+    )
+    def get(self, student_number):
+        """
+        (Employees only) GET to retrieve IDs of sessions participated
+        in/registered for by student with `student_number`
+        """
+        # Make sure student exists
+        get_player(self.db_conn, student_number)
+
+        session_ids = self.db_conn.get_player_session_ids(
+            student_number
         )
         return session_ids
