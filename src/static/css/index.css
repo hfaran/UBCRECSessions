@@ -1,0 +1,23 @@
+.session-table-header {
+	padding-bottom: 5px;
+	border-bottom: solid 2px #bbb;
+	font-size: 16px;
+}
+
+.session-table-row {
+	padding: 5px 0;
+	font-size: 14px;
+}
+
+.session-table-row:nth-child(even) {
+	background-color: #fff;
+}
+
+.session-table-row:nth-child(odd) {
+	background-color: #ddd;
+}
+
+.session-table-row .sub-field {
+	font-size: 12px;
+	display: block;
+}
