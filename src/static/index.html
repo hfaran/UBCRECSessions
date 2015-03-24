@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>UBC Rec Sessions</title>
+
+		<!-- Bootstrap CSS -->
+		<link href="//netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+		<link href="/css/datepicker.css" rel="stylesheet">
+		<link href="/css/master.css" rel="stylesheet">
+		<link href="/css/index.css" rel="stylesheet">
+	</head>
+	<body class="margin-bottom-75">
+		<nav class="navbar navbar-default navbar-static-top">
+			<div class="container">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="/">UBC Rec Sessions</a>
+				</div>
+				<!-- @TODO IF IS_GUEST -->
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav navbar-right">
+						<li><a href="/admin-sign-in.html">Employee Sign in</a></li>
+						<li><a href="/sign-in.html">Student Sign in</a></li>
+					</ul>
+				</div>
+				<!-- @TODO ELSEIF IS_STUDENT -->
+				<!-- @TODO Log Out: Perform AJAX call and redirect to index page -->
+				<!-- <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav navbar-right">
+						<li><a href="/my-sessions.html">First Last</a></li>
+						<li><a href="/">Log Out</a></li>
+					</ul>
+				</div> -->
+				<!-- @TODO ELSEIF IS_EMPLOYEE -->
+				<!-- @TODO Log Out: Perform AJAX call and redirect to index page -->
+				<!-- <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav navbar-right">
+						<li><a href="/manage-sessions.html">Manage Sessions</a></li>
+						<li><a href="/">Log Out</a></li>
+					</ul>
+				</div> -->
+				<!-- @TODO END IF -->
+			</div>
+		</nav>
+		<div class="container margin-top-75">
+			<div class="row well">
+				<div class="col-md-3">
+					<fieldset>
+						<legend>Venues</legend>
+		  				<div class="form-group">
+							<select id="venues" multiple class="form-control">
+								<!-- @TODO Use $.ajax() to load in available venues -->
+								<option selected="selected">All Venues</option>
+								<option>Venue 1</option>
+								<option>Venue 2</option>
+								<option>Venue 3</option>
+								<option>Venue 4</option>
+								<option>Venue 5</option>
+							</select>
+						</div>
+					</fieldset>
+				</div>
+				<div class="col-md-3">
+					<fieldset>
+						<legend>Sports</legend>
+		  				<div class="form-group">
+							<select id="sports" multiple class="form-control">
+								<!-- @TODO Use $.ajax() to load in available sports -->
+								<option selected="selected">All Sports</option>
+								<option>Sport 1</option>
+								<option>Sport 2</option>
+								<option>Sport 3</option>
+								<option>Sport 4</option>
+								<option>Sport 5</option>
+							</select>
+						</div>
+					</fieldset>
+				</div>
+				<div class="col-md-6">
+					<div class="form-group">
+						<fieldset>
+							<legend>Date Range to View</legend>
+							<div class="input-daterange input-group" id="datepicker">
+								<input type="text" class="input-sm form-control" id="start-day" />
+								<span class="input-group-addon">to</span>
+								<input type="text" class="input-sm form-control" id="end-day" />
+							</div>
+						</fieldset>
+					</div>
+					<div class="form-group">
+						<!-- @TODO On click, perform ajax to update the session list -->
+						<button class="btn btn-primary full-width">Search Sessions</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="container margin-top-50">
+			<div class="row session-table-header">
+				<div class="col-sm-3">
+					<strong>Sport</strong>
+				</div>
+				<div class="col-sm-3">
+					<strong>Venue</strong>
+				</div>
+				<div class="col-sm-3">
+					<strong>Time</strong>
+				</div>
+				<div class="col-sm-3">
+					<strong>Actions</strong>
+				</div>
+			</div>
+			<div class="row session-table-row">
+				<div class="col-sm-3">
+					<strong>Sport 1</strong>
+					<span class="sub-field">4 teams | 17 players</span>
+				</div>
+				<div class="col-sm-3">
+					<strong>Venue 1</strong>
+					<span class="sub-field">123 Main St
+				</div>
+				<div class="col-sm-3">
+					<strong>12:04 AM</strong> - <strong>10:03 PM</strong>
+					<span class="sub-field">2015-04-04</span>
+				</div>
+				<div class="col-sm-3">
+					<!-- @TODO IF IS_STUDENT -->
+					<!-- <button class="btn btn-sm btn-primary">Join</button> -->
+					<!-- @TODO ELSEIF IS_STUDENT AND SIGNED_UP_FOR_THIS_SESSION -->
+					<!-- <button class="btn btn-sm btn-danger">Leave</button> -->
+					<!-- @TODO ELSEIF IS_GUEST -->
+					<button class="btn btn-sm btn-primary" disabled>You must be Signed In to join</button>
+				</div>
+			</div>
+		</div>
+
+		<!-- jQuery -->
+		<script src="//code.jquery.com/jquery.js"></script>
+		<!-- Bootstrap JavaScript -->
+		<script src="//netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+		<script src="/js/bootstrap-datepicker.js"></script>
+		<script src="/js/index.js"></script>
+	</body>
+</html>

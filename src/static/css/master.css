@@ -1,0 +1,21 @@
+/**********
+ * Sizing *
+ **********/
+.full-width {
+	width: 100%;
+}
+
+/***********
+ * Margins *
+ ***********/
+.margin-top-75 {
+	margin-top: 75px;
+}
+
+.margin-top-50 {
+	margin-top: 50px;
+}
+
+.margin-bottom-75 {
+	margin-bottom: 75px;
+}
