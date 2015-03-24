@@ -42,10 +42,10 @@ class SQLAPI(object):
         """
         :type Sin: str
         :param Sin: Employees SIN number
-        :type startShift: str
-        :param startShift: Employees start shift
-        :type endShift: str
-        :param endShift: Employees end shift
+        :type startShift: int
+        :param startShift: Employees start shift (Unix Time)
+        :type endShift: int
+        :param endShift: Employees end shift (Unix Time)
         """
         self.cursor.execute(
             "INSERT INTO Working VALUES (? ,? ,?)",
@@ -258,5 +258,20 @@ class SQLAPI(object):
         :type username: str
         :rtype: models.Employee or None
         :returns: Employee model if exists otherwise, None
+        """
+        raise NotImplementedError
+
+    def get_employee_shifts(self, username, start=None, end=None):
+        """Return shifts for employee username
+
+        :type username: str
+        :type start: int
+        :param start: Filter only shifts with a start_time greater
+            than this (Unix Time), or, if this is None, do not filter.
+        :type end: int
+        :param end: Filter only shifts with an end_time smaller
+            than this (Unix Time), or, if this is None, do not filter.
+        :return: list of Shift models
+        :rtype: list
         """
         raise NotImplementedError
