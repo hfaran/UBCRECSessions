@@ -1,6 +1,6 @@
 from tornado_json.exceptions import api_assert
 
-from ubcrec.models import Player, Session
+from ubcrec.models import Player, Session, Venue
 
 
 def get_player(db_conn, student_number):
@@ -37,3 +37,20 @@ def get_session(db_conn, session_id):
     )
 
     return session
+
+
+def get_venue(db_conn, venue_name):
+    """Get Venue with ``venue_name``
+
+    :type venue_name: str
+    :rtype: Venue or None
+    """
+    venue = db_conn.get_venue(venue_name)
+
+    api_assert(
+        venue is not None,
+        409,
+        log_message="No Venue with name {} exists.".format(venue_name)
+    )
+
+    return venue

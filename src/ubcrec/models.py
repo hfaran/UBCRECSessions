@@ -72,3 +72,9 @@ class Venue(object):
     def __init__(self, name, address):
         self.name = name
         self.address = address
+
+    def to_dict(self):
+        return {k: getattr(self, k) for k in [
+            "name",
+            "address",
+        ]}

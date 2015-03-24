@@ -55,15 +55,15 @@ class SQLAPI(object):
         )
         self.conn.commit()
 
-    def insertVenueData(self, Name, Address):
+    def create_venue(self, name, address):
         """
-        :type Name: str
-        :param Name: Venue name
-        :type Address: str
-        :param Address: Address of venue
+        :type name: str
+        :param name: Venue name
+        :type address: str
+        :param address: address of venue
         """
         self.cursor.execute(
-            "INSERT INTO Venue VALUES (? ,?)", (Name, Address)
+            "INSERT INTO Venue VALUES (? ,?)", (name, address)
         )
         self.conn.commit()
 
@@ -233,5 +233,21 @@ class SQLAPI(object):
             these venues, or, if this is None, do not filter.
         :rtype: list
         :return: List of Session objects
+        """
+        raise NotImplementedError
+
+    def get_venue(self, venue_name):
+        """Returns Venue with ``venue_name``
+
+        :type venue_name: str
+        :rtype: models.Venue or None
+        """
+        raise NotImplementedError
+
+    def get_venues(self):
+        """Return all venues
+
+        :returns: list of Venue models
+        :rtype: list
         """
         raise NotImplementedError
