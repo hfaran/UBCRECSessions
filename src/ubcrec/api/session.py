@@ -119,7 +119,7 @@ class Sessions(APIHandler):
         },
         output_schema={"type": "array"}
     )
-    def get(self):
+    def post(self):
         """
         GET array of sessions matching given parameters
 
