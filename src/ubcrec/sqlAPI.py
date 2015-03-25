@@ -143,15 +143,16 @@ class SQLAPI(object):
         )
         self.conn.commit()
 
-    def insertPlaysInData(self, studentNum, teamID):
+    def register_player_in_team(self, student_num, team_id):
         """
-        :type studentNum int
-        :param studentNum: Student number of the player
-        :type teamID: int
-        :param teamID: Team ID
+        :type student_num int
+        :param student_num: Student number of the player
+        :type team_id: int
+        :param team_id: Team ID
         """
         self.cursor.execute(
-            "INSERT INTO PlaysIn VALUES (? ,?)", (studentNum, teamID)
+            "INSERT INTO PlaysIn (student_num, team_id) VALUES (? ,?)",
+            (student_num, team_id)
         )
         self.conn.commit()
 
@@ -288,5 +289,25 @@ class SQLAPI(object):
         :param session_id: ID of session for which to get teams for
         :rtype: list
         :returns: A list like the following: [models.Team(...), models.Team(...)]
+        """
+        raise NotImplementedError
+
+    def get_team(self, team_id):
+        """Return Team model with ``team_id``
+
+        :type team_id: int
+        :rtype: models.Team or None
+        :returns: Team model or None if doesn't exist
+        """
+        raise NotImplementedError
+
+    def get_num_players_registered(self, team_id):
+        """Return count of players CURRENTLY registered (i.e., PlaysIn) in
+        ``team_id``.
+
+        You can assume that a team with ``team_id`` definitely exists.
+
+        :type team_id: int
+        :rtype: int
         """
         raise NotImplementedError
