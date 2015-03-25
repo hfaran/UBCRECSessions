@@ -11,7 +11,10 @@ def get_player(db_conn, student_number):
     :type student_number: int or str
     :rtype: Player or None
     """
-    player = db_conn.get_player(int(student_number))
+    try:
+        player = db_conn.get_player(int(student_number))
+    except ValueError:
+        player = None
 
     api_assert(
         player is not None,
@@ -31,7 +34,10 @@ def get_session(db_conn, session_id):
     :type session_id: int or str
     :rtype: Session or None
     """
-    session = db_conn.get_session(int(session_id))
+    try:
+        session = db_conn.get_session(int(session_id))
+    except ValueError:
+        session = None
 
     api_assert(
         session is not None,
