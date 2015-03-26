@@ -212,10 +212,15 @@ class SQLAPI(object):
         :rtype: list
         :returns: list of session IDs
         """
-        self.cursor.execute('SELECT session_id FROM Sessions WHERE student_num=?', (student_number,))
+        self.cursor.execute(
+            'SELECT session_id FROM Team_ParticipatesIn WHERE '
+            'team_id=(SELECT team_id FROM PlaysIn WHERE student_num=?)',
+            (student_number,)
+        )
         row = self.cursor.fetchall()
+        team_ids = [v[0] for v in row]  # unpack result tuple
 
-        return row
+        return team_ids
 
     def get_session(self, session_id):
         """Returns session with ``session_id``

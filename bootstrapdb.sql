@@ -154,7 +154,7 @@ VALUES ('Lakers', 1, 10, 1);
 INSERT INTO Team_ParticipatesIn (name, team_id, number_of_players, session_id)
 VALUES ('Canucks', 2, 10, 2);
 INSERT INTO Team_ParticipatesIn (name, team_id, number_of_players, session_id)
-VALUES ('MU', 3, 10, 333);
+VALUES ('MU', 3, 10, 3);
 INSERT INTO Team_ParticipatesIn (name, team_id, number_of_players, session_id)
 VALUES ('Fake Madrid', 4, 10, 4);
 INSERT INTO Team_ParticipatesIn (name, team_id, number_of_players, session_id)
