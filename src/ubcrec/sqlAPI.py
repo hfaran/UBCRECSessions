@@ -214,7 +214,7 @@ class SQLAPI(object):
         """
         self.cursor.execute(
             'SELECT session_id FROM Team_ParticipatesIn WHERE '
-            'team_id=(SELECT team_id FROM PlaysIn WHERE student_num=?)',
+            'team_id IN (SELECT team_id FROM PlaysIn WHERE student_num=?)',
             (student_number,)
         )
         row = self.cursor.fetchall()
