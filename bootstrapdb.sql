@@ -95,15 +95,15 @@ INSERT INTO Working (sin, start_shift, end_shift)
 VALUES (55555555, 1427235705, 1427239305);
 
 INSERT INTO Venue (name, address)
-VALUES ('SRC A', '2329 West Mall, Vancouver, BC');
+VALUES ('SRC_A', '2329 West Mall, Vancouver, BC');
 INSERT INTO Venue (name, address)
-VALUES ('SRC B', '2329 West Mall, Vancouver, BC');
+VALUES ('SRC_B', '2329 West Mall, Vancouver, BC');
 INSERT INTO Venue (name, address)
 VALUES ('Thunderbird', '2330 Thunderbird Boulevard, Vancouver, BC');
 INSERT INTO Venue (name, address)
-VALUES ('Aquatic Center', '6121 University Boulevard Vancouver, BC');
+VALUES ('Aquatic_Center', '6121 University Boulevard Vancouver, BC');
 INSERT INTO Venue (name, address)
-VALUES ('SRC GYM', '2329 West Mall, Vancouver, BC');
+VALUES ('SRC_GYM', '2329 West Mall, Vancouver, BC');
 
 INSERT INTO Sport (name) VALUES ('Indoor Soccer');
 INSERT INTO Sport (name) VALUES ('Basketball');
@@ -112,15 +112,15 @@ INSERT INTO Sport (name) VALUES ('Table Tennis');
 INSERT INTO Sport (name) VALUES ('Croquet');
 
 INSERT INTO Sessions (start_time, end_time, sport_id, venue_name)
-VALUES (1427235705, 1427239305, 1, 'SRC A');
+VALUES (1427235705, 1427239305, 1, 'SRC_A');
 INSERT INTO Sessions (start_time, end_time, sport_id, venue_name)
-VALUES (1427235705, 1427239305, 2, 'SRC B');
+VALUES (1427235705, 1427239305, 2, 'SRC_B');
 INSERT INTO Sessions (start_time, end_time, sport_id, venue_name)
 VALUES (1427235705, 1427239305, 3, 'Thunderbird');
 INSERT INTO Sessions (start_time, end_time, sport_id, venue_name)
-VALUES (1427235705, 1427239305, 4, 'SRC GYM');
+VALUES (1427235705, 1427239305, 4, 'SRC_GYM');
 INSERT INTO Sessions (start_time, end_time, sport_id, venue_name)
-VALUES (1427235705, 1427239305, 5, 'Aquatic Center');
+VALUES (1427235705, 1427239305, 5, 'Aquatic_Center');
 
 INSERT INTO Players (student_num, name, password, salt)
 VALUES (12346589, 'Patton Hunt',

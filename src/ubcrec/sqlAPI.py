@@ -318,13 +318,13 @@ class SQLAPI(object):
         :type venue_name: str
         :rtype: models.Venue or None
         """
-        self.cursor.execute('SELECT * FROM Venue WHERE venue_name=?', (venue_name,))
+        self.cursor.execute('SELECT * FROM Venue WHERE name=?', (venue_name,))
         row = self.cursor.fetchall()
         # I am adding this in case I messed up during the database setup
         if len(row) > 1:
             raise (IndexError, "There is something wrong with the primary key of Session Table. Duplicated keys")
         elif len(row) == 1:
-            venue_model = models.Venue(venue_name=row[0], address=row[1])
+            venue_model = models.Venue(name=row[0][0], address=row[0][1])
             return venue_model
         else:
             return None
