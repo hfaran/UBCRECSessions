@@ -123,7 +123,7 @@ class SQLAPI(object):
         :type session_id: int
         :type results: str
         """
-        raise NotImplementedError
+        self.cursor.execute("UPDATE Sessions SET result=? WHERE session_id=?", (results, session_id))
 
     def insert_player_data(self, name, student_number, password, salt):
         """
