@@ -20,5 +20,5 @@ mkdocs serve
 ```bash
 sudo pip install -r requirements.txt
 cd src/
-./ubcrec_server.py
+./ubcrec_server.py --port 8888 --db ../project.db --cookie-secret cookies
 ```

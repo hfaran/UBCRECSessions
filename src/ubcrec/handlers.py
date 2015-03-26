@@ -4,18 +4,22 @@ from tornado_json import requesthandlers
 class AuthMixin(object):
 
     def get_current_user(self):
-        cookie = self.get_secure_cookie("user").decode()
+        cookie = self.get_secure_cookie("user")
         if cookie is None:
             return None
+        else:
+            cookie = cookie.decode()
 
         user_type, user_id = cookie.split(" ")
         return user_id
 
     @property
     def user_type(self):
-        cookie = self.get_secure_cookie("user").decode()
+        cookie = self.get_secure_cookie("user")
         if cookie is None:
             return None
+        else:
+            cookie = cookie.decode()
 
         user_type, user_id = cookie.split(" ")
         return user_type
