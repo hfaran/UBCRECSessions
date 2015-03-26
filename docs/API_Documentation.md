@@ -7,36 +7,41 @@
     Content-Type: application/json
 
 ## POST
+
+
 **Input Schema**
 ```json
 {
-    "required": [
-        "username", 
-        "password"
-    ], 
-    "type": "object", 
     "properties": {
-        "username": {
-            "type": "string"
-        }, 
         "password": {
             "type": "string"
+        },
+        "username": {
+            "type": "string"
         }
-    }
+    },
+    "required": [
+        "username",
+        "password"
+    ],
+    "type": "object"
 }
 ```
+
+
 
 **Output Schema**
 ```json
 {
-    "type": "object", 
     "properties": {
         "username": {
             "type": "string"
         }
-    }
+    },
+    "type": "object"
 }
 ```
+
 
 
 **Notes**
@@ -49,10 +54,14 @@ POST the required credentials to get back a cookie
 
 
 ## GET
+
+
 **Input Schema**
 ```json
 null
 ```
+
+
 
 **Output Schema**
 ```json
@@ -60,6 +69,7 @@ null
     "type": "string"
 }
 ```
+
 
 
 **Notes**
@@ -78,10 +88,14 @@ Should be obvious from status code (403 vs. 200).
     Content-Type: application/json
 
 ## DELETE
+
+
 **Input Schema**
 ```json
 null
 ```
+
+
 
 **Output Schema**
 ```json
@@ -89,6 +103,7 @@ null
     "type": "string"
 }
 ```
+
 
 
 **Notes**
@@ -105,36 +120,41 @@ DELETE to clear cookie for current user.
     Content-Type: application/json
 
 ## POST
+
+
 **Input Schema**
 ```json
 {
-    "required": [
-        "student_number", 
-        "password"
-    ], 
-    "type": "object", 
     "properties": {
-        "student_number": {
-            "type": "string"
-        }, 
         "password": {
             "type": "string"
+        },
+        "student_number": {
+            "type": "number"
         }
-    }
+    },
+    "required": [
+        "student_number",
+        "password"
+    ],
+    "type": "object"
 }
 ```
+
+
 
 **Output Schema**
 ```json
 {
-    "type": "object", 
     "properties": {
         "student_number": {
-            "type": "string"
+            "type": "number"
         }
-    }
+    },
+    "type": "object"
 }
 ```
+
 
 
 **Notes**
@@ -147,10 +167,14 @@ POST the required credentials to get back a cookie
 
 
 ## GET
+
+
 **Input Schema**
 ```json
 null
 ```
+
+
 
 **Output Schema**
 ```json
@@ -158,6 +182,7 @@ null
     "type": "string"
 }
 ```
+
 
 
 **Notes**
@@ -176,20 +201,24 @@ Should be obvious from status code (403 vs. 200).
     Content-Type: application/json
 
 ## POST
+
+
 **Input Schema**
 ```json
 {
-    "type": "object", 
     "properties": {
-        "start": {
-            "type": "number"
-        }, 
         "end": {
             "type": "number"
+        },
+        "start": {
+            "type": "number"
         }
-    }
+    },
+    "type": "object"
 }
 ```
+
+
 
 **Output Schema**
 ```json
@@ -197,6 +226,7 @@ Should be obvious from status code (403 vs. 200).
     "type": "array"
 }
 ```
+
 
 
 **Notes**
@@ -218,31 +248,36 @@ GET employee shifts from `start` to `end`
     Content-Type: application/json
 
 ## GET
+
+
 **Input Schema**
 ```json
 null
 ```
 
+
+
 **Output Schema**
 ```json
 {
-    "type": "object", 
     "properties": {
-        "username": {
-            "type": "string"
-        }, 
         "student_number": {
             "type": "number"
+        },
+        "username": {
+            "type": "string"
         }
-    }
+    },
+    "type": "object"
 }
 ```
+
 
 **Output Example**
 ```json
 {
-    "student_number": 10235609, 
-    "full_name": "John Smith"
+    "full_name": "John Smith",
+    "student_number": 10235609
 }
 ```
 
@@ -261,40 +296,45 @@ null
     Content-Type: application/json
 
 ## PUT
+
+
 **Input Schema**
 ```json
 {
-    "required": [
-        "full_name", 
-        "password", 
-        "student_number"
-    ], 
-    "type": "object", 
     "properties": {
-        "student_number": {
-            "type": "number"
-        }, 
-        "password": {
-            "type": "string"
-        }, 
         "full_name": {
             "type": "string"
+        },
+        "password": {
+            "type": "string"
+        },
+        "student_number": {
+            "type": "number"
         }
-    }
+    },
+    "required": [
+        "full_name",
+        "password",
+        "student_number"
+    ],
+    "type": "object"
 }
 ```
+
+
 
 **Output Schema**
 ```json
 {
-    "type": "object", 
     "properties": {
         "student_number": {
             "type": "number"
         }
-    }
+    },
+    "type": "object"
 }
 ```
+
 
 
 **Notes**
@@ -315,10 +355,14 @@ PUT the required parameters to permanently register a new player
     Content-Type: application/json
 
 ## GET
+
+
 **Input Schema**
 ```json
 null
 ```
+
+
 
 **Output Schema**
 ```json
@@ -327,11 +371,12 @@ null
 }
 ```
 
+
 **Output Example**
 ```json
 [
-    1, 
-    56, 
+    1,
+    56,
     7859
 ]
 ```
@@ -352,10 +397,14 @@ in/registered for
     Content-Type: application/json
 
 ## GET
+
+
 **Input Schema**
 ```json
 null
 ```
+
+
 
 **Output Schema**
 ```json
@@ -364,11 +413,12 @@ null
 }
 ```
 
+
 **Output Example**
 ```json
 [
-    1, 
-    56, 
+    1,
+    56,
     7859
 ]
 ```
@@ -389,37 +439,45 @@ in/registered for by student with `student_number`
     Content-Type: application/json
 
 ## GET
+
+
 **Input Schema**
 ```json
 null
 ```
 
+
+
 **Output Schema**
 ```json
 {
-    "type": "object", 
     "properties": {
-        "venue_name": {
-            "type": "string"
-        }, 
-        "start_time": {
-            "type": "number"
-        }, 
-        "results": {
-            "type": "string"
-        }, 
-        "session_id": {
-            "type": "number"
-        }, 
         "end_time": {
             "type": "number"
-        }, 
+        },
+        "results": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "session_id": {
+            "type": "number"
+        },
         "sport_id": {
             "type": "number"
+        },
+        "start_time": {
+            "type": "number"
+        },
+        "venue_name": {
+            "type": "string"
         }
-    }
+    },
+    "type": "object"
 }
 ```
+
 
 
 **Notes**
@@ -429,36 +487,41 @@ GET data for session with `session_id`
 
 
 ## PATCH
+
+
 **Input Schema**
 ```json
 {
-    "required": [
-        "session_id", 
-        "results"
-    ], 
-    "type": "object", 
     "properties": {
         "results": {
             "type": "string"
-        }, 
+        },
         "session_id": {
             "type": "number"
         }
-    }
+    },
+    "required": [
+        "session_id",
+        "results"
+    ],
+    "type": "object"
 }
 ```
+
+
 
 **Output Schema**
 ```json
 {
-    "type": "object", 
     "properties": {
         "session_id": {
             "type": "number"
         }
-    }
+    },
+    "type": "object"
 }
 ```
+
 
 
 **Notes**
@@ -470,44 +533,49 @@ PATCH to add/amend results for a session
 
 
 ## PUT
+
+
 **Input Schema**
 ```json
 {
-    "required": [
-        "start_time", 
-        "end_time", 
-        "sport_id", 
-        "venue_name"
-    ], 
-    "type": "object", 
     "properties": {
-        "start_time": {
-            "type": "number"
-        }, 
         "end_time": {
             "type": "number"
-        }, 
+        },
         "sport_id": {
             "type": "number"
-        }, 
+        },
+        "start_time": {
+            "type": "number"
+        },
         "venue_name": {
             "type": "string"
         }
-    }
+    },
+    "required": [
+        "start_time",
+        "end_time",
+        "sport_id",
+        "venue_name"
+    ],
+    "type": "object"
 }
 ```
+
+
 
 **Output Schema**
 ```json
 {
-    "type": "object", 
     "properties": {
         "session_id": {
             "type": "number"
         }
-    }
+    },
+    "type": "object"
 }
 ```
+
 
 
 **Notes**
@@ -522,15 +590,20 @@ PUT to create a new session
 
 
 ## DELETE
+
+
 **Input Schema**
 ```json
 null
 ```
 
+
+
 **Output Schema**
 ```json
 null
 ```
+
 
 
 **Notes**
@@ -548,37 +621,45 @@ null
     Content-Type: application/json
 
 ## GET
+
+
 **Input Schema**
 ```json
 null
 ```
 
+
+
 **Output Schema**
 ```json
 {
-    "type": "object", 
     "properties": {
-        "venue_name": {
-            "type": "string"
-        }, 
-        "start_time": {
-            "type": "number"
-        }, 
-        "results": {
-            "type": "string"
-        }, 
-        "session_id": {
-            "type": "number"
-        }, 
         "end_time": {
             "type": "number"
-        }, 
+        },
+        "results": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "session_id": {
+            "type": "number"
+        },
         "sport_id": {
             "type": "number"
+        },
+        "start_time": {
+            "type": "number"
+        },
+        "venue_name": {
+            "type": "string"
         }
-    }
+    },
+    "type": "object"
 }
 ```
+
 
 
 **Notes**
@@ -588,36 +669,41 @@ GET data for session with `session_id`
 
 
 ## PATCH
+
+
 **Input Schema**
 ```json
 {
-    "required": [
-        "session_id", 
-        "results"
-    ], 
-    "type": "object", 
     "properties": {
         "results": {
             "type": "string"
-        }, 
+        },
         "session_id": {
             "type": "number"
         }
-    }
+    },
+    "required": [
+        "session_id",
+        "results"
+    ],
+    "type": "object"
 }
 ```
+
+
 
 **Output Schema**
 ```json
 {
-    "type": "object", 
     "properties": {
         "session_id": {
             "type": "number"
         }
-    }
+    },
+    "type": "object"
 }
 ```
+
 
 
 **Notes**
@@ -629,44 +715,49 @@ PATCH to add/amend results for a session
 
 
 ## PUT
+
+
 **Input Schema**
 ```json
 {
-    "required": [
-        "start_time", 
-        "end_time", 
-        "sport_id", 
-        "venue_name"
-    ], 
-    "type": "object", 
     "properties": {
-        "start_time": {
-            "type": "number"
-        }, 
         "end_time": {
             "type": "number"
-        }, 
+        },
         "sport_id": {
             "type": "number"
-        }, 
+        },
+        "start_time": {
+            "type": "number"
+        },
         "venue_name": {
             "type": "string"
         }
-    }
+    },
+    "required": [
+        "start_time",
+        "end_time",
+        "sport_id",
+        "venue_name"
+    ],
+    "type": "object"
 }
 ```
+
+
 
 **Output Schema**
 ```json
 {
-    "type": "object", 
     "properties": {
         "session_id": {
             "type": "number"
         }
-    }
+    },
+    "type": "object"
 }
 ```
+
 
 
 **Notes**
@@ -681,15 +772,20 @@ PUT to create a new session
 
 
 ## DELETE
+
+
 **Input Schema**
 ```json
 null
 ```
 
+
+
 **Output Schema**
 ```json
 null
 ```
+
 
 
 **Notes**
@@ -707,26 +803,30 @@ null
     Content-Type: application/json
 
 ## POST
+
+
 **Input Schema**
 ```json
 {
-    "type": "object", 
     "properties": {
-        "started_after": {
-            "type": "number"
-        }, 
         "ended_before": {
             "type": "number"
-        }, 
-        "venues": {
-            "type": "array"
-        }, 
+        },
         "sports": {
             "type": "array"
+        },
+        "started_after": {
+            "type": "number"
+        },
+        "venues": {
+            "type": "array"
         }
-    }
+    },
+    "type": "object"
 }
 ```
+
+
 
 **Output Schema**
 ```json
@@ -734,6 +834,7 @@ null
     "type": "array"
 }
 ```
+
 
 
 **Notes**
@@ -755,10 +856,14 @@ GET array of sessions matching given parameters
     Content-Type: application/json
 
 ## GET
+
+
 **Input Schema**
 ```json
 null
 ```
+
+
 
 **Output Schema**
 ```json
@@ -767,15 +872,16 @@ null
 }
 ```
 
+
 **Output Example**
 ```json
 [
     {
-        "name": "Basketball", 
+        "name": "Basketball",
         "sport_id": 1
-    }, 
+    },
     {
-        "name": "Futsal", 
+        "name": "Futsal",
         "sport_id": 2
     }
 ]
@@ -796,29 +902,34 @@ GET array of all sports
     Content-Type: application/json
 
 ## POST
+
+
 **Input Schema**
 ```json
 {
-    "type": "object", 
     "properties": {
         "team_id": {
             "type": "number"
         }
-    }
+    },
+    "type": "object"
 }
 ```
+
+
 
 **Output Schema**
 ```json
 {
-    "type": "object", 
     "properties": {
         "team_id": {
             "type": "number"
         }
-    }
+    },
+    "type": "object"
 }
 ```
+
 
 
 **Notes**
@@ -837,35 +948,40 @@ GET array of all sports
     Content-Type: application/json
 
 ## PUT
+
+
 **Input Schema**
 ```json
 {
-    "type": "object", 
     "properties": {
         "name": {
             "type": "string"
-        }, 
-        "session_id": {
-            "type": "number"
-        }, 
+        },
         "num_max_players": {
             "type": "number"
+        },
+        "session_id": {
+            "type": "number"
         }
-    }
+    },
+    "type": "object"
 }
 ```
+
+
 
 **Output Schema**
 ```json
 {
-    "type": "object", 
     "properties": {
         "team_id": {
             "type": "number"
         }
-    }
+    },
+    "type": "object"
 }
 ```
+
 
 
 **Notes**
@@ -886,10 +1002,14 @@ GET array of all sports
     Content-Type: application/json
 
 ## GET
+
+
 **Input Schema**
 ```json
 null
 ```
+
+
 
 **Output Schema**
 ```json
@@ -898,14 +1018,15 @@ null
 }
 ```
 
+
 **Output Example**
 ```json
 [
     {
-        "team_id": 1, 
-        "name": "The Team", 
-        "session_id": 5, 
-        "num_max_players": 8
+        "name": "The Team",
+        "num_max_players": 8,
+        "session_id": 5,
+        "team_id": 1
     }
 ]
 ```
@@ -924,70 +1045,80 @@ GET array of all teams for the given `session_id`
 
     Content-Type: application/json
 
-## PUT
-**Input Schema**
-```json
-{
-    "required": [
-        "name", 
-        "address"
-    ], 
-    "type": "object", 
-    "properties": {
-        "name": {
-            "type": "string"
-        }, 
-        "address": {
-            "type": "string"
-        }
-    }
-}
-```
-
-**Output Schema**
-```json
-{
-    "type": "object", 
-    "properties": {
-        "name": {
-            "type": "string"
-        }
-    }
-}
-```
-
-
-**Notes**
-
-PUT to add new venue
-
-
-
 ## GET
+
+
 **Input Schema**
 ```json
 null
 ```
 
+
+
 **Output Schema**
 ```json
 {
-    "type": "object", 
     "properties": {
-        "name": {
-            "type": "string"
-        }, 
         "address": {
             "type": "string"
+        },
+        "name": {
+            "type": "string"
         }
-    }
+    },
+    "type": "object"
 }
 ```
+
 
 
 **Notes**
 
 GET data for venue with ``venue_name``
+
+
+
+## PUT
+
+
+**Input Schema**
+```json
+{
+    "properties": {
+        "address": {
+            "type": "string"
+        },
+        "name": {
+            "type": "string"
+        }
+    },
+    "required": [
+        "name",
+        "address"
+    ],
+    "type": "object"
+}
+```
+
+
+
+**Output Schema**
+```json
+{
+    "properties": {
+        "name": {
+            "type": "string"
+        }
+    },
+    "type": "object"
+}
+```
+
+
+
+**Notes**
+
+PUT to add new venue
 
 
 
@@ -998,70 +1129,80 @@ GET data for venue with ``venue_name``
 
     Content-Type: application/json
 
-## PUT
-**Input Schema**
-```json
-{
-    "required": [
-        "name", 
-        "address"
-    ], 
-    "type": "object", 
-    "properties": {
-        "name": {
-            "type": "string"
-        }, 
-        "address": {
-            "type": "string"
-        }
-    }
-}
-```
-
-**Output Schema**
-```json
-{
-    "type": "object", 
-    "properties": {
-        "name": {
-            "type": "string"
-        }
-    }
-}
-```
-
-
-**Notes**
-
-PUT to add new venue
-
-
-
 ## GET
+
+
 **Input Schema**
 ```json
 null
 ```
 
+
+
 **Output Schema**
 ```json
 {
-    "type": "object", 
     "properties": {
-        "name": {
-            "type": "string"
-        }, 
         "address": {
             "type": "string"
+        },
+        "name": {
+            "type": "string"
         }
-    }
+    },
+    "type": "object"
 }
 ```
+
 
 
 **Notes**
 
 GET data for venue with ``venue_name``
+
+
+
+## PUT
+
+
+**Input Schema**
+```json
+{
+    "properties": {
+        "address": {
+            "type": "string"
+        },
+        "name": {
+            "type": "string"
+        }
+    },
+    "required": [
+        "name",
+        "address"
+    ],
+    "type": "object"
+}
+```
+
+
+
+**Output Schema**
+```json
+{
+    "properties": {
+        "name": {
+            "type": "string"
+        }
+    },
+    "type": "object"
+}
+```
+
+
+
+**Notes**
+
+PUT to add new venue
 
 
 
@@ -1073,10 +1214,14 @@ GET data for venue with ``venue_name``
     Content-Type: application/json
 
 ## GET
+
+
 **Input Schema**
 ```json
 null
 ```
+
+
 
 **Output Schema**
 ```json
@@ -1084,6 +1229,7 @@ null
     "type": "array"
 }
 ```
+
 
 
 **Notes**
