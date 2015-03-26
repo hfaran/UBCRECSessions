@@ -40,9 +40,9 @@ class PlayerLogin(APIHandler):
         # Check if the given password hashed with the player's known
         #   salt matches the stored password
         password_match = bcrypt.hashpw(
-            password.encode('utf-8'),
-            player.salt.encode('utf-8')
-        ) == player.hashed_pass.encode('utf-8')
+            password.encode(),
+            player.salt.encode()
+        ) == player.hashed_pass.encode()
         if password_match:
             self.set_secure_cookie(
                 "user",
@@ -107,10 +107,10 @@ class EmployeeLogin(APIHandler):
         # Check if the given password hashed with the player's known
         #   salt matches the stored password
         check = bcrypt.hashpw(
-            password.encode('utf-8'),
-            employee.salt.encode('utf-8')
+            password.encode(),
+            employee.salt.encode()
         )
-        password_match = employee.hashed_pass.encode('utf-8') == check
+        password_match = employee.hashed_pass.encode() == check
         if password_match:
             self.set_secure_cookie(
                 "user",
