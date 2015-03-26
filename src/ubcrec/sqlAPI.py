@@ -460,7 +460,7 @@ class SQLAPI(object):
 
         :type session_id: int
         """
-        raise NotImplementedError
+        self.cursor.execute("DELETE FROM Sessions WHERE session_id=?", (session_id, ))
 
 """ # Don't kill me please ,  iwas lazy so I tested it this way instead of unittest
 def main():
