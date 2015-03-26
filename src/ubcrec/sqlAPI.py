@@ -311,3 +311,14 @@ class SQLAPI(object):
         :rtype: int
         """
         raise NotImplementedError
+
+    def delete_session(self, session_id):
+        """Delete session with ``session_id``
+
+        This should cascade to delete Teams for that session as well. Of course
+            the PlaysIn table should update as well.
+        Assume that the provided session_id exists.
+
+        :type session_id: int
+        """
+        raise NotImplementedError
