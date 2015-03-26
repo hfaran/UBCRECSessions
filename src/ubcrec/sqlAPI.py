@@ -214,7 +214,7 @@ class SQLAPI(object):
         """
         self.cursor.execute(
             'SELECT session_id FROM Team_ParticipatesIn WHERE '
-            'team_id=(SELECT team_id FROM PlaysIn WHERE student_num=?)',
+            'team_id IN (SELECT team_id FROM PlaysIn WHERE student_num=?)',
             (student_number,)
         )
         row = self.cursor.fetchall()
@@ -429,7 +429,8 @@ class SQLAPI(object):
         :rtype: list
         :returns: A list like the following: [models.Team(...), models.Team(...)]
         """
-        self.cursor.execute("SELECT * FROM Team_ParticipatesIn ")
+        self.cursor.execute("SELECT * FROM Team_ParticipatesIn "
+                            "WHERE session_id=?", (session_id,))
         teams_list = []
         rows = self.cursor.fetchall()
         for row in rows:
@@ -466,7 +467,7 @@ class SQLAPI(object):
         :rtype: int
         """
         self.cursor.execute("SELECT COUNT(student_num) FROM PlaysIn WHERE team_id=?", (team_id,))
-        players_count = self.cursor.fetchall()
+        players_count = self.cursor.fetchall()[0][0]
         return players_count
 
     def delete_session(self, session_id):
