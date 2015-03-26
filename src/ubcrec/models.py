@@ -1,4 +1,16 @@
-class Player(object):
+import json
+
+
+class Model(object):
+
+    def to_dict(self):
+        raise NotImplementedError
+
+    def __str__(self):
+        return json.dumps(self.to_dict(), indent=2)
+
+
+class Player(Model):
     """Model of Player
 
     :type student_number: int
@@ -13,7 +25,7 @@ class Player(object):
         self.salt = salt
 
 
-class Employee(object):
+class Employee(Model):
     """Employee Model
 
     :type sin: int
@@ -33,7 +45,7 @@ class Employee(object):
         self.salt = salt
 
 
-class Session(object):
+class Session(Model):
     """"Session Model
 
     :type start_time: int
@@ -63,7 +75,7 @@ class Session(object):
         ]}
 
 
-class Venue(object):
+class Venue(Model):
     """Venue Model
 
     :type name: str
@@ -80,7 +92,7 @@ class Venue(object):
         ]}
 
 
-class Shift(object):
+class Shift(Model):
     """Shift (for employees) model
 
     :type username: str
@@ -100,7 +112,7 @@ class Shift(object):
         ]}
 
 
-class Sport(object):
+class Sport(Model):
     """Sport model
 
     :type sport_id: int
@@ -117,7 +129,7 @@ class Sport(object):
         ]}
 
 
-class Team(object):
+class Team(Model):
     """Team model
 
     :type team_id: int

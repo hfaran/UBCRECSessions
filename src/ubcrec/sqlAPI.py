@@ -257,12 +257,18 @@ class SQLAPI(object):
         :rtype: list
         :return: List of Session objects
         """
+        get_list_sub_string = lambda x: ", ".join("?"*len(x))
 
         # use the sport IDs to
         arg_list = []
         where_clauses = []
         query = "SELECT * FROM Sessions "
-        if started_after is not None or ended_before is not None or sports is not None or venues is not None:
+        if (
+            started_after is not None or
+            ended_before is not None or
+            sports is not None or
+            venues is not None
+        ):
             query += " WHERE "
 
         if started_after is not None:
@@ -273,22 +279,32 @@ class SQLAPI(object):
             arg_list.append(ended_before)
         if sports is not None:
             # first get the sport ID by its name
-            self.cursor.execute("SELECT sin FROM Sport WHERE sport_name IN ?", "({})".format(", ".join('"{}"'.format(s) for s in sports)))
+            self.cursor.execute(
+                "SELECT sport_id FROM Sport WHERE name IN ({})".format(
+                    ", ".join("?"*len(sports))
+                ),
+                sports
+            )
             sin_row = self.cursor.fetchall()
-            where_clauses.append("sport_id IN ?")
-            arg_list.append("({})".format(", ".join('"{}"'.format(s) for s in sin_row)))
+            where_clauses.append("sport_id IN ({})".format(get_list_sub_string(sports)))
+            arg_list.extend([v[0] for v in sin_row])
         if venues is not None:
-            where_clauses.append("venue_name IN ?")
-            arg_list.append("({})".format(", ".join('"{}"'.format(s) for s in venues)))
+            where_clauses.append("venue_name IN ({})".format(get_list_sub_string(venues)))
+            arg_list.extend(venues)
 
         query = "{0} {1}".format(query, " AND ".join(where_clauses))
-
         self.cursor.execute(query, arg_list)
         session_list = self.cursor.fetchall()
         session_model_list = []
         for row in session_list:
-            session_model_list.append(models.Session(start_time=row[1], end_time=row[2], session_id=row[0],
-                                                     sport_id=row[3], venue_name=row[4], results=row[5]))
+            session_model_list.append(models.Session(
+                start_time=row[1],
+                end_time=row[2],
+                session_id=row[0],
+                sport_id=row[3],
+                venue_name=row[4],
+                results=row[5]
+            ))
         return session_model_list
 
     def get_venue(self, venue_name):
