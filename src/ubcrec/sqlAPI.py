@@ -196,7 +196,7 @@ class SQLAPI(object):
         :returns: Model of player with user
         :rtype: models.Player or None
         """
-        self.cursor.execute('SELECT * FROM Player WHERE student_num=?', (student_number,))
+        self.cursor.execute('SELECT * FROM Players WHERE student_num=?', (student_number,))
         row = self.cursor.fetchall()
 
         # I am adding this in case I messed up during the database setup
@@ -204,7 +204,8 @@ class SQLAPI(object):
             raise (IndexError, "There is something wrong with the primary key of Player Table. Duplicated keys")
         elif (len(row) == 1):
             # schema: Player (name: string , student_num: uint, password: string, salt: string)
-            player_model = models.Player(full_name=row[0], student_number=row[1], hashed_pass=row[2], salt=row[3])
+            player_model = models.Player(full_name=row[0][0], student_number=row[0][1],
+                                         hashed_pass=row[0][2], salt=row[0][3])
             return player_model
         else:
             return None
@@ -237,8 +238,8 @@ class SQLAPI(object):
             raise (IndexError, "There is something wrong with the primary key of Session Table. Duplicated keys")
         elif len(row) == 1:
             # Session (start_time: integer, end_time: integer, session_id: integer, sport_id: uint, venue_name: string, results: string)
-            session_model = models.Session(start_time=row[0], end_time=row[1], session_id=row[2], sport_id=row[3],
-                                           venue_name=row[4], results=row[5])
+            session_model = models.Session(session_id=row[0][0], start_time=row[0][1], end_time=row[0][2], sport_id=row[0][3],
+                                           venue_name=row[0][4], results=row[0][5])
             return session_model
         else:
             return None
@@ -262,14 +263,13 @@ class SQLAPI(object):
         :rtype: list
         :return: List of Session objects
         """
-        # first get the sport ID by its name
-        self.cursor.execute("SELECT sin FROM Sport WHERE sport_name IN ?", "({})".format(", ".join('"{}"'.format(s) for s in sports)))
-        sin_row = self.cursor.fetchall()
 
         # use the sport IDs to
         arg_list = []
         where_clauses = []
-        query = "SELECT * FROM Sessions WHERE "
+        query = "SELECT * FROM Sessions "
+        if started_after is not None or ended_before is not None or sports is not None or venues is not None:
+            query += " WHERE "
 
         if started_after is not None:
             where_clauses.append("start_time > ?")
@@ -278,14 +278,24 @@ class SQLAPI(object):
             where_clauses.append("end_time < ?")
             arg_list.append(ended_before)
         if sports is not None:
+            # first get the sport ID by its name
+            self.cursor.execute("SELECT sin FROM Sport WHERE sport_name IN ?", "({})".format(", ".join('"{}"'.format(s) for s in sports)))
+            sin_row = self.cursor.fetchall()
             where_clauses.append("sport_id IN ?")
             arg_list.append("({})".format(", ".join('"{}"'.format(s) for s in sin_row)))
         if venues is not None:
             where_clauses.append("venue_name IN ?")
             arg_list.append("({})".format(", ".join('"{}"'.format(s) for s in venues)))
+
         query = "{0} {1}".format(query, " AND ".join(where_clauses))
+
         self.cursor.execute(query, arg_list)
-        raise NotImplementedError
+        session_list = self.cursor.fetchall()
+        session_model_list = []
+        for row in session_list:
+            session_model_list.append(models.Session(start_time=row[1], end_time=row[2], session_id=row[0],
+                                                     sport_id=row[3], venue_name=row[4], results=row[5]))
+        return session_model_list
 
     def get_venue(self, venue_name):
         """Returns Venue with ``venue_name``
@@ -327,10 +337,11 @@ class SQLAPI(object):
         self.cursor.execute('SELECT * FROM Employees WHERE username=?', (username,))
         row = self.cursor.fetchall()
         # I am adding this in case I messed up during the database setup
-        if (len(row) > 1):
+        if len(row) > 1:
             raise (IndexError, "There is something wrong with the primary key of Employees Table. Duplicated keys")
-        elif (len(row) == 1):
-            employee_model = models.Employee(sin=row[0],first_name=row[1],last_name=row[2],username=row[3],hashed_pass=row[4],salt=row[5])
+        elif len(row) == 1:
+            employee_model = models.Employee(sin=row[0][0], first_name=row[0][1], last_name=row[0][2],
+                                             username=row[0][3], hashed_pass=row[0][4], salt=row[0][5])
             return employee_model
         else:
             return None
@@ -355,7 +366,7 @@ class SQLAPI(object):
         if len(sin_row) > 1:
             raise (IndexError, "There is something wrong with the primary key of Employees Table. Duplicated keys")
         elif len(sin_row) == 1:
-            sin_num = models.Employee(sin=sin_row[0])
+            sin_num = models.Employee(sin=sin_row[0][0])
         else:
             raise (Exception, "No sin found for the specified username.")
 
@@ -365,6 +376,7 @@ class SQLAPI(object):
         query = "SELECT * FROM Working WHERE "
         where_clauses.append("sin=")
         arg_list.append(sin_num)
+
         if start is not None:
             where_clauses.append("start_shift > ?")
             arg_list.append(start)
@@ -372,8 +384,14 @@ class SQLAPI(object):
             where_clauses.append("end_shift < ?")
             arg_list.append(end)
         query = "{0} {1}".format(query, " AND ".join(where_clauses))
-        employees_list = self.cursor.execute(query, arg_list)
-        return employees_list
+        self.cursor.execute(query, arg_list)
+        selected_employees_list = self.cursor.fetchall()
+
+        # converting the results to list of shift models
+        shift_model_list = []
+        for row in selected_employees_list:
+            shift_model_list.append(models.Shift(username=username, start_time=row[1], end_time=row[2]))
+        return selected_employees_list
 
     def get_sports(self):
         """Return list of all sports (as Sport models)
@@ -400,7 +418,8 @@ class SQLAPI(object):
         teams_list = []
         rows = self.cursor.fetchall()
         for row in rows:
-            teams_list.append(models.Team(team_id=row[0], name=row[1], num_max_players=row[2], session_id=row[3]))
+            teams_list.append(models.Team(team_id=row[0], name=row[1],
+                                          num_max_players=row[2], session_id=row[3]))
         return teams_list
 
     def get_team(self, team_id):
@@ -410,13 +429,14 @@ class SQLAPI(object):
         :rtype: models.Team or None
         :returns: Team model or None if doesn't exist
         """
-        self.cursor.execute("SELECT * FROM Team_ParticipatesIn ")
+        self.cursor.execute("SELECT * FROM Team_ParticipatesIn WHERE team_id=?", (team_id,))
         teams_list = []
         team_row = self.cursor.fetchall()
         if len(team_row) > 1:
-            raise (IndexError, "There is something wrong with the primary key of Team_ParticipatesIn Table. Duplicated keys")
+            raise (IndexError, "Thsere is something wrong with the primary key of Team_ParticipatesIn Table. Duplicated keys")
         elif len(team_row) == 1:
-            team_obj = models.Team(team_id=team_row[0],name=team_row[1],num_max_players=team_row[2],session_id=team_row[3])
+            team_obj = models.Team(team_id=team_row[0][0], name=team_row[0][1],
+                                   num_max_players=team_row[0][2], session_id=team_row[0][3])
             return team_obj
         else:
             return None
@@ -434,3 +454,35 @@ class SQLAPI(object):
         players_count = self.cursor.fetchall()
         return players_count
 
+""" # Don't kill me please ,  iwas lazy so I tested it this way instead of unittest 
+def main():
+    obj = SQLAPI('project.db')
+    session = obj.get_session(1)
+    print session.session_id
+    print session.results
+    print session.end_time
+    print session.start_time
+
+    session=obj.get_session(6)
+    if session is None:
+        print "correct"
+
+    print obj.get_sessions()
+
+    print obj.get_sessions(started_after=1427235705)
+
+    print "get_num_players_registered: "+str(obj.get_num_players_registered(1))
+
+    print "get_employee: "+ obj.get_employee("acalhoon").first_name
+
+    print str(obj.get_player(student_number=9876543).student_number)
+
+    print obj.get_teams_for_session(session_id=4)
+
+    print "number of sports: " + str(len(obj.get_sports()))
+
+    print obj.get_team(4)
+
+if __name__ == "__main__":
+    main()
+"""
