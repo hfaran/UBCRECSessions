@@ -321,12 +321,12 @@ class SQLAPI(object):
         :rtype: list
         """
         self.cursor.execute('SELECT * FROM Venue')
-        row = self.cursor.fetchall()
-        if len(row) > 0:
-            return row
-        else:
-            return None
-
+        rows = self.cursor.fetchall()
+        venue_list = []
+        for row in rows:
+            venue_list.append(models.Venue(name=row[0],address=row[1]))
+        return venue_list
+    
     def get_employee(self, username):
         """Get Employee with ``username``
 
