@@ -44,6 +44,15 @@ class Employee(Model):
         self.hashed_pass = hashed_pass
         self.salt = salt
 
+    def to_dict(self):
+        return {k: getattr(self, k) for k in [
+            "sin",
+            "first_name",
+            "last_name",
+            "username",
+            "hashed_pass",
+            "salt"
+        ]}
 
 class Session(Model):
     """"Session Model

@@ -15,14 +15,14 @@ class PlayerLogin(APIHandler):
             "required": ["student_number", "password"],
             "type": "object",
             "properties": {
-                "student_number": {"type": "string"},
+                "student_number": {"type": "number"},
                 "password": {"type": "string"},
             },
         },
         output_schema={
             "type": "object",
             "properties": {
-                "student_number": {"type": "string"}
+                "student_number": {"type": "number"}
             }
         },
     )
@@ -40,8 +40,9 @@ class PlayerLogin(APIHandler):
         # Check if the given password hashed with the player's known
         #   salt matches the stored password
         password_match = bcrypt.hashpw(
-            str(password), str(player.salt)
-        ) == player.hashed_pass
+            password.encode('utf-8'),
+            player.salt.encode('utf-8')
+        ) == player.hashed_pass.encode('utf-8')
         if password_match:
             self.set_secure_cookie(
                 "user",
@@ -105,9 +106,11 @@ class EmployeeLogin(APIHandler):
 
         # Check if the given password hashed with the player's known
         #   salt matches the stored password
-        password_match = bcrypt.hashpw(
-            str(password), str(employee.salt)
-        ) == employee.hashed_pass
+        check = bcrypt.hashpw(
+            password.encode('utf-8'),
+            employee.salt.encode('utf-8')
+        )
+        password_match = employee.hashed_pass.encode('utf-8') == check
         if password_match:
             self.set_secure_cookie(
                 "user",

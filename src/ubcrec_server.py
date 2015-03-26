@@ -25,7 +25,7 @@ def sig_handler(sig, frame):
 
 def shutdown():
     """Waits MAX_WAIT_SECONDS_BEFORE_SHUTDOWN, then shuts down the server"""
-    MAX_WAIT_SECONDS_BEFORE_SHUTDOWN = 3
+    MAX_WAIT_SECONDS_BEFORE_SHUTDOWN = 1
 
     logging.info('Stopping http server')
     http_server.stop()
@@ -50,7 +50,7 @@ def shutdown():
 @click.command()
 @click.option('-p', '--port', default=8888, type=int, required=True,
               help="Port to start server on")
-@click.option('--db', default="project.db", type=str, required=True,
+@click.option('--db', default="../project.db", type=str, required=True,
               help="Path of database file")
 @click.option('--session-timeout-days', default=1, required=True,
               help=("Cookie expiration time in days; can also be set to "
@@ -85,8 +85,8 @@ def main(port, db, session_timeout_days, cookie_secret):
         gzip=True,
         cookie_secret=(cookie_secret if cookie_secret
                        else uuid.uuid4().hex),
-        ubcrec=ubcrec_config
-        # login_url="/signin/signin"   # TODO
+        ubcrec=ubcrec_config,
+        login_url="/api/auth/playerlogin"
     )
 
     # Create server

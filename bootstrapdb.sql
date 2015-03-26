@@ -63,15 +63,25 @@ CREATE TABLE Team_ParticipatesIn (
 -----------------
 
 INSERT INTO Employees (sin, first_name, last_name, username, password, salt)
-VALUES (11111111, 'Antoinette', 'Calhoon', 'acalhoon', 'password', 'salt');
+VALUES (11111111, 'Antoinette', 'Calhoon', 'acalhoon',
+        '$2a$12$SyAcf3XD/hg0fLEbAPahheWyrHGORDRbgb6zTyQPpI/i4clYj.kau',
+        '$2a$12$SyAcf3XD/hg0fLEbAPahhe');
 INSERT INTO Employees (sin, first_name, last_name, username, password, salt)
-VALUES (22222222, 'Jennie', 'Bucko', 'jbucko', 'password', 'salt');
+VALUES (22222222, 'Jennie', 'Bucko', 'jbucko',
+        '$2a$12$SyAcf3XD/hg0fLEbAPahheWyrHGORDRbgb6zTyQPpI/i4clYj.kau',
+        '$2a$12$SyAcf3XD/hg0fLEbAPahhe');
 INSERT INTO Employees (sin, first_name, last_name, username, password, salt)
-VALUES (33333333, 'Lizabeth', 'Ringdahl', 'lringdahl', 'password', 'salt');
+VALUES (33333333, 'Lizabeth', 'Ringdahl', 'lringdahl',
+        '$2a$12$SyAcf3XD/hg0fLEbAPahheWyrHGORDRbgb6zTyQPpI/i4clYj.kau',
+        '$2a$12$SyAcf3XD/hg0fLEbAPahhe');
 INSERT INTO Employees (sin, first_name, last_name, username, password, salt)
-VALUES (44444444, 'Georgeann', 'Lenoir', 'glenoir', 'password', 'salt');
+VALUES (44444444, 'Georgeann', 'Lenoir', 'glenoir',
+        '$2a$12$SyAcf3XD/hg0fLEbAPahheWyrHGORDRbgb6zTyQPpI/i4clYj.kau',
+        '$2a$12$SyAcf3XD/hg0fLEbAPahhe');
 INSERT INTO Employees (sin, first_name, last_name, username, password, salt)
-VALUES (55555555, 'Romeo', 'Calhoon', 'rcalhoon', 'password', 'salt');
+VALUES (55555555, 'Romeo', 'Calhoon', 'rcalhoon',
+        '$2a$12$SyAcf3XD/hg0fLEbAPahheWyrHGORDRbgb6zTyQPpI/i4clYj.kau',
+        '$2a$12$SyAcf3XD/hg0fLEbAPahhe');
 
 INSERT INTO Working (sin, start_shift, end_shift)
 VALUES (11111111, 1427235705, 1427239305);

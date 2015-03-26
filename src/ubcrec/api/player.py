@@ -60,7 +60,8 @@ class Player(APIHandler):
         self.db_conn.insert_player_data(
             name=full_name,
             student_number=student_number,
-            password=bcrypt.hashpw(str(password), salt),
+            password=bcrypt.hashpw(password.encode('utf-8'),
+                                   salt.encode('utf-8')),
             salt=salt
         )
 
