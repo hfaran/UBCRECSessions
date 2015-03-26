@@ -144,7 +144,7 @@ class Sessions(APIHandler):
             models.Session.to_dict,
             self.db_conn.get_sessions(
                 **{k: self.body.get(k, None) for k in [
-                    "started_before",
+                    "started_after",
                     "ended_before",
                     "sports",
                     "venues"
