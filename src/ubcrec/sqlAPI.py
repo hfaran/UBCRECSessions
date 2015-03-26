@@ -384,7 +384,7 @@ class SQLAPI(object):
         arg_list = []
         where_clauses = []
         query = "SELECT * FROM Working WHERE "
-        where_clauses.append("sin=")
+        where_clauses.append("sin=?")
         arg_list.append(sin_num)
 
         if start is not None:
@@ -401,7 +401,7 @@ class SQLAPI(object):
         shift_model_list = []
         for row in selected_employees_list:
             shift_model_list.append(models.Shift(username=username, start_time=row[1], end_time=row[2]))
-        return selected_employees_list
+        return shift_model_list
 
     def get_sports(self):
         """Return list of all sports (as Sport models)
