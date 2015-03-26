@@ -18,7 +18,7 @@ class Session(APIHandler):
                 "session_id": {"type": "number"},
                 "sport_id": {"type": "number"},
                 "venue_name": {"type": "string"},
-                "results": {"type": "string"},
+                "results": {"type": ["string", "null"]},
             }
         }
     )
