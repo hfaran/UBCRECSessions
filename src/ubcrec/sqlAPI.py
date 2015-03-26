@@ -429,7 +429,8 @@ class SQLAPI(object):
         :rtype: list
         :returns: A list like the following: [models.Team(...), models.Team(...)]
         """
-        self.cursor.execute("SELECT * FROM Team_ParticipatesIn ")
+        self.cursor.execute("SELECT * FROM Team_ParticipatesIn "
+                            "WHERE session_id=?", (session_id,))
         teams_list = []
         rows = self.cursor.fetchall()
         for row in rows:
