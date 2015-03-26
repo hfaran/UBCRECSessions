@@ -24,32 +24,37 @@
 					</button>
 					<a class="navbar-brand" href="/static/index.html">UBC Rec Sessions</a>
 				</div>
-				<!-- @TODO IF IS_GUEST -->
-				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-					<ul class="nav navbar-nav navbar-right">
-						<li><a href="/static/admin-sign-in.html">Employee Sign in</a></li>
-						<li><a href="/static/sign-in.html">Student Sign in</a></li>
-					</ul>
+				<!-- GUEST -->
+				<div class="hidden"  id="guest-only">
+					<div class="collapse navbar-collapse">
+						<ul class="nav navbar-nav navbar-right">
+							<li><a href="/static/admin-sign-in.html">Employee Sign in</a></li>
+							<li><a href="/static/sign-in.html">Student Sign in</a></li>
+						</ul>
+					</div>
 				</div>
-				<!-- @TODO ELSEIF IS_STUDENT -->
 				<!-- @TODO Log Out: Perform AJAX call and redirect to index page -->
 				<!-- @TODO My Sessions: Perform AJAX call to load only the sessions joined by signed in user and hide the search -->
-				<!-- <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-					<ul class="nav navbar-nav navbar-right">
-						<li><a href="#">My Sessions</a></li>
-						<li><a href="#">Log Out</a></li>
-					</ul>
-				</div> -->
+				<div class="hidden" id="student-only">
+					<div class="collapse navbar-collapse">
+						<ul class="nav navbar-nav navbar-right">
+							<li><a href="#">My Sessions</a></li>
+							<li><a href="#">Log Out</a></li>
+						</ul>
+					</div>
+				</div>
 				<!-- @TODO ELSEIF IS_EMPLOYEE -->
 				<!-- @TODO Log Out: Perform AJAX call and redirect to index page -->
-				<!-- <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-					<ul class="nav navbar-nav navbar-right">
-						<li><a href="/static/admin-venues.html">Add Venue</a></li>
-						<li><a href="/static/admin-session.html">Add Session</a></li>
-						<li><a href="/static/admin-schedule.html">Work Schedule</a></li>
-						<li><a href="#">Log Out</a></li>
-					</ul>
-				</div> -->
+				<div class="hidden" id= "admin-only">
+					<div class="collapse navbar-collapse" id="admin-only">
+						<ul class="nav navbar-nav navbar-right">
+							<li><a href="/static/admin-venues.html">Add Venue</a></li>
+							<li><a href="/static/admin-session.html">Add Session</a></li>
+							<li><a href="/static/admin-schedule.html">Work Schedule</a></li>
+							<li><a href="#">Log Out</a></li>
+						</ul>
+					</div>
+				</div>
 				<!-- @TODO END IF -->
 			</div>
 		</nav>

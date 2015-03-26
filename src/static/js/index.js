@@ -41,7 +41,7 @@ function loadVenueOptions() {
 
 function loadVenueOptionsSuccess(response) {
 	console.log("+loadVenueOptionsSuccess");
-	console.log(response);
+	//console.log(response);
 	
 	// Go through each response and add it to the div
 	for(var i = 0; i < response.data.length; i++)
