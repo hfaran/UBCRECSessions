@@ -4,7 +4,7 @@ from tornado_json import requesthandlers
 class AuthMixin(object):
 
     def get_current_user(self):
-        cookie = self.get_secure_cookie("user")
+        cookie = self.get_secure_cookie("user").decode()
         if cookie is None:
             return None
 
@@ -13,7 +13,7 @@ class AuthMixin(object):
 
     @property
     def user_type(self):
-        cookie = self.get_secure_cookie("user")
+        cookie = self.get_secure_cookie("user").decode()
         if cookie is None:
             return None
 
@@ -21,12 +21,12 @@ class AuthMixin(object):
         return user_type
 
 
-class APIHandler(requesthandlers.APIHandler, AuthMixin):
+class APIHandler(AuthMixin, requesthandlers.APIHandler):
     """APIHandler"""
 
     # For PyCharm completion, since this is otherwise dynamically  inserted
     body = None
 
 
-class ViewHandler(requesthandlers.ViewHandler, AuthMixin):
+class ViewHandler(AuthMixin, requesthandlers.ViewHandler):
     """ViewHandler"""

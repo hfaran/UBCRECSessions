@@ -85,8 +85,8 @@ def main(port, db, session_timeout_days, cookie_secret):
         gzip=True,
         cookie_secret=(cookie_secret if cookie_secret
                        else uuid.uuid4().hex),
-        ubcrec=ubcrec_config
-        # login_url="/signin/signin"   # TODO
+        ubcrec=ubcrec_config,
+        login_url="/api/auth/playerlogin"
     )
 
     # Create server

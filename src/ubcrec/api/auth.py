@@ -15,14 +15,14 @@ class PlayerLogin(APIHandler):
             "required": ["student_number", "password"],
             "type": "object",
             "properties": {
-                "student_number": {"type": "string"},
+                "student_number": {"type": "number"},
                 "password": {"type": "string"},
             },
         },
         output_schema={
             "type": "object",
             "properties": {
-                "student_number": {"type": "string"}
+                "student_number": {"type": "number"}
             }
         },
     )
@@ -42,7 +42,7 @@ class PlayerLogin(APIHandler):
         password_match = bcrypt.hashpw(
             password.encode('utf-8'),
             player.salt.encode('utf-8')
-        ) == player.hashed_pass
+        ) == player.hashed_pass.encode('utf-8')
         if password_match:
             self.set_secure_cookie(
                 "user",
