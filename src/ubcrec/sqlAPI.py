@@ -117,9 +117,6 @@ class SQLAPI(object):
         row = self.cursor.fetchall()
         return row
 
-    def update_result (self):
-        raise NotImplemented
-
     def add_session_results(self, session_id, results):
         """Add results to session
 
@@ -326,7 +323,7 @@ class SQLAPI(object):
         for row in rows:
             venue_list.append(models.Venue(name=row[0],address=row[1]))
         return venue_list
-    
+
     def get_employee(self, username):
         """Get Employee with ``username``
 
@@ -366,7 +363,7 @@ class SQLAPI(object):
         if len(sin_row) > 1:
             raise (IndexError, "There is something wrong with the primary key of Employees Table. Duplicated keys")
         elif len(sin_row) == 1:
-            sin_num = models.Employee(sin=sin_row[0][0])
+            sin_num = sin_row[0][0]
         else:
             raise (Exception, "No sin found for the specified username.")
 
