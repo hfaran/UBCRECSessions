@@ -7,17 +7,38 @@
 .session-table-row {
 	padding: 5px 0;
 	font-size: 14px;
+	border-bottom: 1px solid #ddd;
 }
 
-.session-table-row:nth-child(even) {
-	background-color: #fff;
+.session-table-team-header {
+	padding: 5px 0;
+	border-bottom: solid 1px #bbb;
+	font-size: 14px;
 }
 
-.session-table-row:nth-child(odd) {
+.session-table-team-row {
+	padding: 5px 0;
+	font-size: 12px;
+}
+
+.session-table-team-row:hover {
 	background-color: #ddd;
+}
+
+.session-table-row:hover {
+	background-color: #ddd;
+	cursor: pointer;
 }
 
 .session-table-row .sub-field {
 	font-size: 12px;
 	display: block;
+}
+
+.session-team-list {
+	display:none;
+}
+
+.picked-session {
+	background-color: #eee;
 }

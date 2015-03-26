@@ -21,6 +21,9 @@ $( document ).ready(function() {
 
 	// Add the loadSessions method to the 'Search Sessions' button
 	$("#search-sessions").on("click", loadSessions);
+
+	// Open team list event, only call if user is student
+	$(".session-table-row").on("click", openTeams);
 });
 
 // This function builds the sessionsQueryData object and sends the AJAX call
@@ -85,4 +88,10 @@ function loadSessions() {
 function loadSessionsSuccess(data) {
 	// @TODO Generated rows for each sessions
 	console.log(data);
+}
+
+function openTeams(sender) {
+	console.log(sender.currentTarget);
+	$(sender.currentTarget).next('.session-team-list').toggleClass('picked-session').slideToggle();
+	$(sender.currentTarget).toggleClass('picked-session');
 }

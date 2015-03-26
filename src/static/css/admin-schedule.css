@@ -1,0 +1,15 @@
+.schedule-table-header {
+	padding-bottom: 5px;
+	border-bottom: solid 2px #bbb;
+	font-size: 16px;
+}
+
+.schedule-table-row {
+	padding: 5px 0;
+	font-size: 14px;
+	border-bottom: 1px solid #ddd;
+}
+
+.schedule-table-row:hover {
+	background-color: #ddd;
+}
