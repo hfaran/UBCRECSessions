@@ -454,7 +454,7 @@ class SQLAPI(object):
         players_count = self.cursor.fetchall()
         return players_count
 
-""" # Don't kill me please ,  iwas lazy so I tested it this way instead of unittest 
+""" # Don't kill me please ,  iwas lazy so I tested it this way instead of unittest
 def main():
     obj = SQLAPI('project.db')
     session = obj.get_session(1)
