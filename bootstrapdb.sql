@@ -113,15 +113,25 @@ INSERT INTO Sessions (start_time, end_time, sport_id, venue_name)
 VALUES (1427235705, 1427239305, 5, 'Aquatic Center');
 
 INSERT INTO Players (student_num, name, password, salt)
-VALUES (12346589, 'Patton Hunt', 'password', 'salt');
+VALUES (12346589, 'Patton Hunt',
+        '$2a$12$SyAcf3XD/hg0fLEbAPahheWyrHGORDRbgb6zTyQPpI/i4clYj.kau',
+        '$2a$12$SyAcf3XD/hg0fLEbAPahhe');
 INSERT INTO Players (student_num, name, password, salt)
-VALUES (09876543, 'Ehsan Obama', 'password', 'salt');
+VALUES (09876543, 'Ehsan Obama',
+        '$2a$12$SyAcf3XD/hg0fLEbAPahheWyrHGORDRbgb6zTyQPpI/i4clYj.kau',
+        '$2a$12$SyAcf3XD/hg0fLEbAPahhe');
 INSERT INTO Players (student_num, name, password, salt)
-VALUES (67539489, 'Niles Lemieux', 'password', 'salt');
+VALUES (67539489, 'Niles Lemieux',
+        '$2a$12$SyAcf3XD/hg0fLEbAPahheWyrHGORDRbgb6zTyQPpI/i4clYj.kau',
+        '$2a$12$SyAcf3XD/hg0fLEbAPahhe');
 INSERT INTO Players (student_num, name, password, salt)
-VALUES (68723732, 'Isaiah Nearan', 'password', 'salt');
+VALUES (68723732, 'Isaiah Nearan',
+        '$2a$12$SyAcf3XD/hg0fLEbAPahheWyrHGORDRbgb6zTyQPpI/i4clYj.kau',
+        '$2a$12$SyAcf3XD/hg0fLEbAPahhe');
 INSERT INTO Players (student_num, name, password, salt)
-VALUES (89789656, 'Sarah Blessnil', 'password', 'salt');
+VALUES (89789656, 'Sarah Blessnil',
+        '$2a$12$SyAcf3XD/hg0fLEbAPahheWyrHGORDRbgb6zTyQPpI/i4clYj.kau',
+        '$2a$12$SyAcf3XD/hg0fLEbAPahhe');
 
 INSERT INTO PlaysIn (student_num, team_id) VALUES (12346589, 1);
 INSERT INTO PlaysIn (student_num, team_id) VALUES (09876543, 2);
