@@ -120,7 +120,8 @@ class SQLAPI(object):
         :type session_id: int
         :type results: str
         """
-        self.cursor.execute("UPDATE Sessions SET result=? WHERE session_id=?", (results, session_id))
+        self.cursor.execute("UPDATE Sessions SET results=? WHERE session_id=?",
+                            (results, session_id))
 
     def insert_player_data(self, name, student_number, password, salt):
         """
@@ -134,10 +135,11 @@ class SQLAPI(object):
         :param salt: Password salt
         """
         self.cursor.execute(
-            "INSERT INTO Player VALUES (?,?,?,?)",
+            "INSERT INTO Players (name, student_num, password, salt) "
+            "VALUES (?,?,?,?)",
             (name,
-             password,
              student_number,
+             password,
              salt)
         )
         self.conn.commit()
@@ -481,7 +483,8 @@ class SQLAPI(object):
         """
         self.cursor.execute("DELETE FROM Sessions WHERE session_id=?", (session_id, ))
 
-""" # Don't kill me please ,  iwas lazy so I tested it this way instead of unittest
+
+"""
 def main():
     obj = SQLAPI('project.db')
     session = obj.get_session(1)
