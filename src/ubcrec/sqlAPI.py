@@ -467,7 +467,7 @@ class SQLAPI(object):
         :rtype: int
         """
         self.cursor.execute("SELECT COUNT(student_num) FROM PlaysIn WHERE team_id=?", (team_id,))
-        players_count = self.cursor.fetchall()
+        players_count = self.cursor.fetchall()[0][0]
         return players_count
 
     def delete_session(self, session_id):
