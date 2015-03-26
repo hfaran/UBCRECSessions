@@ -103,7 +103,7 @@ class SQLAPI(object):
         results = None  # TODO Doesn't make sense to add on a PUT; should be
 
         self.cursor.execute(
-            "INSERT INTO Session (start_time, end_time, sport_id, venue_name, results) VALUES (?,?,?,?,?)",
+            "INSERT INTO Sessions (start_time, end_time, sport_id, venue_name, results) VALUES (?,?,?,?,?)",
             (startTime,
              endTime,
              sportID,
@@ -113,7 +113,7 @@ class SQLAPI(object):
         self.conn.commit()
 
         # The session ID is always incremented so the max(sessionID) would give you the last session that was created
-        self.cursor.execute("SELECT MAX(session_id) FROM Session ", )
+        self.cursor.execute("SELECT MAX(session_id) FROM Sessions ", )
         row = self.cursor.fetchall()
         return row
 
@@ -217,7 +217,7 @@ class SQLAPI(object):
         :rtype: list
         :returns: list of session IDs
         """
-        self.cursor.execute('SELECT session_id FROM Session WHERE student_num=?', (student_number,))
+        self.cursor.execute('SELECT session_id FROM Sessions WHERE student_num=?', (student_number,))
         row = self.cursor.fetchall()
 
         return row
@@ -230,7 +230,7 @@ class SQLAPI(object):
         :return: Session or None if no such session with ``session_id`` exists
         :rtype: models.Session or None
         """
-        self.cursor.execute('SELECT * FROM Session WHERE session_id=?', (session_id,))
+        self.cursor.execute('SELECT * FROM Sessions WHERE session_id=?', (session_id,))
         row = self.cursor.fetchall()
         # I am adding this in case I messed up during the database setup
         if len(row) > 1:
@@ -269,7 +269,7 @@ class SQLAPI(object):
         # use the sport IDs to
         arg_list = []
         where_clauses = []
-        query = "SELECT * FROM Session WHERE "
+        query = "SELECT * FROM Sessions WHERE "
 
         if started_after is not None:
             where_clauses.append("start_time > ?")
@@ -372,7 +372,8 @@ class SQLAPI(object):
             where_clauses.append("end_shift < ?")
             arg_list.append(end)
         query = "{0} {1}".format(query, " AND ".join(where_clauses))
-        self.cursor.execute(query, arg_list)
+        employees_list = self.cursor.execute(query, arg_list)
+        return employees_list
 
     def get_sports(self):
         """Return list of all sports (as Sport models)
@@ -380,7 +381,12 @@ class SQLAPI(object):
         :rtype: list
         :returns: A list like the following: [models.Sport(...), models.Sport(...)]
         """
-        raise NotImplementedError
+        self.cursor.execute("SELECT * FROM Sport ")
+        sports_list = []
+        rows = self.cursor.fetchall()
+        for row in rows:
+            sports_list.append(models.Sport(row[0], row[1]))
+        return sports_list
 
     def get_teams_for_session(self, session_id):
         """Return list of Team models for teams that are part of a session
@@ -390,7 +396,12 @@ class SQLAPI(object):
         :rtype: list
         :returns: A list like the following: [models.Team(...), models.Team(...)]
         """
-        raise NotImplementedError
+        self.cursor.execute("SELECT * FROM Team_ParticipatesIn ")
+        teams_list = []
+        rows = self.cursor.fetchall()
+        for row in rows:
+            teams_list.append(models.Team(team_id=row[0], name=row[1], num_max_players=row[2], session_id=row[3]))
+        return teams_list
 
     def get_team(self, team_id):
         """Return Team model with ``team_id``
@@ -399,7 +410,16 @@ class SQLAPI(object):
         :rtype: models.Team or None
         :returns: Team model or None if doesn't exist
         """
-        raise NotImplementedError
+        self.cursor.execute("SELECT * FROM Team_ParticipatesIn ")
+        teams_list = []
+        team_row = self.cursor.fetchall()
+        if len(team_row) > 1:
+            raise (IndexError, "There is something wrong with the primary key of Team_ParticipatesIn Table. Duplicated keys")
+        elif len(team_row) == 1:
+            team_obj = models.Team(team_id=team_row[0],name=team_row[1],num_max_players=team_row[2],session_id=team_row[3])
+            return team_obj
+        else:
+            return None
 
     def get_num_players_registered(self, team_id):
         """Return count of players CURRENTLY registered (i.e., PlaysIn) in
@@ -410,5 +430,7 @@ class SQLAPI(object):
         :type team_id: int
         :rtype: int
         """
-        raise NotImplementedError
+        self.cursor.execute("SELECT COUNT(student_num) FROM PlaysIn WHERE team_id=?", (team_id,))
+        players_count = self.cursor.fetchall()
+        return players_count
 
