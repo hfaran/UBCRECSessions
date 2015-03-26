@@ -123,6 +123,7 @@
 				</div>
 			</div>
 			<!-- @TODO begin dynamic session row -->
+			<!-- @FOREACH SESSION -->
 			<div class="row session-table-row">
 				<div class="col-sm-3">
 					<strong>Sport 1</strong>
@@ -138,7 +139,7 @@
 				</div>
 				<div class="col-sm-3">
 					<!-- @TODO IF IS_EMPLOYEE -->
-					<!-- <button class="btn btn-sm btn-primary">Edit</button> -->
+					<!-- <button class="btn btn-sm btn-primary">Edit Results</button> -->
 					<!-- <button class="btn btn-sm btn-danger">Delete</button> -->
 					<!-- @TODO ELSE -->
 					<!-- Display the results -->
@@ -158,7 +159,8 @@
 						<strong>Actions</strong>
 					</div>
 				</div>
-				<!-- @TODO begin dynamic session team row one per team-->
+				<!-- @TODO begin dynamic session team row one per team -->
+				<!-- @FOREACH TEAM -->
 				<div class="row session-table-team-row">
 					<div class="col-sm-4 col-sm-offset-1">
 						Best Team
@@ -179,7 +181,7 @@
 				</div>
 				<!-- @TODO end dynamic session team row -->
 			</div>
-			<!-- @TODO end dynamic session row --><!-- @TODO begin dynamic session row -->
+			<!-- @TODO end dynamic session row -->
 		</div>
 
 		<!-- jQuery -->
