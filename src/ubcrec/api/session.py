@@ -104,6 +104,18 @@ class Session(APIHandler):
 
         return {"session_id": session_id}
 
+    @authenticated(USERTYPE_EMPLOYEE)
+    @schema.validate()
+    def delete(self, session_id):
+        """
+        (Employees Only) DELETE session with `session_id`
+            (cascade through teams for that session)
+        """
+        # Make sure session exists
+        get_session(self.db_conn, session_id=session_id)
+
+        self.db_conn.delete_session(int(session_id))
+
 
 class Sessions(APIHandler):
 

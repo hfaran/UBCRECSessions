@@ -1,10 +1,8 @@
-from sphinx_typesafe.typesafe import typesafe
 from tornado_json.exceptions import api_assert
 
 from ubcrec.models import Player, Session, Venue, Employee, Team
 
 
-@typesafe
 def get_player(db_conn, student_number):
     """Get player with ``student_number``
 
@@ -27,7 +25,6 @@ def get_player(db_conn, student_number):
     return player
 
 
-@typesafe
 def get_session(db_conn, session_id):
     """Get player with ``session_id``
 
@@ -48,7 +45,6 @@ def get_session(db_conn, session_id):
     return session
 
 
-@typesafe
 def get_venue(db_conn, venue_name):
     """Get Venue with ``venue_name``
 
@@ -66,7 +62,6 @@ def get_venue(db_conn, venue_name):
     return venue
 
 
-@typesafe
 def get_employee(db_conn, username):
     """Get Employee with ``username``
 
@@ -84,7 +79,6 @@ def get_employee(db_conn, username):
     return employee
 
 
-@typesafe
 def get_team(db_conn, team_id):
     """Get Team with ``team_id``
 
