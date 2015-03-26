@@ -18,7 +18,7 @@ $( document ).ready(function() {
 	loadVenueOptions();
 	loadSportsOptions();
 	loadSessions();
-	// @TODO Load Venues options for search
+	checkLoginStatus();
 
 	// Add the loadSessions method to the 'Search Sessions' button
 	$("#search-sessions").on("click", loadSessions);
@@ -26,7 +26,6 @@ $( document ).ready(function() {
 	// Open team list event, only call if user is student
 	$(".session-table-row").on("click", openTeams);
 });
-
 
 // This function starts an AJAX call to load the venues
 function loadVenueOptions() {
@@ -151,4 +150,17 @@ function openTeams(sender) {
 	console.log(sender.currentTarget);
 	$(sender.currentTarget).next('.session-team-list').toggleClass('picked-session').slideToggle();
 	$(sender.currentTarget).toggleClass('picked-session');
+}
+
+function checkLoginStatus() {
+	console.log("+checkLoginStatus");
+	// Set Guest options visible by default
+	//$("#guest-only").show();
+
+	// Check if Admin is logged in
+	
+	console.log("-checkLoginStatus");
+}
+
+function checkAdminSuccess() {
 }
