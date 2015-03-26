@@ -112,10 +112,7 @@ class SQLAPI(object):
         )
         self.conn.commit()
 
-        # The session ID is always incremented so the max(sessionID) would give you the last session that was created
-        self.cursor.execute("SELECT MAX(session_id) FROM Sessions ", )
-        row = self.cursor.fetchall()
-        return row
+        return self.cursor.lastrowid
 
     def add_session_results(self, session_id, results):
         """Add results to session
