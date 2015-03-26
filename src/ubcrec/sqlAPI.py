@@ -504,7 +504,19 @@ def main():
 
     print obj.get_team(4)
 
+    sessions = s.get_sessions(
+        sports=["Basketball", "Volleyball", "Indoor Soccer"],
+        venues=["SRC B"],
+        started_after=1427235704
+    )
+    for session in sessions:
+        print(session)
+
+    shifts = s.get_employee_shifts("rcalhoon", start=1427235704)
+    for shift in shifts:
+        print(shift)
+
+
 if __name__ == "__main__":
     main()
 """
-
