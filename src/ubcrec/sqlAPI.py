@@ -1,7 +1,7 @@
 import sqlite3
 
-# not sure about the below
-import models
+
+from ubcrec import models
 
 
 class SQLAPI(object):
@@ -56,7 +56,7 @@ class SQLAPI(object):
         )
         self.conn.commit()
 
-    # TODO: change this to insert_venue
+
     def create_venue(self, name, address):
         """
         :type name: str
@@ -82,7 +82,7 @@ class SQLAPI(object):
         )
         self.conn.commit()
 
-        # TODO whay is this create ? lool need to change that to insert_session -> let Hamza know
+
     def create_session(self, startTime, endTime, sportID, venueName):
         """Create a new session
 
@@ -98,25 +98,27 @@ class SQLAPI(object):
         :returns: ID of newly created session
         :rtype: int
         """
-        raise NotImplementedError
 
         sessionID = None  # TODO This should be auto-incremented by SQL
         results = None  # TODO Doesn't make sense to add on a PUT; should be
-            # inserted afterwards; also wtf is this supposed to actually
-            # represent, it isn't specified clearly anywhere.
+
         self.cursor.execute(
-            "INSERT INTO Session VALUES (? ,?,? ,?,? ,?)",
+            "INSERT INTO Session (start_time, end_time, sport_id, venue_name, results) VALUES (?,?,?,?,?)",
             (startTime,
              endTime,
-             sessionID,
              sportID,
              venueName,
-             results)
+             None)
         )
         self.conn.commit()
 
-        # TODO Get and return session_id
-        # return session_id
+        # The session ID is always incremented so the max(sessionID) would give you the last session that was created
+        self.cursor.execute("SELECT MAX(session_id) FROM Session ", )
+        row = self.cursor.fetchall()
+        return row
+
+    def update_result (self):
+        raise NotImplemented
 
     def add_session_results(self, session_id, results):
         """Add results to session
@@ -202,9 +204,9 @@ class SQLAPI(object):
             raise (IndexError, "There is something wrong with the primary key of Player Table. Duplicated keys")
         elif (len(row) == 1):
             # schema: Player (name: string , student_num: uint, password: string, salt: string)
-            player_model = models.Player(row[0],row[1],row[2],row[3])
+            player_model = models.Player(full_name=row[0], student_number=row[1], hashed_pass=row[2], salt=row[3])
             return player_model
-        else :
+        else:
             return None
 
     def get_player_session_ids(self, student_number):
@@ -231,21 +233,22 @@ class SQLAPI(object):
         self.cursor.execute('SELECT * FROM Session WHERE session_id=?', (session_id,))
         row = self.cursor.fetchall()
         # I am adding this in case I messed up during the database setup
-        if (len(row) > 1):
+        if len(row) > 1:
             raise (IndexError, "There is something wrong with the primary key of Session Table. Duplicated keys")
-        elif (len(row) == 1):
+        elif len(row) == 1:
             # Session (start_time: integer, end_time: integer, session_id: integer, sport_id: uint, venue_name: string, results: string)
-            session_model = models.Session(row[0],row[1],row[2],row[3],row[4],row[5])
+            session_model = models.Session(start_time=row[0], end_time=row[1], session_id=row[2], sport_id=row[3],
+                                           venue_name=row[4], results=row[5])
             return session_model
         else:
             return None
 
-    def get_sessions(self, started_before=None, ended_before=None, sports=None,
+    def get_sessions(self, started_after=None, ended_before=None, sports=None,
                      venues=None):
         """Returns list of Session objects that match the provided filters
 
-        :type started_before: int or None
-        :param started_before: Filter only sessions with a start_time greater
+        :type started_after: int or None
+        :param started_after: Filter only sessions with a start_time greater
             than this (Unix Time), or, if this is None, do not filter.
         :type ended_before: int or None
         :param ended_before: Filter only sessions with an end_time smaller
@@ -259,6 +262,29 @@ class SQLAPI(object):
         :rtype: list
         :return: List of Session objects
         """
+        # first get the sport ID by its name
+        self.cursor.execute("SELECT sin FROM Sport WHERE sport_name IN ?", "({})".format(", ".join('"{}"'.format(s) for s in sports)))
+        sin_row = self.cursor.fetchall()
+
+        # use the sport IDs to
+        arg_list = []
+        where_clauses = []
+        query = "SELECT * FROM Session WHERE "
+
+        if started_after is not None:
+            where_clauses.append("start_time > ?")
+            arg_list.append(started_after)
+        if ended_before is not None:
+            where_clauses.append("end_time < ?")
+            arg_list.append(ended_before)
+        if sports is not None:
+            where_clauses.append("sport_id IN ?")
+            arg_list.append("({})".format(", ".join('"{}"'.format(s) for s in sin_row)))
+        if venues is not None:
+            where_clauses.append("venue_name IN ?")
+            arg_list.append("({})".format(", ".join('"{}"'.format(s) for s in venues)))
+        query = "{0} {1}".format(query, " AND ".join(where_clauses))
+        self.cursor.execute(query, arg_list)
         raise NotImplementedError
 
     def get_venue(self, venue_name):
@@ -270,10 +296,10 @@ class SQLAPI(object):
         self.cursor.execute('SELECT * FROM Venue WHERE venue_name=?', (venue_name,))
         row = self.cursor.fetchall()
         # I am adding this in case I messed up during the database setup
-        if (len(row) > 1):
+        if len(row) > 1:
             raise (IndexError, "There is something wrong with the primary key of Session Table. Duplicated keys")
-        elif (len(row) == 1):
-            venue_model = models.Venue(row[0],row[1])
+        elif len(row) == 1:
+            venue_model = models.Venue(venue_name=row[0], address=row[1])
             return venue_model
         else:
             return None
@@ -286,7 +312,7 @@ class SQLAPI(object):
         """
         self.cursor.execute('SELECT * FROM Venue')
         row = self.cursor.fetchall()
-        if (len(row) > 0):
+        if len(row) > 0:
             return row
         else:
             return None
@@ -298,13 +324,13 @@ class SQLAPI(object):
         :rtype: models.Employee or None
         :returns: Employee model if exists otherwise, None
         """
-        self.cursor.execute('SELECT * FROM Employees WHERE venue_name=?', (username,))
+        self.cursor.execute('SELECT * FROM Employees WHERE username=?', (username,))
         row = self.cursor.fetchall()
         # I am adding this in case I messed up during the database setup
         if (len(row) > 1):
             raise (IndexError, "There is something wrong with the primary key of Employees Table. Duplicated keys")
         elif (len(row) == 1):
-            employee_model = models.Employee(row[0],row[1],row[2],row[3],row[4],row[5])
+            employee_model = models.Employee(sin=row[0],first_name=row[1],last_name=row[2],username=row[3],hashed_pass=row[4],salt=row[5])
             return employee_model
         else:
             return None
@@ -323,20 +349,30 @@ class SQLAPI(object):
         :rtype: list
         """
 
-        # I dont understand what you need from this function, need to discuss
-        # TODO: discuss the fucntionality
-        if start==None:
-            print "Check start conditions"
-            # raise MyBrainDoesntWork
-            # get the sin for the username
-            #use the sin in Working table and check if start_time greater than start
-        elif end==None:
-            print "Check end conditions"
-            # get the sin for the username (cause Working schema has sin)
-            #use the sin in Working table and check if start_time greater than start
+        # first get the sin number for the specified username
+        self.cursor.execute("SELECT sin FROM Employees WHERE username=?", (username,))
+        sin_row = self.cursor.fetchall()
+        if len(sin_row) > 1:
+            raise (IndexError, "There is something wrong with the primary key of Employees Table. Duplicated keys")
+        elif len(sin_row) == 1:
+            sin_num = models.Employee(sin=sin_row[0])
         else:
-            print "Check both start and end condition"
-        raise NotImplementedError
+            raise (Exception, "No sin found for the specified username.")
+
+        # use the sin number to find the shifts he/she is working
+        arg_list = []
+        where_clauses = []
+        query = "SELECT * FROM Working WHERE "
+        where_clauses.append("sin=")
+        arg_list.append(sin_num)
+        if start is not None:
+            where_clauses.append("start_shift > ?")
+            arg_list.append(start)
+        if end is not None:
+            where_clauses.append("end_shift < ?")
+            arg_list.append(end)
+        query = "{0} {1}".format(query, " AND ".join(where_clauses))
+        self.cursor.execute(query, arg_list)
 
     def get_sports(self):
         """Return list of all sports (as Sport models)
@@ -375,3 +411,4 @@ class SQLAPI(object):
         :rtype: int
         """
         raise NotImplementedError
+
