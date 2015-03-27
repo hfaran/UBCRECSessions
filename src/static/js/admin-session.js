@@ -11,11 +11,11 @@ $( document ).ready(function() {
 });
 
 function addTeamField() {
-	$("#teams").append('<div class="form-group"><input type="text" class="form-control team" placeholder="Team Name"></div>');
+	$("#teams").append('<div class="row"><div class="form-group col-sm-8"><input type="text" class="form-control team" id="team-name" placeholder="Team Name"></div><div class="form-group col-sm-4"><input type="number" class="form-control team" id="max-players" placeholder="Max"></div></div>');
 }
 
 function removeTeamField() {
-	$(".form-group:last-child","#teams").remove();
+	$(".row:last-child","#teams").remove();
 }
 
 function addSession() {
@@ -86,13 +86,33 @@ function addSession() {
 
 function addSessionSuccess(response) {
 	console.log("+addSessionSuccess");
-	console.log(response);
+	console.log(response.data.session_id);
 	// Add session completed successfully
 	// Register the teams
-	registerTeams();
+	alert("Session Added");
+	registerTeams(response.data.session_id);
 	console.log("-addSessionSuccess");
 }
 
-function registerTeams() {
+function registerTeams(sessionID) {
 	// Register each team in the HTML field
+	$("#teams").children(".row").each(function() {
+		// console.log($(this).children(".form-group").children("#team-name").val());
+		// console.log($(this).children(".form-group").children("#max-players").val());
+		var teamData = {
+			name : $(this).children(".form-group").children("#team-name").val(),
+			num_max_players : parseInt($(this).children(".form-group").children("#max-players").val()),
+			session_id : sessionID
+		};
+
+		$.ajax({
+			url : "/api/team/team/",
+			type : "PUT",
+			data : JSON.stringify(teamData),
+			success : function(data) {
+				alert(teamData['name'] + " was added to the session.")
+			},
+			dataType : "json"
+		});
+	});
 }
