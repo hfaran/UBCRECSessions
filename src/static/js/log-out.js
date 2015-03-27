@@ -5,7 +5,7 @@ function logout() {
 	$.ajax({
 		url : "/api/auth/logout/?",
 		type : "DELETE",
-		data : null,
+		data : "",
 		success : logoutSuccess,
 		dataType : "json"
 	}).fail(function(){

@@ -1,3 +1,7 @@
+var isAdmin = false;
+var isStudent = false;
+var isGuest = true;
+
 // Wait for document to load before doing anything
 $( document ).ready(function() {
 
@@ -7,9 +11,12 @@ $( document ).ready(function() {
 		orientation: "top left"
 	});
 
+	// Because are database entries are from the past, make the
+	// default start date a fixed date
 	var dateRightNow = new Date();
 	var date7DaysFromNow = new Date();
 	date7DaysFromNow.setDate(dateRightNow.getDate() + 7);
+	dateRightNow.setDate(dateRightNow.getDate() - 80);
 	$('#start-day').datepicker('setDate', dateRightNow);
 	$('#end-day').datepicker('setDate', date7DaysFromNow);
 	$('#start-day').datepicker('update');
@@ -31,6 +38,7 @@ $( document ).ready(function() {
 
 // This function builds the sessionsQueryData object and sends the AJAX call
 function loadSessions() {
+
 	// This data structure is sent to the API when searching for queries
 	// Empty venues or sports will return all venues or sports
 	// started_after and ended_before is UNIX timestamp
@@ -75,7 +83,7 @@ function loadSessions() {
 
 	// Print it for debugging
 	console.log(sessionsQueryData);
-
+		
 	// Perform the AJAX HTTP request
 	// We're using a POST here which is bad practice when GETting data
 	// But for the sake of time, we're using POST
@@ -88,10 +96,20 @@ function loadSessions() {
 	});
 }
 
-function loadSessionsSuccess(data) {
+function loadSessionsSuccess(response) {
 	// @TODO Generated rows for each sessions
 	console.log("Load Session Success!\n");
-	console.log(data);
+	console.log(response);
+	
+	
+	// Go through each response and add it to the div
+	for(var i = 0; i < response.data.length; i++)
+	{
+		var venue = response.data[i].name;
+		//console.log(venue);
+		venueOption = new Option(venue, venue, false, false);
+		document.all.venues.options.add(venueOption);
+	}
 }
 
 function openTeams(sender) {
@@ -104,24 +122,27 @@ function checkLoginStatus() {
 	console.log("+checkLoginStatus");
 	// Check if Admin is logged in
 	
-	$("#guest-mask").show();
-	
-	//$.ajax({
-	//	url : "/api/auth/employeelogin/",
-	//	type : "GET",
-	//	data : null, 
-	//	success : checkAdminSuccess,
-	//	dataType : "json"
-	//}).fail(checkStudentLoggedIn);
+	checkAdminLoggedIn();
 	
 	console.log("-checkLoginStatus");
 }
 
+function checkAdminLoggedIn() {
+	$.ajax({
+		url : "/api/auth/employeelogin/",
+		type : "GET",
+		data : "", 
+		success : checkAdminSuccess,
+		dataType : "json"
+	}).fail(checkStudentLoggedIn);
+}
+
 function checkAdminSuccess() {
 	console.log("+checkAdminSuccess");
-	$("#guest-mask").hide();
-	$("#student-mask").hide();
-	$("#admin-mask").show();
+	isAdmin = true;
+	isStudent = false;
+	isGuest = false;
+	updateHeader();
 	console.log("-checkAdminSuccess");
 }
 
@@ -129,16 +150,16 @@ function checkStudentLoggedIn() {
 	console.log("+checkStudentLoggedIn");
 	
 	$.ajax({
-		url : "/api/auth/employeelogin/",
+		url : "/api/auth/playerlogin/",
 		type : "POST",
-		data : JSON.stringify(sessionsQueryData),
+		data : "",
 		success : loadSessionsSuccess,
 		dataType : "json"
 	}).fail(function(){
-			$("#guest-mask").show();
-			$("#student-mask").hide();
-			$("#admin-mask").hide();
-			console.log("No user logged in");
+			isAdmin = false;
+			isStudent = false;
+			isGuest = true;
+			updateHeader();
 		});
 		
 	console.log("-checkStudentLoggedIn");
@@ -146,8 +167,17 @@ function checkStudentLoggedIn() {
 
 function checkStudentSuccess() {
 	console.log("+checkStudentSuccess");
-	$("#guest-mask").hide();
-	$("#student-mask").show();
-	$("#admin-mask").hide();
+	isAdmin = false;
+	isStudent = true;
+	isGuest = false;
+	updateHeader();
 	console.log("-checkStudentSuccess");
+}
+
+function updateHeader() {
+	console.log("Admin : " + isAdmin);
+	console.log("Student : " + isStudent);
+	console.log("isGuest : " + isGuest);
+	// TODO: Make this function modify the visibility of the admin/student/guest headers
+	
 }
