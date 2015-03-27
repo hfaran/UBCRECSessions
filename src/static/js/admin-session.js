@@ -24,28 +24,51 @@ function addSession() {
 	var addSessionData = {
 		"start_time" : 0,
 		"end_time" : 0,
-		"sport_id" : 0,
+		"sport_id" : -1,
 		"venue_name" : ""
 	};
 	
 	// Obtain date-time values
 	var sport_id = $("#sports").val();
 	var venue_name = $("#venues").val();
-	var start_time = $('#start-time').data("datetimepicker").getDate();
-	// Assign it within our object
-	// JavaScript getTime is UNIX time in milliseconds, API wants seconds
-	addSessionData["start_time"] = start_time / 1000;
-	var end_time = $('#end-time').data("datetimepicker").getDate();
-	// Assign it within our object
-	// JavaScript getTime is UNIX time in milliseconds, API wants seconds
-	addSessionData["end_time"] = end_time / 1000;
+	var start_time = $('#start-time').data("DateTimePicker").date();
+	var end_time = $('#end-time').data("DateTimePicker").date();
 	
-	
-	// Error Check Values
-	if(start_time == 0 || end_time == 0) {
+	// Error Check Time
+	if(start_time == null || end_time == null) {
 		alert("Please enter valid start and end dates.");
 		return;
 	}
+	
+	// Check for valid venue
+	if(venue_name == "") {
+		alert("Choose a valid venue");
+	}
+	
+	// Check for valid sport
+	if(sport_id == -1) {
+		alert("Choose a valid sport");
+	}
+	
+	
+	// Check if any teams were added
+	var numTeams = $("#teams > div").length;
+	for(i = 0; i < $("#teams > div").length; i++){
+		formDiv = $("#teams > div")[i];
+		
+		console.log(formDiv.length);
+	}
+	
+	console.log(numTeams);
+	
+	// Convert to unix time
+	start_time = start_time.unix();
+	end_time = end_time.unix();
+	
+	addSessionData["start_time"] = start_time;
+	addSessionData["end_time"] = end_time;
+	addSessionData["venue_name"] = venue_name;
+	addSessionData["sport_id"] = sport_id;
 	
 	console.log(addSessionData);
 
