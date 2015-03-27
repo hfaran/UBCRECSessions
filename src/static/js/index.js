@@ -16,7 +16,7 @@ $( document ).ready(function() {
 	var dateRightNow = new Date();
 	var date7DaysFromNow = new Date();
 	date7DaysFromNow.setDate(dateRightNow.getDate() + 7);
-	dateRightNow.setDate(dateRightNow.getDate() - 80);
+	dateRightNow.setDate(dateRightNow.getDate() - 7);
 	$('#start-day').datepicker('setDate', dateRightNow);
 	$('#end-day').datepicker('setDate', date7DaysFromNow);
 	$('#start-day').datepicker('update');
@@ -99,32 +99,32 @@ function loadSessions() {
 function loadSessionsSuccess(response) {
 	// @TODO Generated rows for each sessions
 	console.log("Load Session Success!\n");
-	console.log(response);
+	console.log(response.data);
 
 
 	// Go through each response and add it to the div
-	for(var i = 0; i < response.data.length; i++)
-	{
-		var venue = response.data[i].name;
-		//console.log(venue);
-		venueOption = new Option(venue, venue, false, false);
-		document.all.venues.options.add(venueOption);
-	}
+	// for(var i = 0; i < response.data.length; i++) {
+	// 	var venue = response.data[i].name;
+	// 	//console.log(venue);
+	// 	venueOption = new Option(venue, venue, false, false);
+	// 	document.all.venues.options.add(venueOption);
+	// }
+
+
 }
 
 function openTeams(sender) {
-	console.log(sender.currentTarget);
 	$(sender.currentTarget).next('.session-team-list').toggleClass('picked-session').slideToggle();
 	$(sender.currentTarget).toggleClass('picked-session');
 }
 
 function checkLoginStatus() {
-	console.log("+checkLoginStatus");
+	// console.log("+checkLoginStatus");
 	// Check if Admin is logged in
 
 	checkAdminLoggedIn();
 
-	console.log("-checkLoginStatus");
+	// console.log("-checkLoginStatus");
 }
 
 function checkAdminLoggedIn() {
@@ -138,16 +138,16 @@ function checkAdminLoggedIn() {
 }
 
 function checkAdminSuccess() {
-	console.log("+checkAdminSuccess");
+	// console.log("+checkAdminSuccess");
 	isAdmin = true;
 	isStudent = false;
 	isGuest = false;
 	updateHeader();
-	console.log("-checkAdminSuccess");
+	// console.log("-checkAdminSuccess");
 }
 
 function checkStudentLoggedIn() {
-	console.log("+checkStudentLoggedIn");
+	// console.log("+checkStudentLoggedIn");
 
 	$.ajax({
 		url : "/api/auth/playerlogin/",
@@ -156,28 +156,28 @@ function checkStudentLoggedIn() {
 		success : loadSessionsSuccess,
 		dataType : "json"
 	}).fail(function(){
-			isAdmin = false;
-			isStudent = false;
-			isGuest = true;
-			updateHeader();
-		});
+		isAdmin = false;
+		isStudent = false;
+		isGuest = true;
+		updateHeader();
+	});
 
-	console.log("-checkStudentLoggedIn");
+	// console.log("-checkStudentLoggedIn");
 }
 
 function checkStudentSuccess() {
-	console.log("+checkStudentSuccess");
+	// console.log("+checkStudentSuccess");
 	isAdmin = false;
 	isStudent = true;
 	isGuest = false;
 	updateHeader();
-	console.log("-checkStudentSuccess");
+	// console.log("-checkStudentSuccess");
 }
 
 function updateHeader() {
-	console.log("Admin : " + isAdmin);
-	console.log("Student : " + isStudent);
-	console.log("isGuest : " + isGuest);
+	// console.log("Admin : " + isAdmin);
+	// console.log("Student : " + isStudent);
+	// console.log("isGuest : " + isGuest);
 	// TODO: Make this function modify the visibility of the admin/student/guest headers
 
 }
