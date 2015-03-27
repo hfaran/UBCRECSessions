@@ -11,11 +11,8 @@ function signIn() {
 	console.log("Admin Sign In");
 	
 	var loginQueryData = {
-		//"properties": {
-			"username" : '',
-			"password" : ''
-		//}//,
-		//"type" : "object"
+		"username" : '',
+		"password" : ''
 	}
 	
 	
@@ -48,6 +45,7 @@ function signIn() {
 		alert("Incorrect username/password!")
 		});
 
+	console.log("-Admin Sign In");
 }
 
 function employeeLoginSuccess(response) {

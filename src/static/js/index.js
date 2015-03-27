@@ -14,6 +14,7 @@ $( document ).ready(function() {
 	$('#end-day').datepicker('setDate', date7DaysFromNow);
 	$('#start-day').datepicker('update');
 	$('#end-day').datepicker('update');
+	
 
 	loadVenueOptions();
 	loadSportsOptions();
@@ -26,59 +27,6 @@ $( document ).ready(function() {
 	// Open team list event, only call if user is student
 	$(".session-table-row").on("click", openTeams);
 });
-
-// This function starts an AJAX call to load the venues
-function loadVenueOptions() {
-	$.ajax({
-		url : "/api/venue/venues/?",
-		type : "GET",
-		data : null,
-		success : loadVenueOptionsSuccess,
-		dataType : "json"
-	});
-}
-
-function loadVenueOptionsSuccess(response) {
-	console.log("+loadVenueOptionsSuccess");
-	//console.log(response);
-	
-	// Go through each response and add it to the div
-	for(var i = 0; i < response.data.length; i++)
-	{
-		var venue = response.data[i].name;
-		console.log(venue);
-		venueOption = new Option(venue, venue, false, false);
-		document.all.venues.options.add(venueOption);
-	}
-	console.log("-loadVenueOptionsSuccess")
-}
-
-// This function starts an AJAX call to load the sports
-function loadSportsOptions() {
-	$.ajax({
-		url : "/api/sport/sports/?",
-		type : "GET",
-		data : null,
-		success : loadSportsOptionsSuccess,
-		dataType : "json"
-	});
-}
-
-function loadSportsOptionsSuccess(response) {
-	console.log("+loadSportsOptionsSuccess");
-	//console.log(response);
-	
-	// Go through each response and add it to the div
-	for(var i = 0; i < response.data.length; i++)
-	{
-		var sport = response.data[i].name;
-		//console.log(sport);
-		sportOption = new Option(sport, sport, false, false);
-		document.all.sports.options.add(sportOption);
-	}
-	
-	console.log("-loadSportsOptionsSuccess")
-}
 
 
 // This function builds the sessionsQueryData object and sends the AJAX call
@@ -154,13 +102,52 @@ function openTeams(sender) {
 
 function checkLoginStatus() {
 	console.log("+checkLoginStatus");
-	// Set Guest options visible by default
-	//$("#guest-only").show();
-
 	// Check if Admin is logged in
+	
+	$("#guest-mask").show();
+	
+	//$.ajax({
+	//	url : "/api/auth/employeelogin/",
+	//	type : "GET",
+	//	data : null, 
+	//	success : checkAdminSuccess,
+	//	dataType : "json"
+	//}).fail(checkStudentLoggedIn);
 	
 	console.log("-checkLoginStatus");
 }
 
 function checkAdminSuccess() {
+	console.log("+checkAdminSuccess");
+	$("#guest-mask").hide();
+	$("#student-mask").hide();
+	$("#admin-mask").show();
+	console.log("-checkAdminSuccess");
+}
+
+function checkStudentLoggedIn() {
+	console.log("+checkStudentLoggedIn");
+	
+	$.ajax({
+		url : "/api/auth/employeelogin/",
+		type : "POST",
+		data : JSON.stringify(sessionsQueryData),
+		success : loadSessionsSuccess,
+		dataType : "json"
+	}).fail(function(){
+			$("#guest-mask").show();
+			$("#student-mask").hide();
+			$("#admin-mask").hide();
+			console.log("No user logged in");
+		});
+		
+	console.log("-checkStudentLoggedIn");
+}
+
+function checkStudentSuccess() {
+	console.log("+checkStudentSuccess");
+	$("#guest-mask").hide();
+	$("#student-mask").show();
+	$("#admin-mask").hide();
+	console.log("-checkStudentSuccess");
 }
