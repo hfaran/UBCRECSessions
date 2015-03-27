@@ -25,7 +25,6 @@ $( document ).ready(function() {
 
 	loadVenueOptions();
 	loadSportsOptions();
-	loadSessions();
 	checkLoginStatus();
 
 	// Add the loadSessions method to the 'Search Sessions' button
@@ -35,6 +34,7 @@ $( document ).ready(function() {
 
 // This function builds the sessionsQueryData object and sends the AJAX call
 function loadSessions() {
+	$("#session-holder").html('<div class="row session-table-header"><div class="col-sm-3">	<strong>Sport</strong></div><div class="col-sm-3">	<strong>Venue</strong></div><div class="col-sm-3">	<strong>Time</strong></div><div class="col-sm-3">	<strong id="results-actions">Results</strong></div></div>');
 
 	// This data structure is sent to the API when searching for queries
 	// Empty venues or sports will return all venues or sports
@@ -94,7 +94,6 @@ function loadSessions() {
 }
 
 function loadSessionsSuccess(response) {
-	// @TODO Generated rows for each sessions
 	// console.log("Load Session Success!\n");
 	// console.log(response.data);
 
@@ -114,7 +113,7 @@ function loadSessionsSuccess(response) {
 		var customHTML = results;
 
 		if(isAdmin) {
-			customHTML = '<button class="btn btn-sm btn-primary">Edit Results</button> -->	<!-- <button class="btn btn-sm btn-danger">Delete</button>';
+			customHTML = '<button class="btn btn-sm btn-primary">Edit Results</button><button id="delete-session-'+sessionID+'" class="btn btn-sm btn-danger">Delete</button>';
 		}
 
 		$("#session-holder").append('<div class="row session-table-row"><div class="col-sm-3">	<strong>'+sport+'</strong>	<span class="sub-field">4 teams | 17 players</span></div><div class="col-sm-3">	<strong>'+venue+'</strong>	<span class="sub-field">NEED ADDRESS</div><div class="col-sm-3">	<strong>'+startDate.toLocaleString()+'</strong> - <strong>'+endDate.toLocaleString()+'</strong></div><div class="col-sm-3">'+customHTML+'</div></div>')
@@ -132,9 +131,24 @@ function loadSessionsSuccess(response) {
 				success : loadTeamSuccess,
 				dataType : "json"
 			});
+		} else {
+			$("#delete-session-"+sessionID).on("click", function() {
+					var sID = $(this).attr('id').split('-')[2];
+					$.ajax({
+						url : "/api/session/session/"+sID,
+						type : "DELETE",
+						data : null,
+						success : deleteSessionSuccess,
+						dataType : "json"
+					});
+			});
 		}
 	}
 
+}
+
+function deleteSessionSuccess(response) {
+	loadSessions();
 }
 
 function loadTeamSuccess(response) {
@@ -154,8 +168,10 @@ function loadTeamSuccess(response) {
 		$("#session-"+sessionID).append('<div id="team-'+teamID+'" class="row session-table-team-row"><div class="col-sm-4 col-sm-offset-1">'+teamName+'</div><div class="col-sm-4">'+maxPlayers+'</div><div class="col-sm-2">'+customHTML+'</div></div>');
 
 		$("#join-team-"+teamID).on("click", function(){
+			var tID = $(this).attr('id').split('-')[2];
+			console.log("tID:" + tID);
 			var data = {
-				team_id : teamID
+				team_id : parseInt(tID)
 			};
 
 			$.ajax({
@@ -242,7 +258,6 @@ function updateHeader() {
 	console.log("Admin : " + isAdmin);
 	console.log("Student : " + isStudent);
 	console.log("isGuest : " + isGuest);
-	// TODO: Make this function modify the visibility of the admin/student/guest headers
 
 	if(isAdmin) {
 		$("#admin-mask").show();
@@ -257,5 +272,6 @@ function updateHeader() {
 		$("#guest-mask").show();
 		$("#student-mask").hide();
 	}
+	loadSessions();
 
 }
