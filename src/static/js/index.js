@@ -29,6 +29,7 @@ $( document ).ready(function() {
 
 	// Add the loadSessions method to the 'Search Sessions' button
 	$("#search-sessions").on("click", loadSessions);
+	$("#my-sessions").on("click", loadSessions);
 });
 
 
@@ -49,34 +50,51 @@ function loadSessions() {
 	// Clear the venue list
 	sessionsQueryData["venues"] = ["SRC_A","SRC_B","Thunderbird","Aquatic_Center","SRC_GYM","Testing"];
 	// Add all selected venues to the venue list
-	// $("#venues option").each(function() {
-	// 	// Check if this venue is selected
-	// 	if($(this).is(':selected')) {
-	// 		sessionsQueryData["venues"].push($(this).val());
-	// 	}
-	// });
+	var noVenues = true;
+	var venues = [];
+	$("#venues option").each(function() {
+		// Check if this venue is selected
+		if($(this).is(':selected')) {
+			venues.push($(this).text());
+			noVenues = false;
+		}
+	});
+
+	if(!noVenues) {
+		sessionsQueryData["venues"] = venues;
+	}
 
 	// Clear the sport list
 	sessionsQueryData["sports"] = ["Basketball","Croquet","Indoor Soccer","Table Tennis","Volleyball"];
 	// Add all selected venues to the sport list
-	// $("#sports option").each(function() {
-	// 	// Check if this sport is selected
-	// 	if($(this).is(':selected')) {
-	// 		sessionsQueryData["sports"].push($(this).val());
-	// 	}
-	// });
+	var noSports = true;
+	var sports = [];
+	$("#sports option").each(function() {
+		// Check if this sport is selected
+		if($(this).is(':selected')) {
+			sports.push($(this).text());
+			noSports = false;
+		}
+	});
+
+	if(!noSports) {
+		sessionsQueryData["sports"] = sports;
+	}
 
 	// Get the start date
 	var startDate = $('#start-day').datepicker('getDate');
 	// Assign it within our object
 	// JavaScript getTime is UNIX time in milliseconds, API wants seconds
-	sessionsQueryData["started_after"] = 0;//startDate.getTime() / 1000;
+	sessionsQueryData["started_after"] = startDate.getTime() / 1000;
+
+	console.log("started_after: "+sessionsQueryData["started_after"]);
 
 	// Get the end date
 	var endDate = $('#end-day').datepicker('getDate');
 	// Assign it within our object
 	// JavaScript getTime is UNIX time in milliseconds, API wants seconds
-	sessionsQueryData["ended_before"] = 9999999999;//endDate.getTime() / 1000;
+	sessionsQueryData["ended_before"] = endDate.getTime() / 1000;
+	console.log("ended_before: "+sessionsQueryData["ended_before"]);
 
 	// Print it for debugging
 	console.log(sessionsQueryData);
@@ -258,6 +276,11 @@ function updateHeader() {
 	console.log("Admin : " + isAdmin);
 	console.log("Student : " + isStudent);
 	console.log("isGuest : " + isGuest);
+
+	// Force student
+	// isStudent = true;
+	// isGuest = false;
+	// isAdmin = false;
 
 	if(isAdmin) {
 		$("#admin-mask").show();

@@ -45,7 +45,7 @@ function loadSportsOptionsSuccess(response) {
 		var sport = response.data[i].name;
 		var sport_id = response.data[i].sport_id;
 		//console.log(sport);
-		sportOption = new Option(sport);
+		sportOption = new Option(sport, sport_id, false, false);
 		document.all.sports.options.add(sportOption);
 	}
 	
