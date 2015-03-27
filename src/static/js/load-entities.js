@@ -3,7 +3,7 @@ function loadVenueOptions() {
 	$.ajax({
 		url : "/api/venue/venues/?",
 		type : "GET",
-		data : null,
+		data : "",
 		success : loadVenueOptionsSuccess,
 		dataType : "json"
 	});
@@ -29,7 +29,7 @@ function loadSportsOptions() {
 	$.ajax({
 		url : "/api/sport/sports/?",
 		type : "GET",
-		data : null,
+		data : "",
 		success : loadSportsOptionsSuccess,
 		dataType : "json"
 	});
@@ -43,8 +43,9 @@ function loadSportsOptionsSuccess(response) {
 	for(var i = 0; i < response.data.length; i++)
 	{
 		var sport = response.data[i].name;
+		var sport_id = response.data[i].sport_id;
 		//console.log(sport);
-		sportOption = new Option(sport, sport, false, false);
+		sportOption = new Option(sport, sport_id, false, false);
 		document.all.sports.options.add(sportOption);
 	}
 	
