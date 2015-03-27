@@ -147,12 +147,31 @@ function loadTeamSuccess(response) {
 
 		var customHTML = '<button class="btn btn-sm btn-primary" disabled>You must be Signed In to join</button>';
 
-		if(isStudent) {
-			customHTML = '<button class="btn btn-sm btn-primary">Join</button>';
+		if(isStudent || true) {
+			customHTML = '<button id="join-team-'+teamID+'" class="btn btn-sm btn-primary">Join</button>';
 		}
 
 		$("#session-"+sessionID).append('<div id="team-'+teamID+'" class="row session-table-team-row"><div class="col-sm-4 col-sm-offset-1">'+teamName+'</div><div class="col-sm-4">'+maxPlayers+'</div><div class="col-sm-2">'+customHTML+'</div></div>');
+
+		$("#join-team-"+teamID).on("click", function(){
+			var data = {
+				team_id : teamID
+			};
+
+			$.ajax({
+				url : "/api/team/register/",
+				type : "POST",
+				data : JSON.stringify(data),
+				success : teamRegisterSuccess,
+				dataType : "json"
+			}).fail(function() {alert("Could not join team. :(")});
+		});
 	}
+}
+
+function teamRegisterSuccess(response) {
+	var teamID = response.data.team_id;
+	$("#join-team-"+teamID).html("Joined").prop('disabled', true);
 }
 
 function openTeams(sender) {
