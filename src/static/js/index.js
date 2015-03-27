@@ -95,8 +95,8 @@ function loadSessions() {
 
 function loadSessionsSuccess(response) {
 	// @TODO Generated rows for each sessions
-	console.log("Load Session Success!\n");
-	console.log(response.data);
+	// console.log("Load Session Success!\n");
+	// console.log(response.data);
 
 
 	// Go through each response and add it to the div
@@ -130,8 +130,7 @@ function loadSessionsSuccess(response) {
 				type : "GET",
 				data : null,
 				success : loadTeamSuccess,
-				dataType : "json",
-				async: false
+				dataType : "json"
 			});
 		}
 	}
@@ -139,7 +138,7 @@ function loadSessionsSuccess(response) {
 }
 
 function loadTeamSuccess(response) {
-	console.log(response);
+	// console.log(response);
 	for(var i = 0; i < response.data.length; i++) {
 		var teamName = response.data[i]['name'];
 		var maxPlayers = response.data[i]['num_max_players'];
@@ -221,9 +220,23 @@ function checkStudentSuccess() {
 }
 
 function updateHeader() {
-	// console.log("Admin : " + isAdmin);
-	// console.log("Student : " + isStudent);
-	// console.log("isGuest : " + isGuest);
+	console.log("Admin : " + isAdmin);
+	console.log("Student : " + isStudent);
+	console.log("isGuest : " + isGuest);
 	// TODO: Make this function modify the visibility of the admin/student/guest headers
+
+	if(isAdmin) {
+		$("#admin-mask").show();
+		$("#guest-mask").hide();
+		$("#student-mask").hide();
+	} else if(isStudent) {
+		$("#admin-mask").hide();
+		$("#guest-mask").hide();
+		$("#student-mask").show();
+	} else {
+		$("#admin-mask").hide();
+		$("#guest-mask").show();
+		$("#student-mask").hide();
+	}
 
 }
