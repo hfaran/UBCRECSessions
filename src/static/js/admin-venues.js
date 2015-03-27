@@ -7,11 +7,8 @@ function addVenue() {
 	console.log("Admin Sign In");
 	
 	var addVenueData = {
-		//"properties": {
-			"address" : '',
-			"name" : ''
-		//}//,
-		//"type" : "object"
+		"address" : '',
+		"name" : ''
 	}
 	
 	

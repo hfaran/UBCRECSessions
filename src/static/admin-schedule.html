@@ -28,7 +28,7 @@
 						<li><a href="/static/admin-venues.html">Add Venue</a></li>
 						<li><a href="/static/admin-session.html">Add Session</a></li>
 						<li><a href="/static/admin-schedule.html">Work Schedule</a></li>
-						<li><a href="#">Log Out</a></li>
+						<li onclick="logout()"><a href="#">Log Out</a></li>
 					</ul>
 				</div>
 			</div>
@@ -48,16 +48,18 @@
 						</div>
 					</div>
 					<!-- @TODO begin schedule shift listing row -->
-					<div class="row schedule-table-row">
-						<div class="col-md-4">
-							<strong>Username</strong>
-						</div>
-						<div class="col-md-4">
-							March 10 2015 @ 10:15am
-						</div>
-						<div class="col-md-4">
-							March 10 2015 @ 6:15pm
-						</div>
+					<div id="body">
+						<!--div class="row schedule-table-row">
+							<div class="col-md-4">
+								<strong>Username</strong>
+							</div>
+							<div class="col-md-4">
+								March 10 2015 @ 10:15am
+							</div>
+							<div class="col-md-4">
+								March 10 2015 @ 6:15pm
+							</div>
+						</div-->
 					</div>
 					<!-- @TODO end schedule shift listing row -->
 				</div>
@@ -68,5 +70,7 @@
 		<script src="//code.jquery.com/jquery.js"></script>
 		<!-- Bootstrap JavaScript -->
 		<script src="//netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+		<script src="/static/js/admin-schedule.js"></script>
+		<script src="/static/js/log-out.js"></script>
 	</body>
 </html>

@@ -26,29 +26,34 @@
 				</div>
 				<!-- @TODO: hidden css class currently does not hide divs! -->
 				<!-- GUEST -->
-				<div class="collapse navbar-collapse hidden" id="guest-only">
-					<ul class="nav navbar-nav navbar-right">
-						<li><a href="/static/admin-sign-in.html">Employee Sign in</a></li>
-						<li><a href="/static/sign-in.html">Student Sign in</a></li>
-					</ul>
+				<div class="" id="guest-mask">
+					<div class="collapse navbar-collapse" id="guest-only">
+						<ul class="nav navbar-nav navbar-right">
+							<li><a href="/static/admin-sign-in.html">Employee Sign in</a></li>
+							<li><a href="/static/sign-in.html">Student Sign in</a></li>
+						</ul>
+					</div>
 				</div>
 				<!-- @TODO Log Out: Perform AJAX call and redirect to index page -->
 				<!-- @TODO My Sessions: Perform AJAX call to load only the sessions joined by signed in user and hide the search -->
-				<div class="collapse navbar-collapse hidden" id="student-only">
-					<ul class="nav navbar-nav navbar-right">
-						<li><a href="#">My Sessions</a></li>
-						<li><a href="#">Log Out</a></li>
-					</ul>
-				</div>
+				<div class="" id="student-mask">
+					<div class="collapse navbar-collapse" id="student-only">
+						<ul class="nav navbar-nav navbar-right">
+							<li><a href="#">My Sessions</a></li>
+							<li onclick="logout()"><a href="#">Log Out</a></li>
+						</ul>
+					</div>
+				<div>
 				<!-- @TODO ELSEIF IS_EMPLOYEE -->
 				<!-- @TODO Log Out: Perform AJAX call and redirect to index page -->
-				<div class="collapse navbar-collapse hidden" id= "admin-only">
-					<ul class="nav navbar-nav navbar-right">
-						<li><a href="/static/admin-venues.html">Add Venue</a></li>
-						<li><a href="/static/admin-session.html">Add Session</a></li>
-						<li><a href="/static/admin-schedule.html">Work Schedule</a></li>
-						<li><a href="#">Log Out</a></li>
-					</ul>
+				<div class="" id="admin-mask">
+					<div class="collapse navbar-collapse" id= "admin-only">
+						<ul class="nav navbar-nav navbar-right">
+							<li><a href="/static/admin-venues.html">Add Venue</a></li>
+							<li><a href="/static/admin-session.html">Add Session</a></li>
+							<li><a href="/static/admin-schedule.html">Work Schedule</a></li>
+							<li onclick="logout()"><a href="#">Log Out</a></li>
+						</ul>
 					</div>
 				</div>
 				<!-- @TODO END IF -->
@@ -180,6 +185,8 @@
 		<!-- Bootstrap JavaScript -->
 		<script src="//netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 		<script src="/static/js/bootstrap-datepicker.js"></script>
+		<script src="/static/js/log-out.js"></script>
 		<script src="/static/js/index.js"></script>
+		<script src="/static/js/load-entities.js"></script>
 	</body>
 </html>

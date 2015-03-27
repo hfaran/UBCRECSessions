@@ -3,6 +3,10 @@ $( document ).ready(function() {
 	$("#end-time").datetimepicker({sideBySide: true});
 	$("#remove-team-field").on("click", removeTeamField);
 	$("#add-team-field").on("click", addTeamField);
+	
+	
+	loadVenueOptions();
+	loadSportsOptions();
 });
 
 function addTeamField() {
