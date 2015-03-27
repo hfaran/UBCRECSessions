@@ -37,6 +37,7 @@ $( document ).ready(function() {
 function loadSessions() {
 	$("#session-holder").html('<div class="row session-table-header"><div class="col-sm-3">	<strong>Sport</strong></div><div class="col-sm-3">	<strong>Venue</strong></div><div class="col-sm-3">	<strong>Time</strong></div><div class="col-sm-3">	<strong id="results-actions">Results</strong></div></div>');
 
+
 	// This data structure is sent to the API when searching for queries
 	// Empty venues or sports will return all venues or sports
 	// started_after and ended_before is UNIX timestamp
@@ -131,7 +132,7 @@ function loadSessionsSuccess(response) {
 		var customHTML = results;
 
 		if(isAdmin) {
-			customHTML = '<button class="btn btn-sm btn-primary">Edit Results</button><button id="delete-session-'+sessionID+'" class="btn btn-sm btn-danger">Delete</button>';
+			customHTML = '<button id="edit-results-'+sessionID+'" class="btn btn-sm btn-primary">Edit Results</button><button id="delete-session-'+sessionID+'" class="btn btn-sm btn-danger">Delete</button>';
 		}
 
 		$("#session-holder").append('<div class="row session-table-row"><div class="col-sm-3">	<strong>'+sport+'</strong>	<span class="sub-field">4 teams | 17 players</span></div><div class="col-sm-3">	<strong>'+venue+'</strong>	<span class="sub-field">NEED ADDRESS</div><div class="col-sm-3">	<strong>'+startDate.toLocaleString()+'</strong> - <strong>'+endDate.toLocaleString()+'</strong></div><div class="col-sm-3">'+customHTML+'</div></div>')
@@ -159,6 +160,26 @@ function loadSessionsSuccess(response) {
 						success : deleteSessionSuccess,
 						dataType : "json"
 					});
+			});
+
+			$("#edit-results-"+sessionID).on("click", function() {
+					var results = prompt("What are the results?", "0 - 0");
+					var sID = $(this).attr('id').split('-')[2];
+					if (results != null) {
+						var resData = {
+							'results' : results,
+							'session_id' : parseInt(sID)
+						}
+						$.ajax({
+							url : "/api/session/session/",
+							type : "PATCH",
+							data : JSON.stringify(resData),
+							success : function() {
+								alert("Results updated!");
+							},
+							dataType : "json"
+						});
+					}
 			});
 		}
 	}
@@ -237,7 +258,6 @@ function checkAdminSuccess() {
 	isAdmin = true;
 	isStudent = false;
 	isGuest = false;
-	$("#results-actions").html("Actions");
 	updateHeader();
 	// console.log("-checkAdminSuccess");
 }
@@ -255,7 +275,6 @@ function checkStudentLoggedIn() {
 		isAdmin = false;
 		isStudent = false;
 		isGuest = true;
-		$("#results-actions").html("Results");
 		updateHeader();
 	});
 
@@ -267,7 +286,6 @@ function checkStudentSuccess() {
 	isAdmin = false;
 	isStudent = true;
 	isGuest = false;
-	$("#results-actions").html("Results");
 	updateHeader();
 	// console.log("-checkStudentSuccess");
 }
@@ -281,20 +299,23 @@ function updateHeader() {
 	// isStudent = true;
 	// isGuest = false;
 	// isAdmin = false;
+	loadSessions();
 
 	if(isAdmin) {
 		$("#admin-mask").show();
 		$("#guest-mask").hide();
 		$("#student-mask").hide();
+		$("#results-actions").text("Actions");
 	} else if(isStudent) {
 		$("#admin-mask").hide();
 		$("#guest-mask").hide();
 		$("#student-mask").show();
+		$("#results-actions").text("Results");
 	} else {
 		$("#admin-mask").hide();
 		$("#guest-mask").show();
 		$("#student-mask").hide();
+		$("#results-actions").text("Results");
 	}
-	loadSessions();
 
 }
