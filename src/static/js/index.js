@@ -21,7 +21,7 @@ $( document ).ready(function() {
 	$('#end-day').datepicker('setDate', date7DaysFromNow);
 	$('#start-day').datepicker('update');
 	$('#end-day').datepicker('update');
-	
+
 
 	loadVenueOptions();
 	loadSportsOptions();
@@ -83,7 +83,7 @@ function loadSessions() {
 
 	// Print it for debugging
 	console.log(sessionsQueryData);
-		
+
 	// Perform the AJAX HTTP request
 	// We're using a POST here which is bad practice when GETting data
 	// But for the sake of time, we're using POST
@@ -100,8 +100,8 @@ function loadSessionsSuccess(response) {
 	// @TODO Generated rows for each sessions
 	console.log("Load Session Success!\n");
 	console.log(response);
-	
-	
+
+
 	// Go through each response and add it to the div
 	for(var i = 0; i < response.data.length; i++)
 	{
@@ -121,9 +121,9 @@ function openTeams(sender) {
 function checkLoginStatus() {
 	console.log("+checkLoginStatus");
 	// Check if Admin is logged in
-	
+
 	checkAdminLoggedIn();
-	
+
 	console.log("-checkLoginStatus");
 }
 
@@ -131,7 +131,7 @@ function checkAdminLoggedIn() {
 	$.ajax({
 		url : "/api/auth/employeelogin/",
 		type : "GET",
-		data : "", 
+		data : "",
 		success : checkAdminSuccess,
 		dataType : "json"
 	}).fail(checkStudentLoggedIn);
@@ -148,7 +148,7 @@ function checkAdminSuccess() {
 
 function checkStudentLoggedIn() {
 	console.log("+checkStudentLoggedIn");
-	
+
 	$.ajax({
 		url : "/api/auth/playerlogin/",
 		type : "POST",
@@ -161,7 +161,7 @@ function checkStudentLoggedIn() {
 			isGuest = true;
 			updateHeader();
 		});
-		
+
 	console.log("-checkStudentLoggedIn");
 }
 
@@ -179,5 +179,5 @@ function updateHeader() {
 	console.log("Student : " + isStudent);
 	console.log("isGuest : " + isGuest);
 	// TODO: Make this function modify the visibility of the admin/student/guest headers
-	
+
 }
