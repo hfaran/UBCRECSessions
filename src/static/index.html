@@ -24,7 +24,6 @@
 					</button>
 					<a class="navbar-brand" href="/static/index.html">UBC Rec Sessions</a>
 				</div>
-				<!-- @TODO: hidden css class currently does not hide divs! -->
 				<!-- GUEST -->
 				<div id="guest-mask">
 					<div class="collapse navbar-collapse" id="guest-only">
@@ -34,7 +33,6 @@
 						</ul>
 					</div>
 				</div>
-				<!-- @TODO Log Out: Perform AJAX call and redirect to index page -->
 				<!-- @TODO My Sessions: Perform AJAX call to load only the sessions joined by signed in user and hide the search -->
 				<div class="hidden_NOBS" id="student-mask">
 					<div class="collapse navbar-collapse" id="student-only">
@@ -44,8 +42,6 @@
 						</ul>
 					</div>
 				</div>
-				<!-- @TODO ELSEIF IS_EMPLOYEE -->
-				<!-- @TODO Log Out: Perform AJAX call and redirect to index page -->
 				<div class="hidden_NOBS" id="admin-mask">
 					<div class="collapse navbar-collapse" id= "admin-only">
 						<ul class="nav navbar-nav navbar-right">
@@ -56,7 +52,6 @@
 						</ul>
 					</div>
 				</div>
-				<!-- @TODO END IF -->
 			</div>
 		</nav>
 		<div class="container margin-top-75">
@@ -93,7 +88,6 @@
 						</fieldset>
 					</div>
 					<div class="form-group">
-						<!-- @TODO On click, perform ajax to update the session list -->
 						<button id="search-sessions" class="btn btn-primary full-width">Search Sessions</button>
 					</div>
 				</div>
