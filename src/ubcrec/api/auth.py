@@ -64,7 +64,7 @@ class PlayerLogin(APIHandler):
 
         Should be obvious from status code (403 vs. 200).
         """
-        if not self.get_current_user():
+        if not self.user_type == USERTYPE_PLAYER:
             raise APIError(
                 403,
                 log_message="Please post to {} to get a cookie".format(
@@ -132,7 +132,7 @@ class EmployeeLogin(APIHandler):
 
         Should be obvious from status code (403 vs. 200).
         """
-        if not self.get_current_user():
+        if not self.user_type == USERTYPE_EMPLOYEE:
             raise APIError(
                 403,
                 log_message="Please post to {} to get a cookie".format(
