@@ -30,9 +30,6 @@ $( document ).ready(function() {
 
 	// Add the loadSessions method to the 'Search Sessions' button
 	$("#search-sessions").on("click", loadSessions);
-
-	// Open team list event, only call if user is student
-	$(".session-table-row").on("click", openTeams);
 });
 
 
@@ -50,36 +47,36 @@ function loadSessions() {
 	}
 
 	// Clear the venue list
-	sessionsQueryData["venues"] = [];
+	sessionsQueryData["venues"] = ["SRC_A","SRC_B","Thunderbird","Aquatic_Center","SRC_GYM","Testing"];
 	// Add all selected venues to the venue list
-	$("#venues option").each(function() {
-		// Check if this venue is selected
-		if($(this).is(':selected')) {
-			sessionsQueryData["venues"].push($(this).val());
-		}
-	});
+	// $("#venues option").each(function() {
+	// 	// Check if this venue is selected
+	// 	if($(this).is(':selected')) {
+	// 		sessionsQueryData["venues"].push($(this).val());
+	// 	}
+	// });
 
 	// Clear the sport list
-	sessionsQueryData["sports"] = [];
+	sessionsQueryData["sports"] = ["Basketball","Croquet","Indoor Soccer","Table Tennis","Volleyball"];
 	// Add all selected venues to the sport list
-	$("#sports option").each(function() {
-		// Check if this sport is selected
-		if($(this).is(':selected')) {
-			sessionsQueryData["sports"].push($(this).val());
-		}
-	});
+	// $("#sports option").each(function() {
+	// 	// Check if this sport is selected
+	// 	if($(this).is(':selected')) {
+	// 		sessionsQueryData["sports"].push($(this).val());
+	// 	}
+	// });
 
 	// Get the start date
 	var startDate = $('#start-day').datepicker('getDate');
 	// Assign it within our object
 	// JavaScript getTime is UNIX time in milliseconds, API wants seconds
-	sessionsQueryData["started_after"] = startDate.getTime() / 1000;
+	sessionsQueryData["started_after"] = 0;//startDate.getTime() / 1000;
 
 	// Get the end date
 	var endDate = $('#end-day').datepicker('getDate');
 	// Assign it within our object
 	// JavaScript getTime is UNIX time in milliseconds, API wants seconds
-	sessionsQueryData["ended_before"] = endDate.getTime() / 1000;
+	sessionsQueryData["ended_before"] = 9999999999;//endDate.getTime() / 1000;
 
 	// Print it for debugging
 	console.log(sessionsQueryData);
@@ -103,14 +100,60 @@ function loadSessionsSuccess(response) {
 
 
 	// Go through each response and add it to the div
-	// for(var i = 0; i < response.data.length; i++) {
-	// 	var venue = response.data[i].name;
-	// 	//console.log(venue);
-	// 	venueOption = new Option(venue, venue, false, false);
-	// 	document.all.venues.options.add(venueOption);
-	// }
+	for(var i = 0; i < response.data.length; i++) {
+		var endTime = response.data[i]['end_time'];
+		var startTime = response.data[i]['start_time'];
+		var results = response.data[i]['results'];
+		var venue = response.data[i]['venue_name'];
+		var sport = response.data[i]['sport_id'];
+		var sessionID = response.data[i]['session_id'];
 
+		var startDate = new Date(startTime * 1000);
+		var endDate = new Date(endTime * 1000);
 
+		var customHTML = results;
+
+		if(isAdmin) {
+			customHTML = '<button class="btn btn-sm btn-primary">Edit Results</button> -->	<!-- <button class="btn btn-sm btn-danger">Delete</button>';
+		}
+
+		$("#session-holder").append('<div class="row session-table-row"><div class="col-sm-3">	<strong>'+sport+'</strong>	<span class="sub-field">4 teams | 17 players</span></div><div class="col-sm-3">	<strong>'+venue+'</strong>	<span class="sub-field">NEED ADDRESS</div><div class="col-sm-3">	<strong>'+startDate.toLocaleString()+'</strong> - <strong>'+endDate.toLocaleString()+'</strong></div><div class="col-sm-3">'+customHTML+'</div></div>')
+
+		if(!isAdmin) {
+			$("#session-holder").append('<div id="session-'+sessionID+'" class="session-team-list"><div class="row">	<div class="col-sm-4 col-sm-offset-1 session-table-team-header">		<strong>Team Name</strong>	</div>	<div class="col-sm-4 session-table-team-header">		<strong>Max Players</strong>	</div>	<div class="col-sm-2 session-table-team-header">		<strong>Actions</strong>	</div></div></div>');
+
+			// Open team list event, only call if user is student
+			$(".session-table-row").off("click");
+			$(".session-table-row").on("click", openTeams);
+			$.ajax({
+				url : "/api/team/teams/"+sessionID,
+				type : "GET",
+				data : null,
+				success : loadTeamSuccess,
+				dataType : "json",
+				async: false
+			});
+		}
+	}
+
+}
+
+function loadTeamSuccess(response) {
+	console.log(response);
+	for(var i = 0; i < response.data.length; i++) {
+		var teamName = response.data[i]['name'];
+		var maxPlayers = response.data[i]['num_max_players'];
+		var teamID = response.data[i]['team_id'];
+		var sessionID = response.data[i]['session_id'];
+
+		var customHTML = '<button class="btn btn-sm btn-primary" disabled>You must be Signed In to join</button>';
+
+		if(isStudent) {
+			customHTML = '<button class="btn btn-sm btn-primary">Join</button>';
+		}
+
+		$("#session-"+sessionID).append('<div id="team-'+teamID+'" class="row session-table-team-row"><div class="col-sm-4 col-sm-offset-1">'+teamName+'</div><div class="col-sm-4">'+maxPlayers+'</div><div class="col-sm-2">'+customHTML+'</div></div>');
+	}
 }
 
 function openTeams(sender) {
@@ -142,6 +185,7 @@ function checkAdminSuccess() {
 	isAdmin = true;
 	isStudent = false;
 	isGuest = false;
+	$("#results-actions").html("Actions");
 	updateHeader();
 	// console.log("-checkAdminSuccess");
 }
@@ -159,6 +203,7 @@ function checkStudentLoggedIn() {
 		isAdmin = false;
 		isStudent = false;
 		isGuest = true;
+		$("#results-actions").html("Results");
 		updateHeader();
 	});
 
@@ -170,6 +215,7 @@ function checkStudentSuccess() {
 	isAdmin = false;
 	isStudent = true;
 	isGuest = false;
+	$("#results-actions").html("Results");
 	updateHeader();
 	// console.log("-checkStudentSuccess");
 }
