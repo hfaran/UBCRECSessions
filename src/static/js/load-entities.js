@@ -10,7 +10,7 @@ function loadVenueOptions() {
 }
 
 function loadVenueOptionsSuccess(response) {
-	console.log("+loadVenueOptionsSuccess");
+	// console.log("+loadVenueOptionsSuccess");
 	//console.log(response);
 	
 	// Go through each response and add it to the div
@@ -21,7 +21,7 @@ function loadVenueOptionsSuccess(response) {
 		venueOption = new Option(venue, venue, false, false);
 		document.all.venues.options.add(venueOption);
 	}
-	console.log("-loadVenueOptionsSuccess")
+	// console.log("-loadVenueOptionsSuccess")
 }
 
 // This function starts an AJAX call to load the sports
@@ -36,7 +36,7 @@ function loadSportsOptions() {
 }
 
 function loadSportsOptionsSuccess(response) {
-	console.log("+loadSportsOptionsSuccess");
+	// console.log("+loadSportsOptionsSuccess");
 	//console.log(response);
 	
 	// Go through each response and add it to the div
@@ -45,10 +45,10 @@ function loadSportsOptionsSuccess(response) {
 		var sport = response.data[i].name;
 		var sport_id = response.data[i].sport_id;
 		//console.log(sport);
-		sportOption = new Option(sport, sport_id, false, false);
+		sportOption = new Option(sport);
 		document.all.sports.options.add(sportOption);
 	}
 	
-	console.log("-loadSportsOptionsSuccess")
+	// console.log("-loadSportsOptionsSuccess")
 }
 
