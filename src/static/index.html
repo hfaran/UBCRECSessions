@@ -99,7 +99,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="container margin-top-50">
+		<div class="container margin-top-50" id="session-holder">
 			<div class="row session-table-header">
 				<div class="col-sm-3">
 					<strong>Sport</strong>
@@ -111,73 +111,9 @@
 					<strong>Time</strong>
 				</div>
 				<div class="col-sm-3">
-					<!-- @TODO IF IS_EMPLOYEE -->
-					<!-- <strong>Actions</strong> -->
-					<!-- @TODO ELSE -->
-					<strong>Results</strong>
-					<!-- @TODO ENDIF -->
+					<strong id="results-actions">Results</strong>
 				</div>
 			</div>
-			<!-- @TODO begin dynamic session row -->
-			<!-- @FOREACH SESSION -->
-			<div class="row session-table-row">
-				<div class="col-sm-3">
-					<strong>Sport 1</strong>
-					<span class="sub-field">4 teams | 17 players</span>
-				</div>
-				<div class="col-sm-3">
-					<strong>Venue 1</strong>
-					<span class="sub-field">123 Main St
-				</div>
-				<div class="col-sm-3">
-					<strong>12:04 AM</strong> - <strong>10:03 PM</strong>
-					<span class="sub-field">2015-04-04</span>
-				</div>
-				<div class="col-sm-3">
-					<!-- @TODO IF IS_EMPLOYEE -->
-					<!-- <button class="btn btn-sm btn-primary">Edit Results</button> -->
-					<!-- <button class="btn btn-sm btn-danger">Delete</button> -->
-					<!-- @TODO ELSE -->
-					<!-- Display the results -->
-					<!-- @TODO ENDIF -->
-				</div>
-			</div>
-			<!-- @TODO This is only used for guests and students, hide for employees -->
-			<div class="session-team-list">
-				<div class="row">
-					<div class="col-sm-4 col-sm-offset-1 session-table-team-header">
-						<strong>Team Name</strong>
-					</div>
-					<div class="col-sm-4 session-table-team-header">
-						<strong>Current/Max Players</strong>
-					</div>
-					<div class="col-sm-2 session-table-team-header">
-						<strong>Actions</strong>
-					</div>
-				</div>
-				<!-- @TODO begin dynamic session team row one per team -->
-				<!-- @FOREACH TEAM -->
-				<div class="row session-table-team-row">
-					<div class="col-sm-4 col-sm-offset-1">
-						Best Team
-					</div>
-					<div class="col-sm-4">
-						10/12
-					</div>
-					<div class="col-sm-2">
-						<!-- @TODO IF IS_STUDENT AND IS_REGISTER_TO_THIS_TEAM -->
-						<!-- <button class="btn btn-sm btn-danger">Leave</button> -->
-						<!-- @TODO ELSEIF IS_STUDENT AND IS_NOT_REGISTERED_TO_THIS_TEAM -->
-						<!-- Makes the AJAX call to register the student to the team  -->
-						<!-- <button class="btn btn-sm btn-primary">Join</button> -->
-						<!-- @TODO ELSE -->
-						<button class="btn btn-sm btn-primary" disabled>You must be Signed In to join</button>
-						<!-- @TODO ENDIF -->
-					</div>
-				</div>
-				<!-- @TODO end dynamic session team row -->
-			</div>
-			<!-- @TODO end dynamic session row -->
 		</div>
 
 		<!-- jQuery -->
