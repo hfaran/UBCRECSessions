@@ -472,6 +472,14 @@ class SQLAPI(object):
         players_count = self.cursor.fetchall()[0][0]
         return players_count
 
+    def get_players_registered_in_team(self, team_id):
+        """Return list of players currently in team_id as models
+
+        :rtype: list
+        """
+        self.cursor.execute("SELECT student_num FROM PlaysIn WHERE team_id=?", (team_id,))
+        return [self.get_player(row[0]) for row in self.cursor.fetchall()]
+
     def delete_session(self, session_id):
         """Delete session with ``session_id``
 

@@ -6,6 +6,33 @@
 
     Content-Type: application/json
 
+## GET
+
+
+**Input Schema**
+```json
+null
+```
+
+
+
+**Output Schema**
+```json
+{
+    "type": "string"
+}
+```
+
+
+
+**Notes**
+
+GET to check if authenticated.
+
+Should be obvious from status code (403 vs. 200).
+
+
+
 ## POST
 
 
@@ -50,33 +77,6 @@ POST the required credentials to get back a cookie
 
 * `username`: Username
 * `password`: Password
-
-
-
-## GET
-
-
-**Input Schema**
-```json
-null
-```
-
-
-
-**Output Schema**
-```json
-{
-    "type": "string"
-}
-```
-
-
-
-**Notes**
-
-GET to check if authenticated.
-
-Should be obvious from status code (403 vs. 200).
 
 
 
@@ -429,6 +429,52 @@ in/registered for by student with `student_number`
 
     Content-Type: application/json
 
+## PATCH
+
+
+**Input Schema**
+```json
+{
+    "properties": {
+        "results": {
+            "type": "string"
+        },
+        "session_id": {
+            "type": "number"
+        }
+    },
+    "required": [
+        "session_id",
+        "results"
+    ],
+    "type": "object"
+}
+```
+
+
+
+**Output Schema**
+```json
+{
+    "properties": {
+        "session_id": {
+            "type": "number"
+        }
+    },
+    "type": "object"
+}
+```
+
+
+
+**Notes**
+
+PATCH to add/amend results for a session
+
+* `results`: String noting results of a session
+
+
+
 ## PUT
 
 
@@ -555,52 +601,6 @@ null
 **Notes**
 
 GET data for session with `session_id`
-
-
-
-## PATCH
-
-
-**Input Schema**
-```json
-{
-    "properties": {
-        "results": {
-            "type": "string"
-        },
-        "session_id": {
-            "type": "number"
-        }
-    },
-    "required": [
-        "session_id",
-        "results"
-    ],
-    "type": "object"
-}
-```
-
-
-
-**Output Schema**
-```json
-{
-    "properties": {
-        "session_id": {
-            "type": "number"
-        }
-    },
-    "type": "object"
-}
-```
-
-
-
-**Notes**
-
-PATCH to add/amend results for a session
-
-* `results`: String noting results of a session
 
 
 
@@ -611,6 +611,52 @@ PATCH to add/amend results for a session
 
     Content-Type: application/json
 
+## PATCH
+
+
+**Input Schema**
+```json
+{
+    "properties": {
+        "results": {
+            "type": "string"
+        },
+        "session_id": {
+            "type": "number"
+        }
+    },
+    "required": [
+        "session_id",
+        "results"
+    ],
+    "type": "object"
+}
+```
+
+
+
+**Output Schema**
+```json
+{
+    "properties": {
+        "session_id": {
+            "type": "number"
+        }
+    },
+    "type": "object"
+}
+```
+
+
+
+**Notes**
+
+PATCH to add/amend results for a session
+
+* `results`: String noting results of a session
+
+
+
 ## PUT
 
 
@@ -737,52 +783,6 @@ null
 **Notes**
 
 GET data for session with `session_id`
-
-
-
-## PATCH
-
-
-**Input Schema**
-```json
-{
-    "properties": {
-        "results": {
-            "type": "string"
-        },
-        "session_id": {
-            "type": "number"
-        }
-    },
-    "required": [
-        "session_id",
-        "results"
-    ],
-    "type": "object"
-}
-```
-
-
-
-**Output Schema**
-```json
-{
-    "properties": {
-        "session_id": {
-            "type": "number"
-        }
-    },
-    "type": "object"
-}
-```
-
-
-
-**Notes**
-
-PATCH to add/amend results for a session
-
-* `results`: String noting results of a session
 
 
 
@@ -882,6 +882,38 @@ null
 **Notes**
 
 GET array of all sports
+
+
+
+<br>
+<br>
+
+# /api/team/players/\(?P\<team\_id\>\[a\-zA\-Z0\-9\_\]\+\)/?$
+
+    Content-Type: application/json
+
+## GET
+
+
+**Input Schema**
+```json
+null
+```
+
+
+
+**Output Schema**
+```json
+{
+    "type": "array"
+}
+```
+
+
+
+**Notes**
+
+GET array of players that are in `team_id`
 
 
 
@@ -1036,39 +1068,6 @@ GET array of all teams for the given `session_id`
 
     Content-Type: application/json
 
-## GET
-
-
-**Input Schema**
-```json
-null
-```
-
-
-
-**Output Schema**
-```json
-{
-    "properties": {
-        "address": {
-            "type": "string"
-        },
-        "name": {
-            "type": "string"
-        }
-    },
-    "type": "object"
-}
-```
-
-
-
-**Notes**
-
-GET data for venue with ``venue_name``
-
-
-
 ## PUT
 
 
@@ -1110,6 +1109,39 @@ GET data for venue with ``venue_name``
 **Notes**
 
 PUT to add new venue
+
+
+
+## GET
+
+
+**Input Schema**
+```json
+null
+```
+
+
+
+**Output Schema**
+```json
+{
+    "properties": {
+        "address": {
+            "type": "string"
+        },
+        "name": {
+            "type": "string"
+        }
+    },
+    "type": "object"
+}
+```
+
+
+
+**Notes**
+
+GET data for venue with ``venue_name``
 
 
 
@@ -1120,39 +1152,6 @@ PUT to add new venue
 
     Content-Type: application/json
 
-## GET
-
-
-**Input Schema**
-```json
-null
-```
-
-
-
-**Output Schema**
-```json
-{
-    "properties": {
-        "address": {
-            "type": "string"
-        },
-        "name": {
-            "type": "string"
-        }
-    },
-    "type": "object"
-}
-```
-
-
-
-**Notes**
-
-GET data for venue with ``venue_name``
-
-
-
 ## PUT
 
 
@@ -1194,6 +1193,39 @@ GET data for venue with ``venue_name``
 **Notes**
 
 PUT to add new venue
+
+
+
+## GET
+
+
+**Input Schema**
+```json
+null
+```
+
+
+
+**Output Schema**
+```json
+{
+    "properties": {
+        "address": {
+            "type": "string"
+        },
+        "name": {
+            "type": "string"
+        }
+    },
+    "type": "object"
+}
+```
+
+
+
+**Notes**
+
+GET data for venue with ``venue_name``
 
 
 

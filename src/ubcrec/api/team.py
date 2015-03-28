@@ -120,3 +120,26 @@ class Register(APIHandler):
         )
 
         return dict(team_id=team_id)
+
+
+class Players(APIHandler):
+
+    @schema.validate(
+        output_schema={
+            "type": "array"
+        }
+    )
+    def get(self, team_id):
+        """
+        GET array of players that are in `team_id`
+        """
+        def player_to_dict(player):
+            return {k: getattr(player, k) for k in (
+                "student_number",
+                "full_name"
+            )}
+
+        return list(map(
+            player_to_dict,
+            self.db_conn.get_players_registered_in_team(team_id=int(team_id))
+        ))
