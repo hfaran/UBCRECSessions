@@ -9,6 +9,7 @@
 		<!-- Bootstrap CSS -->
 		<link href="//netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+		<link href="/static/css/datepicker.css" rel="stylesheet">
 		<link href="/static/css/master.css" rel="stylesheet">
 	</head>
 	<body>
@@ -28,7 +29,7 @@
 						<li><a href="/static/admin-venues.html">Add Venue</a></li>
 						<li><a href="/static/admin-session.html">Add Session</a></li>
 						<li><a href="/static/admin-schedule.html">Work Schedule</a></li>
-						<li><a href="#">Log Out</a></li>
+						<li onclick="logout()"><a href="#">Log Out</a></li>
 					</ul>
 				</div>
 			</div>
@@ -41,22 +42,12 @@
 							<legend>Add Session</legend>
 			  				<div class="form-group">
 								<select id="venues" class="form-control">
-									<!-- @TODO Use $.ajax() to load in available venues -->
-									<option>Venue 1</option>
-									<option>Venue 2</option>
-									<option>Venue 3</option>
-									<option>Venue 4</option>
-									<option>Venue 5</option>
+								<!-- Filled with AJAX -->
 								</select>
 							</div>
 			  				<div class="form-group">
 								<select id="sports" class="form-control">
-									<!-- @TODO Use $.ajax() to load in available sports -->
-									<option>Sport 1</option>
-									<option>Sport 2</option>
-									<option>Sport 3</option>
-									<option>Sport 4</option>
-									<option>Sport 5</option>
+								<!-- Filled with AJAX -->
 								</select>
 							</div>
 							<div class="form-group">
@@ -73,8 +64,13 @@
 						<fieldset>
 							<legend>Session Teams</legend>
 							<div id="teams">
-								<div class="form-group">
-									<input type="text" class="form-control team" placeholder="Team Name">
+								<div class="row">
+									<div class="form-group col-sm-8">
+										<input type="text" class="form-control team" id="team-name" placeholder="Team Name">
+									</div>
+									<div class="form-group col-sm-4">
+										<input type="number" class="form-control team" id="max-players" placeholder="Max">
+									</div>
 								</div>
 							</div>
 							<div class="form-group">
@@ -104,6 +100,9 @@
 		<script src="//netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/js/bootstrap-datetimepicker.min.js"></script>
+		<script src="/static/js/bootstrap-datepicker.js"></script>
+		<script src="/static/js/log-out.js"></script>
 		<script src="/static/js/admin-session.js"></script>
+		<script src="/static/js/load-entities.js"></script>
 	</body>
 </html>
