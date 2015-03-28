@@ -9,6 +9,13 @@ class Model(object):
     def __str__(self):
         return json.dumps(self.to_dict(), indent=2)
 
+    def __repr__(self):
+        d = self.to_dict()
+        return "{}({})".format(
+            self.__class__.__name__,
+            ", ".join("{}={}".format(k, v) for k, v in d.items())
+        )
+
 
 class Player(Model):
     """Model of Player
@@ -24,6 +31,13 @@ class Player(Model):
         self.hashed_pass = hashed_pass
         self.salt = salt
 
+    def to_dict(self):
+        return {k: getattr(self, k) for k in [
+            "student_number",
+            "full_name",
+            "hashed_pass",
+            "salt"
+        ]}
 
 class Employee(Model):
     """Employee Model

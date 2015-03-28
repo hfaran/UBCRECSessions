@@ -143,12 +143,6 @@ VALUES (89789656, 'Sarah Blessnil',
         '$2a$12$SyAcf3XD/hg0fLEbAPahheWyrHGORDRbgb6zTyQPpI/i4clYj.kau',
         '$2a$12$SyAcf3XD/hg0fLEbAPahhe');
 
-INSERT INTO PlaysIn (student_num, team_id) VALUES (12346589, 1);
-INSERT INTO PlaysIn (student_num, team_id) VALUES (09876543, 2);
-INSERT INTO PlaysIn (student_num, team_id) VALUES (67539489, 3);
-INSERT INTO PlaysIn (student_num, team_id) VALUES (68723732, 4);
-INSERT INTO PlaysIn (student_num, team_id) VALUES (89789656, 5);
-
 INSERT INTO Team_ParticipatesIn (name, team_id, number_of_players, session_id)
 VALUES ('Lakers', 1, 10, 1);
 INSERT INTO Team_ParticipatesIn (name, team_id, number_of_players, session_id)
@@ -159,3 +153,19 @@ INSERT INTO Team_ParticipatesIn (name, team_id, number_of_players, session_id)
 VALUES ('Fake Madrid', 4, 10, 4);
 INSERT INTO Team_ParticipatesIn (name, team_id, number_of_players, session_id)
 VALUES ('Eagles', 5, 10, 5);
+
+INSERT INTO PlaysIn (student_num, team_id) VALUES (12346589, 1);
+INSERT INTO PlaysIn (student_num, team_id) VALUES (12346589, 2);
+INSERT INTO PlaysIn (student_num, team_id) VALUES (12346589, 3);
+INSERT INTO PlaysIn (student_num, team_id) VALUES (09876543, 2);
+INSERT INTO PlaysIn (student_num, team_id) VALUES (09876543, 3);
+INSERT INTO PlaysIn (student_num, team_id) VALUES (09876543, 4);
+INSERT INTO PlaysIn (student_num, team_id) VALUES (67539489, 3);
+INSERT INTO PlaysIn (student_num, team_id) VALUES (67539489, 4);
+INSERT INTO PlaysIn (student_num, team_id) VALUES (67539489, 5);
+INSERT INTO PlaysIn (student_num, team_id) VALUES (68723732, 4);
+INSERT INTO PlaysIn (student_num, team_id) VALUES (68723732, 5);
+INSERT INTO PlaysIn (student_num, team_id) VALUES (68723732, 1);
+INSERT INTO PlaysIn (student_num, team_id) VALUES (89789656, 5);
+INSERT INTO PlaysIn (student_num, team_id) VALUES (89789656, 1);
+INSERT INTO PlaysIn (student_num, team_id) VALUES (89789656, 2);
