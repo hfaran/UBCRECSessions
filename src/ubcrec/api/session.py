@@ -1,7 +1,7 @@
 from tornado_json import schema
 
 from ubcrec.handlers import APIHandler
-from ubcrec.common import get_session
+from ubcrec.common import get_session, extend_sessions
 from ubcrec.web import authenticated
 from ubcrec import models
 from ubcrec.constants import USERTYPE_EMPLOYEE
@@ -151,17 +151,5 @@ class Sessions(APIHandler):
                 ]}
             )
         ))
-
-        sports = {sport.sport_id: sport for sport in self.db_conn.get_sports()}
-        for session in sessions:
-            teams = {team.team_id: team for team in
-                     self.db_conn.get_teams_for_session(session["session_id"])}
-            num_players_in_session = sum(
-                self.db_conn.get_num_players_registered(team_id)
-                for team_id in teams
-            )
-            session["sport_name"] = sports[session["sport_id"]].name
-            session["num_registered_players"] = num_players_in_session
-            session["num_teams"] = len(teams)
-
+        extend_sessions(self.db_conn, sessions)
         return sessions

@@ -45,6 +45,25 @@ def get_session(db_conn, session_id):
     return session
 
 
+def extend_sessions(db_conn, sessions):
+    """Extend ``sessions`` (in-place!)
+
+    :type sessions: list
+    :param sessions: list of Session dicts
+    """
+    sports = {sport.sport_id: sport for sport in db_conn.get_sports()}
+    for session in sessions:
+        teams = {team.team_id: team for team in
+                 db_conn.get_teams_for_session(session["session_id"])}
+        num_players_in_session = sum(
+            db_conn.get_num_players_registered(team_id)
+            for team_id in teams
+        )
+        session["sport_name"] = sports[session["sport_id"]].name
+        session["num_registered_players"] = num_players_in_session
+        session["num_teams"] = len(teams)
+
+
 def get_venue(db_conn, venue_name):
     """Get Venue with ``venue_name``
 

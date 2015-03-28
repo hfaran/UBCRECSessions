@@ -6,7 +6,7 @@ from tornado_json.exceptions import api_assert
 from tornado_json import schema
 
 from ubcrec.handlers import APIHandler
-from ubcrec.common import get_player, get_session
+from ubcrec.common import get_player, get_session, extend_sessions
 from ubcrec.constants import USERTYPE_PLAYER, USERTYPE_EMPLOYEE
 from ubcrec.web import authenticated
 from ubcrec.models import Session
@@ -121,13 +121,15 @@ class Sessions(APIHandler):
         session_ids = self.db_conn.get_player_session_ids(
             self.get_current_user()
         )
-        return list(map(
+        sessions = list(map(
             Session.to_dict,
             map(
                 partial(get_session, self.db_conn),
                 session_ids
             )
         ))
+        extend_sessions(self.db_conn, sessions)
+        return sessions
 
 
 class StudentSessions(APIHandler):
