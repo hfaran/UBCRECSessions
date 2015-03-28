@@ -12,4 +12,12 @@
     - See `sample_queries.sql`
 * List all functional dependencies that are applicable to the table (including the ones involving the primary key). For each functional dependency, briefly describe its meaning in English.
     - The schema is described in `schema_graph.pdf`; we will describe the functional dependencies below.
-    - 
+	- All of our tables are in BCNF, as we have no tables where the key does not determine the other attributes.
+    - The 'center' of the schema is the Sessions table. The key, session_id, determines start_time, end_time, sport_id, venue_name, and results.
+	- The Sport and Venue tables are 2-column key-value tables, which satisfies 3NF/BCNF. In the Sport table, sport_id determines name, and for the Venue table, venue_name determines address. Because address is stored in a single attribute, there are no explicit additional functional dependencies in this table.
+	- In Team_ParticipatesIn, team_id determines the name, number_of_players, and session_id.
+	- In PlaysIn, the key, student_num, determines team_id.
+	- In Players, the key student_num determines name, password, and salt.
+	- In Employees, the key sin determines first_name, last_name, username, password, and salt.
+	- In Working, there are no functional dependencies.
+	
