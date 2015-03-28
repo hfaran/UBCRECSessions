@@ -123,9 +123,11 @@ function loadSessionsSuccess(response) {
 		var startTime = response.data[i]['start_time'];
 		var results = response.data[i]['results'];
 		var venue = response.data[i]['venue_name'];
-		var sport = response.data[i]['sport_id'];
+		var sport = response.data[i]['sport_name'];
 		var sessionID = response.data[i]['session_id'];
-
+		var numPlayers = response.data[i]['num_registered_players'];
+		var numTeams = response.data[i]['num_teams'];
+		
 		var startDate = new Date(startTime * 1000);
 		var endDate = new Date(endTime * 1000);
 
@@ -135,7 +137,7 @@ function loadSessionsSuccess(response) {
 			customHTML = '<button id="edit-results-'+sessionID+'" class="btn btn-sm btn-primary">Edit Results</button><button id="delete-session-'+sessionID+'" class="btn btn-sm btn-danger">Delete</button>';
 		}
 
-		$("#session-holder").append('<div class="row session-table-row"><div class="col-sm-3">	<strong>'+sport+'</strong>	<span class="sub-field">4 teams | 17 players</span></div><div class="col-sm-3">	<strong>'+venue+'</strong>	<span class="sub-field">NEED ADDRESS</div><div class="col-sm-3">	<strong>'+startDate.toLocaleString()+'</strong> - <strong>'+endDate.toLocaleString()+'</strong></div><div class="col-sm-3">'+customHTML+'</div></div>')
+		$("#session-holder").append('<div class="row session-table-row"><div class="col-sm-3">	<strong>'+sport+'</strong>	<span class="sub-field">'+numTeams+' teams | '+numPlayers+' players</span></div><div class="col-sm-3">	<strong>'+venue+'</strong>	<span class="sub-field">NEED ADDRESS</div><div class="col-sm-3">	<strong>'+startDate.toLocaleString()+'</strong> - <strong>'+endDate.toLocaleString()+'</strong></div><div class="col-sm-3">'+customHTML+'</div></div>')
 
 		if(!isAdmin) {
 			$("#session-holder").append('<div id="session-'+sessionID+'" class="session-team-list"><div class="row">	<div class="col-sm-4 col-sm-offset-1 session-table-team-header">		<strong>Team Name</strong>	</div>	<div class="col-sm-4 session-table-team-header">		<strong>Max Players</strong>	</div>	<div class="col-sm-2 session-table-team-header">		<strong>Actions</strong>	</div></div></div>');
