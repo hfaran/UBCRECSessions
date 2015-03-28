@@ -114,7 +114,7 @@ function loadSessions() {
 
 function loadSessionsSuccess(response) {
 	// console.log("Load Session Success!\n");
-	// console.log(response.data);
+	console.log(response.data);
 
 
 	// Go through each response and add it to the div
@@ -267,9 +267,9 @@ function checkStudentLoggedIn() {
 
 	$.ajax({
 		url : "/api/auth/playerlogin/",
-		type : "POST",
+		type : "GET",
 		data : "",
-		success : loadSessionsSuccess,
+		success : checkStudentSuccess,
 		dataType : "json"
 	}).fail(function(){
 		isAdmin = false;
