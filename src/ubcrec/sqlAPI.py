@@ -410,6 +410,8 @@ class SQLAPI(object):
             shift_model_list.append(models.Shift(username=username, start_time=row[1], end_time=row[2]))
         return shift_model_list
 
+
+
     def get_sports(self):
         """Return list of all sports (as Sport models)
 
@@ -491,9 +493,56 @@ class SQLAPI(object):
         """
         self.cursor.execute("DELETE FROM Sessions WHERE session_id=?", (session_id, ))
 
+    def get_employee_shift(self, username, start=None, end=None):
+        """Return shifts for employee username
 
-"""
-def main():
+        :type username: str
+        :type start: int
+        :param start: Filter only shifts with a start_time greater
+            than this (Unix Time), or, if this is None, do not filter.
+        :type end: int
+        :param end: Filter only shifts with an end_time smaller
+            than this (Unix Time), or, if this is None, do not filter.
+        :return: list
+        :rtype: list
+        """
+
+        arg_list = []
+        where_clauses = []
+
+        query = "SELECT sin, start_shift, end_shift FROM (SELECT sin, start_shift, end_shift, username FROM Employees NATURAL JOIN Working) WHERE "
+
+        where_clauses.append(" username=? ")
+        arg_list.append(username)
+
+        if start is not None:
+            where_clauses.append("start_shift > ?")
+            arg_list.append(start)
+        if end is not None:
+            where_clauses.append("end_shift < ?")
+            arg_list.append(end)
+        query = "{0} {1}".format(query, " AND ".join(where_clauses))
+        print query
+        self.cursor.execute(query, arg_list)
+        selected_employees_list = self.cursor.fetchall()
+        return selected_employees_list
+
+    def get_single_players(self):
+        """Returns a list of players who did not register in any team
+
+        :return: list
+        :rtype: list
+        """
+        self.cursor.execute("SELECT * FROM Players WHERE NOT EXISTS (SELECT * FROM PlaysIn WHERE Players.student_num=PlaysIn.student_num)")
+        single_players = self.cursor.fetchall()
+
+        for row in single_players:
+            print ("The student %s with student number %s did not register in any team." % (row[0] , row[1]))
+
+        return single_players
+
+    # Don't kill me please ,  iwas lazy so I tested it this way instead of unittest
+"""def main():
     obj = SQLAPI('project.db')
     session = obj.get_session(1)
     print session.session_id
@@ -533,7 +582,12 @@ def main():
     for shift in shifts:
         print(shift)
 
+    print obj.get_employee_shift("acalhoon",1427235707)
+
+    print obj.get_single_players()
+
 
 if __name__ == "__main__":
     main()
+
 """
