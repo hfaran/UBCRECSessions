@@ -16,6 +16,9 @@ CREATE TABLE Working (
   end_shift   INTEGER,
   PRIMARY KEY (sin, start_shift, end_shift),
   FOREIGN KEY (sin) REFERENCES Employees (sin)
+  ON DELETE CASCADE
+  ON UPDATE CASCADE
+
 );
 CREATE TABLE Venue (
   name    TEXT PRIMARY KEY,
@@ -35,6 +38,8 @@ CREATE TABLE Sessions (
   results    TEXT,
   FOREIGN KEY (sport_id) REFERENCES Sport (sport_id),
   FOREIGN KEY (venue_name) REFERENCES Venue (venue_name)
+    ON UPDATE CASCADE
+    ON DELETE RESTRICT
 );
 CREATE TABLE Players (
   name        TEXT,
@@ -46,8 +51,12 @@ CREATE TABLE PlaysIn (
   student_num INTEGER,
   team_id     INTEGER,
   PRIMARY KEY (student_num, team_id),
-  FOREIGN KEY (student_num) REFERENCES Players (student_num),
+  FOREIGN KEY (student_num) REFERENCES Players (student_num)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE,
   FOREIGN KEY (team_id) REFERENCES Team_ParticipatesIn (team_id)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE
 );
 CREATE TABLE Team_ParticipatesIn (
   team_id           INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -55,6 +64,8 @@ CREATE TABLE Team_ParticipatesIn (
   number_of_players INTEGER,
   session_id        INT,
   FOREIGN KEY (session_id) REFERENCES Sessions (session_id)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE
 );
 
 
