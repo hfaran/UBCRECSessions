@@ -120,7 +120,7 @@ class SQLAPI(object):
         :type session_id: int
         :type results: str
         """
-        self.cursor.execute("UPDATE Sessions SET results=? WHERE session_id=? CHECK ( results NOT NULL AND session_id > 0)",
+        self.cursor.execute("UPDATE Sessions SET results=? WHERE session_id=?",
                             (results, session_id))
 
     def insert_player_data(self, name, student_number, password, salt):
@@ -541,8 +541,31 @@ class SQLAPI(object):
 
         return single_players
 
+    def get_avg_num_of_team_players(self, op="min"):
+        if (op == "min"):
+            #self.cursor.execute("SELECT session_id s_id, SUM(number_of_players) FROM (SELECT Sessions.session_id session_id, sport_id, team_id, number_of_players FROM Sessions LEFT OUTER JOIN Team_ParticipatesIn ON Sessions.session_id = Team_ParticipatesIn.session_id) GROUP BY s_id ")
+            self.cursor.execute("SELECT MIN(av) FROM (SELECT session_id s_id, COALESCE(AVG(number_of_players),0) av FROM"
+                                " (SELECT Sessions.session_id session_id, sport_id, team_id, number_of_players FROM "
+                                "Sessions LEFT OUTER JOIN Team_ParticipatesIn ON Sessions.session_id = Team_ParticipatesIn.session_id) GROUP BY s_id ) ")
+            row = self.cursor.fetchall()
+            print ("Minimum number of average team players in all session is {}".format(row[0][0]))
+        if (op == "max"):
+            self.cursor.execute("SELECT MAX(av) FROM (SELECT session_id s_id, COALESCE(AVG(number_of_players),0) av FROM (SELECT "
+                                "Sessions.session_id session_id, sport_id, team_id, number_of_players FROM Sessions LEFT"
+                                " OUTER JOIN Team_ParticipatesIn ON Sessions.session_id = Team_ParticipatesIn.session_id) GROUP BY s_id ) ")
+            row = self.cursor.fetchall()
+            print ("Maximum number of average team players in all session {}".format(row[0][0]))
+
+    def get_total_number_players_in_session (self):
+        self.cursor.execute("SELECT session_id s_id, SUM(number_of_players) FROM (SELECT Sessions.session_id session_id,"
+                            " sport_id, team_id, number_of_players FROM Sessions LEFT OUTER JOIN Team_ParticipatesIn ON "
+                            "Sessions.session_id = Team_ParticipatesIn.session_id) GROUP BY s_id ")
+        rows = self.cursor.fetchall()
+        for row in rows:
+            print ("The session {0} has {1} registered participants".format(row[0],row[1]))
+"""
     # Don't kill me please ,  iwas lazy so I tested it this way instead of unittest
-"""def main():
+def main():
     obj = SQLAPI('project.db')
     session = obj.get_session(1)
     print session.session_id
@@ -570,7 +593,7 @@ class SQLAPI(object):
 
     print obj.get_team(4)
 
-    sessions = s.get_sessions(
+    sessions = obj.get_sessions(
         sports=["Basketball", "Volleyball", "Indoor Soccer"],
         venues=["SRC B"],
         started_after=1427235704
@@ -584,10 +607,13 @@ class SQLAPI(object):
 
     print obj.get_employee_shift("acalhoon",1427235707)
 
-    print obj.get_single_players()
-
-
+    print obj.get_single_players()"""
+    obj.get_total_number_players_in_session()
+    obj.get_avg_num_of_team_players("min")
+    obj.get_avg_num_of_team_players("max")
+    obj.add_session_results(-1,"20-20")
 if __name__ == "__main__":
     main()
+    """
 
-"""
+
