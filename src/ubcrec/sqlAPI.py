@@ -120,7 +120,7 @@ class SQLAPI(object):
         :type session_id: int
         :type results: str
         """
-        self.cursor.execute("UPDATE Sessions SET results=? WHERE session_id=?",
+        self.cursor.execute("UPDATE Sessions SET results=? WHERE session_id=? CHECK ( results NOT NULL AND session_id > 0)",
                             (results, session_id))
 
     def insert_player_data(self, name, student_number, password, salt):
