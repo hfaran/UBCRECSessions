@@ -372,19 +372,10 @@ null
 ```
 
 
-**Output Example**
-```json
-[
-    1,
-    56,
-    7859
-]
-```
-
 
 **Notes**
 
-(Player only) GET to retrieve IDs of sessions participated
+(Player only) GET to retrieve session objects participated
 in/registered for
 
 
@@ -438,6 +429,87 @@ in/registered for by student with `student_number`
 
     Content-Type: application/json
 
+## PUT
+
+
+**Input Schema**
+```json
+{
+    "properties": {
+        "end_time": {
+            "type": "number"
+        },
+        "sport_id": {
+            "type": "number"
+        },
+        "start_time": {
+            "type": "number"
+        },
+        "venue_name": {
+            "type": "string"
+        }
+    },
+    "required": [
+        "start_time",
+        "end_time",
+        "sport_id",
+        "venue_name"
+    ],
+    "type": "object"
+}
+```
+
+
+
+**Output Schema**
+```json
+{
+    "properties": {
+        "session_id": {
+            "type": "number"
+        }
+    },
+    "type": "object"
+}
+```
+
+
+
+**Notes**
+
+PUT to create a new session
+
+* `start_time`: Time session starts in Unix Time
+* `end_time`: Time session ends in Unix Time
+* `sport_id`: ID of sport this session is for
+* `venue_name`: Name of venue where this session is held
+
+
+
+## DELETE
+
+
+**Input Schema**
+```json
+null
+```
+
+
+
+**Output Schema**
+```json
+null
+```
+
+
+
+**Notes**
+
+(Employees Only) DELETE session with `session_id`
+    (cascade through teams for that session)
+
+
+
 ## GET
 
 
@@ -529,87 +601,6 @@ GET data for session with `session_id`
 PATCH to add/amend results for a session
 
 * `results`: String noting results of a session
-
-
-
-## PUT
-
-
-**Input Schema**
-```json
-{
-    "properties": {
-        "end_time": {
-            "type": "number"
-        },
-        "sport_id": {
-            "type": "number"
-        },
-        "start_time": {
-            "type": "number"
-        },
-        "venue_name": {
-            "type": "string"
-        }
-    },
-    "required": [
-        "start_time",
-        "end_time",
-        "sport_id",
-        "venue_name"
-    ],
-    "type": "object"
-}
-```
-
-
-
-**Output Schema**
-```json
-{
-    "properties": {
-        "session_id": {
-            "type": "number"
-        }
-    },
-    "type": "object"
-}
-```
-
-
-
-**Notes**
-
-PUT to create a new session
-
-* `start_time`: Time session starts in Unix Time
-* `end_time`: Time session ends in Unix Time
-* `sport_id`: ID of sport this session is for
-* `venue_name`: Name of venue where this session is held
-
-
-
-## DELETE
-
-
-**Input Schema**
-```json
-null
-```
-
-
-
-**Output Schema**
-```json
-null
-```
-
-
-
-**Notes**
-
-(Employees Only) DELETE session with `session_id`
-    (cascade through teams for that session)
 
 
 
@@ -620,6 +611,87 @@ null
 
     Content-Type: application/json
 
+## PUT
+
+
+**Input Schema**
+```json
+{
+    "properties": {
+        "end_time": {
+            "type": "number"
+        },
+        "sport_id": {
+            "type": "number"
+        },
+        "start_time": {
+            "type": "number"
+        },
+        "venue_name": {
+            "type": "string"
+        }
+    },
+    "required": [
+        "start_time",
+        "end_time",
+        "sport_id",
+        "venue_name"
+    ],
+    "type": "object"
+}
+```
+
+
+
+**Output Schema**
+```json
+{
+    "properties": {
+        "session_id": {
+            "type": "number"
+        }
+    },
+    "type": "object"
+}
+```
+
+
+
+**Notes**
+
+PUT to create a new session
+
+* `start_time`: Time session starts in Unix Time
+* `end_time`: Time session ends in Unix Time
+* `sport_id`: ID of sport this session is for
+* `venue_name`: Name of venue where this session is held
+
+
+
+## DELETE
+
+
+**Input Schema**
+```json
+null
+```
+
+
+
+**Output Schema**
+```json
+null
+```
+
+
+
+**Notes**
+
+(Employees Only) DELETE session with `session_id`
+    (cascade through teams for that session)
+
+
+
 ## GET
 
 
@@ -711,87 +783,6 @@ GET data for session with `session_id`
 PATCH to add/amend results for a session
 
 * `results`: String noting results of a session
-
-
-
-## PUT
-
-
-**Input Schema**
-```json
-{
-    "properties": {
-        "end_time": {
-            "type": "number"
-        },
-        "sport_id": {
-            "type": "number"
-        },
-        "start_time": {
-            "type": "number"
-        },
-        "venue_name": {
-            "type": "string"
-        }
-    },
-    "required": [
-        "start_time",
-        "end_time",
-        "sport_id",
-        "venue_name"
-    ],
-    "type": "object"
-}
-```
-
-
-
-**Output Schema**
-```json
-{
-    "properties": {
-        "session_id": {
-            "type": "number"
-        }
-    },
-    "type": "object"
-}
-```
-
-
-
-**Notes**
-
-PUT to create a new session
-
-* `start_time`: Time session starts in Unix Time
-* `end_time`: Time session ends in Unix Time
-* `sport_id`: ID of sport this session is for
-* `venue_name`: Name of venue where this session is held
-
-
-
-## DELETE
-
-
-**Input Schema**
-```json
-null
-```
-
-
-
-**Output Schema**
-```json
-null
-```
-
-
-
-**Notes**
-
-(Employees Only) DELETE session with `session_id`
-    (cascade through teams for that session)
 
 
 
