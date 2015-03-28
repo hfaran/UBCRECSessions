@@ -563,7 +563,7 @@ class SQLAPI(object):
         rows = self.cursor.fetchall()
         for row in rows:
             print ("The session {0} has {1} registered participants".format(row[0],row[1]))
-"""
+
     # Don't kill me please ,  iwas lazy so I tested it this way instead of unittest
 def main():
     obj = SQLAPI('project.db')
@@ -601,19 +601,20 @@ def main():
     for session in sessions:
         print(session)
 
-    shifts = s.get_employee_shifts("rcalhoon", start=1427235704)
+    shifts = obj.get_employee_shifts("rcalhoon", start=1427235704)
     for shift in shifts:
         print(shift)
 
     print obj.get_employee_shift("acalhoon",1427235707)
 
-    print obj.get_single_players()"""
+    print obj.get_single_players()
     obj.get_total_number_players_in_session()
     obj.get_avg_num_of_team_players("min")
     obj.get_avg_num_of_team_players("max")
     obj.add_session_results(-1,"20-20")
+    obj.create_session(1,1,1,"SRC")
 if __name__ == "__main__":
     main()
-    """
+
 
 

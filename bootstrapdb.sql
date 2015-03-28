@@ -25,18 +25,20 @@ CREATE TABLE Venue (
   address TEXT
 );
 CREATE TABLE Sport (
-  sport_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  sport_id INTEGER PRIMARY KEY AUTOINCREMENT CHECK (sport_id > 0),
   name     TEXT,
   UNIQUE (name)
 );
 CREATE TABLE Sessions (
   session_id INTEGER PRIMARY KEY AUTOINCREMENT,
-  start_time INTEGER CHECK (start_time > 0),
-  end_time   INTEGER CHECK (end_time > 0),
-  sport_id   INTEGER,
+  start_time INTEGER CHECK (start_time > 0 AND end_time>start_time),
+  end_time   INTEGER CHECK (end_time > 0 AND end_time>start_time),
+  sport_id   INTEGER CHECK (sport_id > 0),
   venue_name TEXT,
   results    TEXT,
   FOREIGN KEY (sport_id) REFERENCES Sport (sport_id),
+    on UPDATE RESTRICT
+    ON DELETE RESTRICT
   FOREIGN KEY (venue_name) REFERENCES Venue (venue_name)
     ON UPDATE CASCADE
     ON DELETE RESTRICT
@@ -127,11 +129,11 @@ VALUES (1427235705, 1427239305, 1, 'SRC_A');
 INSERT INTO Sessions (start_time, end_time, sport_id, venue_name)
 VALUES (1427235705, 1427239305, 2, 'SRC_B');
 INSERT INTO Sessions (start_time, end_time, sport_id, venue_name)
-VALUES (1427235705, 1427239305, 3, 'Thunderbird');
+VALUES (1427235702, 1427239305, 3, 'Thunderbird');
 INSERT INTO Sessions (start_time, end_time, sport_id, venue_name)
-VALUES (1427235705, 1427239305, 4, 'SRC_GYM');
+VALUES (1427235706, 1427239305, 4, 'SRC_GYM');
 INSERT INTO Sessions (start_time, end_time, sport_id, venue_name)
-VALUES (1427235705, 1427239305, 5, 'Aquatic_Center');
+VALUES (1427235703, 1427239305, 5, 'Aquatic_Center');
 
 INSERT INTO Players (student_num, name, password, salt)
 VALUES (12346589, 'Patton Hunt',
