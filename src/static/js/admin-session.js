@@ -78,7 +78,9 @@ function addSession() {
 		data : JSON.stringify(addSessionData),
 		success : addSessionSuccess,
 		dataType : "json"
-	});
+	}).fail(function(response){
+		alert(response.data)
+		}).error(function(response){alert(response.message)});
 
 	console.log("-addSession");
 }
@@ -113,6 +115,10 @@ function registerTeams(sessionID) {
 				alert(teamData['name'] + " was added to the session.")
 			},
 			dataType : "json"
-		});
+		}).fail(function(response){
+			alert(response.data)
+			}).error(function(response){alert(response.message)});
 	});
+	
+	window.location.assign("/static/index.html");
 }

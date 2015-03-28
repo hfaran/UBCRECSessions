@@ -6,7 +6,9 @@ function loadVenueOptions() {
 		data : "",
 		success : loadVenueOptionsSuccess,
 		dataType : "json"
-	});
+	}).fail(function(response){
+		alert(response.data)
+		}).error(function(response){alert(response.message)});;
 }
 
 function loadVenueOptionsSuccess(response) {
@@ -32,7 +34,9 @@ function loadSportsOptions() {
 		data : "",
 		success : loadSportsOptionsSuccess,
 		dataType : "json"
-	});
+	}).fail(function(response){
+		alert(response.data)
+		}).error(function(response){alert(response.message)});
 }
 
 function loadSportsOptionsSuccess(response) {

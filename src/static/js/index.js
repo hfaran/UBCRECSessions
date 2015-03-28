@@ -40,7 +40,9 @@ function loadMySessions() {
 		data : null,
 		success : loadSessionsSuccess,
 		dataType : "json"
-	});
+	}).fail(function(response){
+		alert(response.data)
+		}).error(function(response){alert(response.message)});;
 }
 
 
@@ -117,7 +119,9 @@ function loadSessions() {
 		data : JSON.stringify(sessionsQueryData),
 		success : loadSessionsSuccess,
 		dataType : "json"
-	});
+	}).fail(function(response){
+		alert(response.data)
+		}).error(function(response){alert(response.message)});;
 }
 
 function loadSessionsSuccess(response) {
@@ -161,7 +165,9 @@ function loadSessionsSuccess(response) {
 				data : null,
 				success : loadTeamSuccess,
 				dataType : "json"
-			});
+			}).fail(function(response){
+				alert(response.data)
+				}).error(function(response){alert(response.message)});;
 		} else {
 			$("#delete-session-"+sessionID).on("click", function() {
 					var sID = $(this).attr('id').split('-')[2];
@@ -171,7 +177,9 @@ function loadSessionsSuccess(response) {
 						data : null,
 						success : deleteSessionSuccess,
 						dataType : "json"
-					});
+					}).fail(function(response){
+						alert(response.data)
+						}).error(function(response){alert(response.message)});
 			});
 
 			$("#edit-results-"+sessionID).on("click", function() {
@@ -190,7 +198,9 @@ function loadSessionsSuccess(response) {
 								alert("Results updated!");
 							},
 							dataType : "json"
-						});
+						}).fail(function(response){
+							alert(response.data)
+							}).error(function(response){alert(response.message)});
 					}
 			});
 		}
@@ -231,7 +241,9 @@ function loadTeamSuccess(response) {
 				data : JSON.stringify(data),
 				success : teamRegisterSuccess,
 				dataType : "json"
-			}).fail(function() {alert("Could not join team. :(")});
+			}).fail(function(response){
+				alert(response.data)
+				}).error(function(response){alert(response.message)});
 		});
 	}
 }

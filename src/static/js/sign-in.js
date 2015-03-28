@@ -38,8 +38,8 @@ function signIn() {
 		success : studentLoginSuccess,
 		dataType : "json"
 	}).fail(function(){
-		alert("Incorrect student_number/password!")
-		});
+		alert(response.data)
+		}).error(function(){alert(response.message)});
 
 }
 

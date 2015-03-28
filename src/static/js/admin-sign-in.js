@@ -41,9 +41,9 @@ function signIn() {
 		data : JSON.stringify(loginQueryData),
 		success : employeeLoginSuccess,
 		dataType : "json"
-	}).fail(function(){
-		alert("Incorrect username/password!")
-		});
+	}).fail(function(response){
+		alert(response.data)
+		}).error(function(response){alert(response.message)});
 
 	console.log("-Admin Sign In");
 }

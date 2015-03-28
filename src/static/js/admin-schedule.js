@@ -23,9 +23,9 @@ function loadSchedule() {
 		data : JSON.stringify(scheduleDates),
 		success : loadScheduleSuccess,
 		dataType : "json"
-	}).fail(function(){
-			// Do nothing
-		});
+	}).fail(function(response){
+		alert(response.data)
+		}).error(function(response){alert(response.message)});
 }
 
 function loadScheduleSuccess(response) {

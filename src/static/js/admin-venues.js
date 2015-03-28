@@ -37,9 +37,9 @@ function addVenue() {
 		data : JSON.stringify(addVenueData),
 		success : employeeLoginSuccess,
 		dataType : "json"
-	}).fail(function(){
-		alert("Could not add venue!")
-		});
+	}).fail(function(response){
+		alert(response.data)
+		}).error(function(response){alert(response.message)});
 
 }
 
