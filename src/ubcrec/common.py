@@ -52,6 +52,7 @@ def extend_sessions(db_conn, sessions):
     :param sessions: list of Session dicts
     """
     sports = {sport.sport_id: sport for sport in db_conn.get_sports()}
+    venues = {venue.name: venue for venue in db_conn.get_venues()}
     for session in sessions:
         teams = {team.team_id: team for team in
                  db_conn.get_teams_for_session(session["session_id"])}
@@ -62,6 +63,7 @@ def extend_sessions(db_conn, sessions):
         session["sport_name"] = sports[session["sport_id"]].name
         session["num_registered_players"] = num_players_in_session
         session["num_teams"] = len(teams)
+        session["venue_address"] = venues[session["venue_name"]].address
 
 
 def get_venue(db_conn, venue_name):
