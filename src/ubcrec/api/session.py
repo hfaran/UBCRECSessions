@@ -140,7 +140,7 @@ class Sessions(APIHandler):
         * `sports`: Array of sport names; filter only sessions for these sports
         * `venues`: Array of venue names; filter only sessions held in these venues
         """
-        return list(map(
+        sessions = list(map(
             models.Session.to_dict,
             self.db_conn.get_sessions(
                 **{k: self.body.get(k, None) for k in [
@@ -151,3 +151,17 @@ class Sessions(APIHandler):
                 ]}
             )
         ))
+
+        sports = {sport.sport_id: sport for sport in self.db_conn.get_sports()}
+        for session in sessions:
+            teams = {team.team_id: team for team in
+                     self.db_conn.get_teams_for_session(session["session_id"])}
+            num_players_in_session = sum(
+                self.db_conn.get_num_players_registered(team_id)
+                for team_id in teams
+            )
+            session["sport_name"] = sports[session["sport_id"]].name
+            session["num_registered_players"] = num_players_in_session
+            session["num_teams"] = len(teams)
+
+        return sessions
