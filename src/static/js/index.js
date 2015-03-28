@@ -26,18 +26,26 @@ $( document ).ready(function() {
 	loadVenueOptions();
 	loadSportsOptions();
 	checkLoginStatus();
+	
 
 	// Add the loadSessions method to the 'Search Sessions' button
 	$("#search-sessions").on("click", loadSessions);
-	$("#my-sessions").on("click", loadSessions);
+	$("#my-sessions").on("click", loadMySessions);
 });
+
+function loadMySessions() {
+	$.ajax({
+		url : "/api/player/sessions/",
+		type : "GET",
+		data : null,
+		success : loadSessionsSuccess,
+		dataType : "json"
+	});
+}
 
 
 // This function builds the sessionsQueryData object and sends the AJAX call
 function loadSessions() {
-	$("#session-holder").html('<div class="row session-table-header"><div class="col-sm-3">	<strong>Sport</strong></div><div class="col-sm-3">	<strong>Venue</strong></div><div class="col-sm-3">	<strong>Time</strong></div><div class="col-sm-3">	<strong id="results-actions">Results</strong></div></div>');
-
-
 	// This data structure is sent to the API when searching for queries
 	// Empty venues or sports will return all venues or sports
 	// started_after and ended_before is UNIX timestamp
@@ -115,8 +123,9 @@ function loadSessions() {
 function loadSessionsSuccess(response) {
 	// console.log("Load Session Success!\n");
 	console.log(response.data);
-
-
+	
+	$("#session-holder").html('<div class="row session-table-header"><div class="col-sm-3">	<strong>Sport</strong></div><div class="col-sm-3">	<strong>Venue</strong></div><div class="col-sm-3">	<strong>Time</strong></div><div class="col-sm-3">	<strong id="results-actions">Results</strong></div></div>');
+	
 	// Go through each response and add it to the div
 	for(var i = 0; i < response.data.length; i++) {
 		var endTime = response.data[i]['end_time'];
