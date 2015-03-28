@@ -1,13 +1,15 @@
 import re
+from functools import partial
 
 import bcrypt
 from tornado_json.exceptions import api_assert
 from tornado_json import schema
 
 from ubcrec.handlers import APIHandler
-from ubcrec.common import get_player
+from ubcrec.common import get_player, get_session
 from ubcrec.constants import USERTYPE_PLAYER, USERTYPE_EMPLOYEE
 from ubcrec.web import authenticated
+from ubcrec.models import Session
 
 
 class Player(APIHandler):
@@ -110,17 +112,22 @@ class Sessions(APIHandler):
         output_schema={
             "type": "array",
         },
-        output_example=[1, 56, 7859]
     )
     def get(self):
         """
-        (Player only) GET to retrieve IDs of sessions participated
+        (Player only) GET to retrieve session objects participated
         in/registered for
         """
         session_ids = self.db_conn.get_player_session_ids(
             self.get_current_user()
         )
-        return session_ids
+        return list(map(
+            Session.to_dict,
+            map(
+                partial(get_session, self.db_conn),
+                session_ids
+            )
+        ))
 
 
 class StudentSessions(APIHandler):
