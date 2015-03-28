@@ -4,10 +4,10 @@
 
 CREATE TABLE Employees (
   sin        TEXT PRIMARY KEY,
-  first_name TEXT,
-  last_name  TEXT,
-  username   TEXT,
-  password   TEXT,
+  first_name TEXT CHECK (NOT NULL),
+  last_name  TEXT CHECK (NOT NULL),
+  username   TEXT CHECK (NOT NULL),
+  password   TEXT CHECK (NOT NULL),
   salt       TEXT
 );
 CREATE TABLE Working (
@@ -31,8 +31,8 @@ CREATE TABLE Sport (
 );
 CREATE TABLE Sessions (
   session_id INTEGER PRIMARY KEY AUTOINCREMENT,
-  start_time INTEGER,
-  end_time   INTEGER,
+  start_time INTEGER CHECK (start_time > 0),
+  end_time   INTEGER CHECK (end_time > 0),
   sport_id   INTEGER,
   venue_name TEXT,
   results    TEXT,
@@ -44,7 +44,7 @@ CREATE TABLE Sessions (
 CREATE TABLE Players (
   name        TEXT,
   student_num INTEGER PRIMARY KEY,
-  password    TEXT,
+  password    TEXT CHECK (NOT NULL),
   salt        TEXT
 );
 CREATE TABLE PlaysIn (
@@ -60,7 +60,7 @@ CREATE TABLE PlaysIn (
 );
 CREATE TABLE Team_ParticipatesIn (
   team_id           INTEGER PRIMARY KEY AUTOINCREMENT,
-  name              TEXT,
+  name              TEXT CHECK(NOT NULL),
   number_of_players INTEGER,
   session_id        INT,
   FOREIGN KEY (session_id) REFERENCES Sessions (session_id)
