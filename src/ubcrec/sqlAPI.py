@@ -13,6 +13,7 @@ class SQLAPI(object):
     def __init__(self, db_path='project.db'):
         self.conn = sqlite3.connect(db_path)
         self.cursor = self.conn.cursor()
+        self.cursor = self.cursor.execute("PRAGMA FOREIGN_KEYS=ON;")
 
     def log_and_execute(self, sql, args=()):
         """Log and execute ``sql`` with ``args``
@@ -26,6 +27,7 @@ class SQLAPI(object):
             for quoted_value in quoted_values:
                 s = s.replace('?', str(quoted_value), 1)
         print("SQL command: " + s)
+        self.cursor = self.cursor.execute("PRAGMA FOREIGN_KEYS=ON;")
         self.cursor.execute(sql, args)
 
     def insertEmployeesData(self, Sin, fName, lName, username, password, salt):
