@@ -11,6 +11,7 @@ import click
 import tornado.httpserver
 import tornado.ioloop
 from tornado_json.application import Application
+from tornado.log import enable_pretty_logging
 
 from ubcrec.sqlAPI import SQLAPI
 from ubcrec.config import UBCRECConfig
@@ -68,6 +69,8 @@ def main(port, db, session_timeout_days, cookie_secret):
     - Start the server
     """
     global http_server
+
+    enable_pretty_logging()
 
     ubcrec_config = UBCRECConfig(
         port=port,
