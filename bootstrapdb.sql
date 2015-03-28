@@ -2,6 +2,8 @@
 -- Create Tables --
 -------------------
 
+PRAGMA FOREIGN_KEYS = ON;
+
 CREATE TABLE Employees (
   sin        TEXT PRIMARY KEY,
   first_name TEXT CHECK (NOT NULL),
@@ -39,7 +41,7 @@ CREATE TABLE Sessions (
   FOREIGN KEY (sport_id) REFERENCES Sport (sport_id)
     ON UPDATE RESTRICT
     ON DELETE RESTRICT,
-  FOREIGN KEY (venue_name) REFERENCES Venue (venue_name)
+  FOREIGN KEY (venue_name) REFERENCES Venue (name)
     ON UPDATE CASCADE
     ON DELETE RESTRICT
 );
