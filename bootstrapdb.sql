@@ -36,9 +36,9 @@ CREATE TABLE Sessions (
   sport_id   INTEGER CHECK (sport_id > 0),
   venue_name TEXT,
   results    TEXT,
-  FOREIGN KEY (sport_id) REFERENCES Sport (sport_id),
-    on UPDATE RESTRICT
-    ON DELETE RESTRICT
+  FOREIGN KEY (sport_id) REFERENCES Sport (sport_id)
+    ON UPDATE RESTRICT
+    ON DELETE RESTRICT,
   FOREIGN KEY (venue_name) REFERENCES Venue (venue_name)
     ON UPDATE CASCADE
     ON DELETE RESTRICT
