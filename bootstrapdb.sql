@@ -4,10 +4,10 @@
 
 CREATE TABLE Employees (
   sin        TEXT PRIMARY KEY,
-  first_name TEXT,
-  last_name  TEXT,
-  username   TEXT,
-  password   TEXT,
+  first_name TEXT CHECK (NOT NULL),
+  last_name  TEXT CHECK (NOT NULL),
+  username   TEXT CHECK (NOT NULL),
+  password   TEXT CHECK (NOT NULL),
   salt       TEXT
 );
 CREATE TABLE Working (
@@ -16,45 +16,58 @@ CREATE TABLE Working (
   end_shift   INTEGER,
   PRIMARY KEY (sin, start_shift, end_shift),
   FOREIGN KEY (sin) REFERENCES Employees (sin)
+  ON DELETE CASCADE
+  ON UPDATE CASCADE
+
 );
 CREATE TABLE Venue (
   name    TEXT PRIMARY KEY,
   address TEXT
 );
 CREATE TABLE Sport (
-  sport_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  sport_id INTEGER PRIMARY KEY AUTOINCREMENT CHECK (sport_id > 0),
   name     TEXT,
   UNIQUE (name)
 );
 CREATE TABLE Sessions (
   session_id INTEGER PRIMARY KEY AUTOINCREMENT,
-  start_time INTEGER,
-  end_time   INTEGER,
-  sport_id   INTEGER,
+  start_time INTEGER CHECK (start_time > 0 AND end_time>start_time),
+  end_time   INTEGER CHECK (end_time > 0 AND end_time>start_time),
+  sport_id   INTEGER CHECK (sport_id > 0),
   venue_name TEXT,
   results    TEXT,
-  FOREIGN KEY (sport_id) REFERENCES Sport (sport_id),
+  FOREIGN KEY (sport_id) REFERENCES Sport (sport_id)
+    ON UPDATE RESTRICT
+    ON DELETE RESTRICT,
   FOREIGN KEY (venue_name) REFERENCES Venue (venue_name)
+    ON UPDATE CASCADE
+    ON DELETE RESTRICT
 );
 CREATE TABLE Players (
   name        TEXT,
   student_num INTEGER PRIMARY KEY,
-  password    TEXT,
+  password    TEXT CHECK (NOT NULL),
   salt        TEXT
 );
 CREATE TABLE PlaysIn (
   student_num INTEGER,
   team_id     INTEGER,
   PRIMARY KEY (student_num, team_id),
-  FOREIGN KEY (student_num) REFERENCES Players (student_num),
+  FOREIGN KEY (student_num) REFERENCES Players (student_num)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE,
   FOREIGN KEY (team_id) REFERENCES Team_ParticipatesIn (team_id)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE
 );
 CREATE TABLE Team_ParticipatesIn (
   team_id           INTEGER PRIMARY KEY AUTOINCREMENT,
-  name              TEXT,
+  name              TEXT CHECK(NOT NULL),
   number_of_players INTEGER,
   session_id        INT,
   FOREIGN KEY (session_id) REFERENCES Sessions (session_id)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE
 );
 
 
@@ -116,11 +129,11 @@ VALUES (1427235705, 1427239305, 1, 'SRC_A');
 INSERT INTO Sessions (start_time, end_time, sport_id, venue_name)
 VALUES (1427235705, 1427239305, 2, 'SRC_B');
 INSERT INTO Sessions (start_time, end_time, sport_id, venue_name)
-VALUES (1427235705, 1427239305, 3, 'Thunderbird');
+VALUES (1427235702, 1427239305, 3, 'Thunderbird');
 INSERT INTO Sessions (start_time, end_time, sport_id, venue_name)
-VALUES (1427235705, 1427239305, 4, 'SRC_GYM');
+VALUES (1427235706, 1427239305, 4, 'SRC_GYM');
 INSERT INTO Sessions (start_time, end_time, sport_id, venue_name)
-VALUES (1427235705, 1427239305, 5, 'Aquatic_Center');
+VALUES (1427235703, 1427239305, 5, 'Aquatic_Center');
 
 INSERT INTO Players (student_num, name, password, salt)
 VALUES (12346589, 'Patton Hunt',

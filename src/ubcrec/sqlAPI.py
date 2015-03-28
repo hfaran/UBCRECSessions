@@ -14,6 +14,20 @@ class SQLAPI(object):
         self.conn = sqlite3.connect(db_path)
         self.cursor = self.conn.cursor()
 
+    def log_and_execute(self, sql, args=()):
+        """Log and execute ``sql`` with ``args``
+        http://stackoverflow.com/a/13647368
+        """
+        s = sql
+        if len(args) > 0:
+            # generates SELECT quote(?), quote(?), ...
+            self.cursor.execute("SELECT " + ", ".join(["quote(?)" for i in args]), args)
+            quoted_values = list(self.cursor.fetchone())
+            for quoted_value in quoted_values:
+                s = s.replace('?', str(quoted_value), 1)
+        print("SQL command: " + s)
+        self.cursor.execute(sql, args)
+
     def insertEmployeesData(self, Sin, fName, lName, username, password, salt):
         """
         :type Sin: str
@@ -48,7 +62,7 @@ class SQLAPI(object):
         :type endShift: int
         :param endShift: Employees end shift (Unix Time)
         """
-        self.cursor.execute(
+        self.log_and_execute(
             "INSERT INTO Working VALUES (? ,? ,?)",
             (Sin,
              startShift,
@@ -64,7 +78,7 @@ class SQLAPI(object):
         :type address: str
         :param address: address of venue
         """
-        self.cursor.execute(
+        self.log_and_execute(
             "INSERT INTO Venue VALUES (? ,?)", (name, address)
         )
         self.conn.commit()
@@ -77,7 +91,7 @@ class SQLAPI(object):
         :type sportID: int
         :param sportID: ID of the sport type
         """
-        self.cursor.execute(
+        self.log_and_execute(
             "INSERT INTO Sport VALUES (? ,?)", (sportName, sportID)
         )
         self.conn.commit()
@@ -98,11 +112,7 @@ class SQLAPI(object):
         :returns: ID of newly created session
         :rtype: int
         """
-
-        sessionID = None  # TODO This should be auto-incremented by SQL
-        results = None  # TODO Doesn't make sense to add on a PUT; should be
-
-        self.cursor.execute(
+        self.log_and_execute(
             "INSERT INTO Sessions (start_time, end_time, sport_id, venue_name, results) VALUES (?,?,?,?,?)",
             (startTime,
              endTime,
@@ -120,7 +130,7 @@ class SQLAPI(object):
         :type session_id: int
         :type results: str
         """
-        self.cursor.execute("UPDATE Sessions SET results=? WHERE session_id=?",
+        self.log_and_execute("UPDATE Sessions SET results=? WHERE session_id=?",
                             (results, session_id))
 
     def insert_player_data(self, name, student_number, password, salt):
@@ -134,7 +144,7 @@ class SQLAPI(object):
         :type salt: str
         :param salt: Password salt
         """
-        self.cursor.execute(
+        self.log_and_execute(
             "INSERT INTO Players (name, student_num, password, salt) "
             "VALUES (?,?,?,?)",
             (name,
@@ -151,7 +161,7 @@ class SQLAPI(object):
         :type team_id: int
         :param team_id: Team ID
         """
-        self.cursor.execute(
+        self.log_and_execute(
             "INSERT INTO PlaysIn (student_num, team_id) VALUES (? ,?)",
             (student_num, team_id)
         )
@@ -169,7 +179,7 @@ class SQLAPI(object):
         :rtype: int
         :returns: ID of newly created team
         """
-        self.cursor.execute(
+        self.log_and_execute(
             "INSERT INTO Team_ParticipatesIn "
             "(name, number_of_players, session_id) "
             "VALUES (?,?,?)",
@@ -192,7 +202,7 @@ class SQLAPI(object):
         :returns: Model of player with user
         :rtype: models.Player or None
         """
-        self.cursor.execute('SELECT * FROM Players WHERE student_num=?', (student_number,))
+        self.log_and_execute('SELECT * FROM Players WHERE student_num=?', (student_number,))
         row = self.cursor.fetchall()
 
         # I am adding this in case I messed up during the database setup
@@ -214,7 +224,7 @@ class SQLAPI(object):
         :rtype: list
         :returns: list of session IDs
         """
-        self.cursor.execute(
+        self.log_and_execute(
             'SELECT session_id FROM Team_ParticipatesIn WHERE '
             'team_id IN (SELECT team_id FROM PlaysIn WHERE student_num=?)',
             (student_number,)
@@ -232,7 +242,7 @@ class SQLAPI(object):
         :return: Session or None if no such session with ``session_id`` exists
         :rtype: models.Session or None
         """
-        self.cursor.execute('SELECT * FROM Sessions WHERE session_id=?', (session_id,))
+        self.log_and_execute('SELECT * FROM Sessions WHERE session_id=?', (session_id,))
         row = self.cursor.fetchall()
         # I am adding this in case I messed up during the database setup
         if len(row) > 1:
@@ -286,7 +296,7 @@ class SQLAPI(object):
             arg_list.append(ended_before)
         if sports is not None:
             # first get the sport ID by its name
-            self.cursor.execute(
+            self.log_and_execute(
                 "SELECT sport_id FROM Sport WHERE name IN ({})".format(
                     ", ".join("?"*len(sports))
                 ),
@@ -300,7 +310,7 @@ class SQLAPI(object):
             arg_list.extend(venues)
 
         query = "{0} {1}".format(query, " AND ".join(where_clauses))
-        self.cursor.execute(query, arg_list)
+        self.log_and_execute(query, arg_list)
         session_list = self.cursor.fetchall()
         session_model_list = []
         for row in session_list:
@@ -320,7 +330,7 @@ class SQLAPI(object):
         :type venue_name: str
         :rtype: models.Venue or None
         """
-        self.cursor.execute('SELECT * FROM Venue WHERE name=?', (venue_name,))
+        self.log_and_execute('SELECT * FROM Venue WHERE name=?', (venue_name,))
         row = self.cursor.fetchall()
         # I am adding this in case I messed up during the database setup
         if len(row) > 1:
@@ -337,7 +347,7 @@ class SQLAPI(object):
         :returns: list of Venue models
         :rtype: list
         """
-        self.cursor.execute('SELECT * FROM Venue')
+        self.log_and_execute('SELECT * FROM Venue')
         rows = self.cursor.fetchall()
         venue_list = []
         for row in rows:
@@ -351,7 +361,7 @@ class SQLAPI(object):
         :rtype: models.Employee or None
         :returns: Employee model if exists otherwise, None
         """
-        self.cursor.execute('SELECT * FROM Employees WHERE username=?', (username,))
+        self.log_and_execute('SELECT * FROM Employees WHERE username=?', (username,))
         row = self.cursor.fetchall()
         # I am adding this in case I messed up during the database setup
         if len(row) > 1:
@@ -378,7 +388,7 @@ class SQLAPI(object):
         """
 
         # first get the sin number for the specified username
-        self.cursor.execute("SELECT sin FROM Employees WHERE username=?", (username,))
+        self.log_and_execute("SELECT sin FROM Employees WHERE username=?", (username,))
         sin_row = self.cursor.fetchall()
         if len(sin_row) > 1:
             raise (IndexError, "There is something wrong with the primary key of Employees Table. Duplicated keys")
@@ -401,7 +411,7 @@ class SQLAPI(object):
             where_clauses.append("end_shift < ?")
             arg_list.append(end)
         query = "{0} {1}".format(query, " AND ".join(where_clauses))
-        self.cursor.execute(query, arg_list)
+        self.log_and_execute(query, arg_list)
         selected_employees_list = self.cursor.fetchall()
 
         # converting the results to list of shift models
@@ -416,7 +426,7 @@ class SQLAPI(object):
         :rtype: list
         :returns: A list like the following: [models.Sport(...), models.Sport(...)]
         """
-        self.cursor.execute("SELECT * FROM Sport ")
+        self.log_and_execute("SELECT * FROM Sport ")
         sports_list = []
         rows = self.cursor.fetchall()
         for row in rows:
@@ -431,7 +441,7 @@ class SQLAPI(object):
         :rtype: list
         :returns: A list like the following: [models.Team(...), models.Team(...)]
         """
-        self.cursor.execute("SELECT * FROM Team_ParticipatesIn "
+        self.log_and_execute("SELECT * FROM Team_ParticipatesIn "
                             "WHERE session_id=?", (session_id,))
         teams_list = []
         rows = self.cursor.fetchall()
@@ -447,7 +457,7 @@ class SQLAPI(object):
         :rtype: models.Team or None
         :returns: Team model or None if doesn't exist
         """
-        self.cursor.execute("SELECT * FROM Team_ParticipatesIn WHERE team_id=?", (team_id,))
+        self.log_and_execute("SELECT * FROM Team_ParticipatesIn WHERE team_id=?", (team_id,))
         teams_list = []
         team_row = self.cursor.fetchall()
         if len(team_row) > 1:
@@ -468,7 +478,7 @@ class SQLAPI(object):
         :type team_id: int
         :rtype: int
         """
-        self.cursor.execute("SELECT COUNT(student_num) FROM PlaysIn WHERE team_id=?", (team_id,))
+        self.log_and_execute("SELECT COUNT(student_num) FROM PlaysIn WHERE team_id=?", (team_id,))
         players_count = self.cursor.fetchall()[0][0]
         return players_count
 
@@ -477,7 +487,7 @@ class SQLAPI(object):
 
         :rtype: list
         """
-        self.cursor.execute("SELECT student_num FROM PlaysIn WHERE team_id=?", (team_id,))
+        self.log_and_execute("SELECT student_num FROM PlaysIn WHERE team_id=?", (team_id,))
         return [self.get_player(row[0]) for row in self.cursor.fetchall()]
 
     def delete_session(self, session_id):
@@ -489,51 +499,130 @@ class SQLAPI(object):
 
         :type session_id: int
         """
-        self.cursor.execute("DELETE FROM Sessions WHERE session_id=?", (session_id, ))
+        self.log_and_execute("DELETE FROM Sessions WHERE session_id=?", (session_id, ))
+
+    def get_employee_shift(self, username, start=None, end=None):
+        """Return shifts for employee username
+
+        :type username: str
+        :type start: int
+        :param start: Filter only shifts with a start_time greater
+            than this (Unix Time), or, if this is None, do not filter.
+        :type end: int
+        :param end: Filter only shifts with an end_time smaller
+            than this (Unix Time), or, if this is None, do not filter.
+        :return: list
+        :rtype: list
+        """
+
+        arg_list = []
+        where_clauses = []
+
+        query = "SELECT sin, start_shift, end_shift FROM (SELECT sin, start_shift, end_shift, username FROM Employees NATURAL JOIN Working) WHERE "
+
+        where_clauses.append(" username=? ")
+        arg_list.append(username)
+
+        if start is not None:
+            where_clauses.append("start_shift > ?")
+            arg_list.append(start)
+        if end is not None:
+            where_clauses.append("end_shift < ?")
+            arg_list.append(end)
+        query = "{0} {1}".format(query, " AND ".join(where_clauses))
+        self.log_and_execute(query, arg_list)
+        selected_employees_list = self.cursor.fetchall()
+        return selected_employees_list
+
+    def get_single_players(self):
+        """Returns a list of players who did not register in any team
+
+        :return: list
+        :rtype: list
+        """
+        self.log_and_execute("SELECT * FROM Players WHERE NOT EXISTS (SELECT * FROM PlaysIn WHERE Players.student_num=PlaysIn.student_num)")
+        single_players = self.cursor.fetchall()
+
+        for row in single_players:
+            print ("The student %s with student number %s did not register in any team." % (row[0] , row[1]))
+
+        return single_players
+
+    def get_avg_num_of_team_players(self, op="min"):
+        if (op == "min"):
+            #self.log_and_execute("SELECT session_id s_id, SUM(number_of_players) FROM (SELECT Sessions.session_id session_id, sport_id, team_id, number_of_players FROM Sessions LEFT OUTER JOIN Team_ParticipatesIn ON Sessions.session_id = Team_ParticipatesIn.session_id) GROUP BY s_id ")
+            self.log_and_execute("SELECT MIN(av) FROM (SELECT session_id s_id, COALESCE(AVG(number_of_players),0) av FROM"
+                                " (SELECT Sessions.session_id session_id, sport_id, team_id, number_of_players FROM "
+                                "Sessions LEFT OUTER JOIN Team_ParticipatesIn ON Sessions.session_id = Team_ParticipatesIn.session_id) GROUP BY s_id ) ")
+            row = self.cursor.fetchall()
+            print("Minimum number of average team players in all session is {}".format(row[0][0]))
+        if (op == "max"):
+            self.log_and_execute("SELECT MAX(av) FROM (SELECT session_id s_id, COALESCE(AVG(number_of_players),0) av FROM (SELECT "
+                                "Sessions.session_id session_id, sport_id, team_id, number_of_players FROM Sessions LEFT"
+                                " OUTER JOIN Team_ParticipatesIn ON Sessions.session_id = Team_ParticipatesIn.session_id) GROUP BY s_id ) ")
+            row = self.cursor.fetchall()
+            print("Maximum number of average team players in all session {}".format(row[0][0]))
+
+    def get_total_number_players_in_session (self):
+        self.log_and_execute("SELECT session_id s_id, SUM(number_of_players) FROM (SELECT Sessions.session_id session_id,"
+                            " sport_id, team_id, number_of_players FROM Sessions LEFT OUTER JOIN Team_ParticipatesIn ON "
+                            "Sessions.session_id = Team_ParticipatesIn.session_id) GROUP BY s_id ")
+        rows = self.cursor.fetchall()
+        for row in rows:
+            print("The session {0} has {1} registered participants".format(row[0],row[1]))
+
+#
+#
+# def main():
+#     obj = SQLAPI('project.db')
+#     session = obj.get_session(1)
+#     print session.session_id
+#     print session.results
+#     print session.end_time
+#     print session.start_time
+#
+#     session=obj.get_session(6)
+#     if session is None:
+#         print "correct"
+#
+#     print obj.get_sessions()
+#
+#     print obj.get_sessions(started_after=1427235705)
+#
+#     print "get_num_players_registered: "+str(obj.get_num_players_registered(1))
+#
+#     print "get_employee: "+ obj.get_employee("acalhoon").first_name
+#
+#     print str(obj.get_player(student_number=9876543).student_number)
+#
+#     print obj.get_teams_for_session(session_id=4)
+#
+#     print "number of sports: " + str(len(obj.get_sports()))
+#
+#     print obj.get_team(4)
+#
+#     sessions = obj.get_sessions(
+#         sports=["Basketball", "Volleyball", "Indoor Soccer"],
+#         venues=["SRC B"],
+#         started_after=1427235704
+#     )
+#     for session in sessions:
+#         print(session)
+#
+#     shifts = obj.get_employee_shifts("rcalhoon", start=1427235704)
+#     for shift in shifts:
+#         print(shift)
+#
+#     print obj.get_employee_shift("acalhoon",1427235707)
+#
+#     print obj.get_single_players()
+#     obj.get_total_number_players_in_session()
+#     obj.get_avg_num_of_team_players("min")
+#     obj.get_avg_num_of_team_players("max")
+#     obj.add_session_results(-1,"20-20")
+#     obj.create_session(1,1,1,"SRC")
+# if __name__ == "__main__":
+#     main()
 
 
-"""
-def main():
-    obj = SQLAPI('project.db')
-    session = obj.get_session(1)
-    print session.session_id
-    print session.results
-    print session.end_time
-    print session.start_time
 
-    session=obj.get_session(6)
-    if session is None:
-        print "correct"
-
-    print obj.get_sessions()
-
-    print obj.get_sessions(started_after=1427235705)
-
-    print "get_num_players_registered: "+str(obj.get_num_players_registered(1))
-
-    print "get_employee: "+ obj.get_employee("acalhoon").first_name
-
-    print str(obj.get_player(student_number=9876543).student_number)
-
-    print obj.get_teams_for_session(session_id=4)
-
-    print "number of sports: " + str(len(obj.get_sports()))
-
-    print obj.get_team(4)
-
-    sessions = s.get_sessions(
-        sports=["Basketball", "Volleyball", "Indoor Soccer"],
-        venues=["SRC B"],
-        started_after=1427235704
-    )
-    for session in sessions:
-        print(session)
-
-    shifts = s.get_employee_shifts("rcalhoon", start=1427235704)
-    for shift in shifts:
-        print(shift)
-
-
-if __name__ == "__main__":
-    main()
-"""
