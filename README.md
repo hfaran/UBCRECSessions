@@ -1,5 +1,3 @@
-**Markers, please see SUBMISSION.md for submission details.**
-
 # UBC REC Sessions
 
 An application that allows UBC REC players to sign-up for drop-in sessions in
