@@ -8,7 +8,7 @@ An application that allows UBC REC players to sign-up for drop-in sessions in
 ### Bootstrapping Database
 
 ```bash
-$ sqlite3 project.db < bootstrapdb.sql
+sqlite3 project.db < bootstrapdb.sql
 ```
 
 ### Installing Dependencies
